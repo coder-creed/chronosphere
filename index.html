@@ -11,9 +11,9 @@
   :root, [data-theme="night"] {
     --bg-0: #04060c;
     --bg-1: #080d17;
-    --text: #e7eefc;
-    --text-dim: #97a6c4;
-    --text-faint: #5d6d8e;
+    --text: #e9eefc;
+    --text-dim: #a4b3d1;
+    --text-faint: #6f7f9e;
     --accent: #5ab3ff;
     --accent-2: #b78cff;
     --accent-3: #ffb86b;
@@ -21,49 +21,60 @@
     --good: #4ade80;
     --warn: #fbbf24;
     --bad: #f87171;
-    --line: rgba(140, 200, 255, 0.08);
-    --line-strong: rgba(140, 200, 255, 0.18);
-    --glass-soft: rgba(10, 15, 28, 0.28);
-    --glass-mid: rgba(10, 15, 28, 0.45);
-    --glass-edge: rgba(140, 200, 255, 0.12);
+    --line: rgba(140, 200, 255, 0.1);
+    --line-strong: rgba(140, 200, 255, 0.22);
+    --panel-bg: rgba(10, 15, 28, 0.55);
+    --panel-edge: rgba(140, 200, 255, 0.14);
+    --chip-bg: rgba(10, 15, 28, 0.6);
+    --chip-edge: rgba(140, 200, 255, 0.16);
+    --rail-bg: rgba(10, 15, 28, 0.5);
+    --topbar-bg: rgba(10, 15, 28, 0.45);
+    --card-bg: rgba(255, 255, 255, 0.035);
+    --card-bg-hover: rgba(140, 200, 255, 0.09);
+    --card-bg-active: rgba(90, 179, 255, 0.16);
+    --card-border: rgba(140, 200, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.035);
     --shadow: 0 16px 60px rgba(0, 0, 0, 0.5);
-    --vignette: rgba(4, 6, 12, 0.65);
+    --vignette: rgba(4, 6, 12, 0.55);
     --top-glow: rgba(90, 179, 255, 0.05);
     --grad-start: #ffffff;
     --grad-end: #9ec8ff;
+    --selected-bg: linear-gradient(135deg, rgba(90,179,255,0.12), rgba(183,140,255,0.05));
+    --selected-border: rgba(90, 179, 255, 0.28);
   }
   [data-theme="day"] {
-    --bg-0: #9bbfe8;
-    --bg-1: #dfeaf8;
+    --bg-0: #88b2e0;
+    --bg-1: #c8dcf3;
     --text: #0a1730;
-    --text-dim: #3d5478;
-    --text-faint: #7a8aa8;
-    --accent: #1d4ed8;
+    --text-dim: #38507a;
+    --text-faint: #7088ac;
+    --accent: #1e40af;
     --accent-2: #7c3aed;
-    --accent-3: #d97706;
-    --accent-pin: #db2777;
-    --good: #16a34a;
-    --warn: #d97706;
-    --bad: #dc2626;
-    --line: rgba(30, 70, 160, 0.1);
-    --line-strong: rgba(30, 70, 160, 0.22);
-    --glass-soft: rgba(255, 255, 255, 0.42);
-    --glass-mid: rgba(255, 255, 255, 0.68);
-    --glass-edge: rgba(255, 255, 255, 0.78);
-    --shadow: 0 16px 60px rgba(30, 60, 120, 0.18);
-    --vignette: rgba(160, 200, 240, 0.35);
-    --top-glow: rgba(255, 220, 150, 0.18);
+    --accent-3: #c2410c;
+    --accent-pin: #be185d;
+    --good: #15803d;
+    --warn: #b45309;
+    --bad: #b91c1c;
+    --line: rgba(15, 40, 100, 0.12);
+    --line-strong: rgba(15, 40, 100, 0.2);
+    --panel-bg: rgba(255, 255, 255, 0.62);
+    --panel-edge: rgba(255, 255, 255, 0.85);
+    --chip-bg: rgba(255, 255, 255, 0.7);
+    --chip-edge: rgba(255, 255, 255, 0.9);
+    --rail-bg: rgba(255, 255, 255, 0.55);
+    --topbar-bg: rgba(255, 255, 255, 0.55);
+    --card-bg: rgba(255, 255, 255, 0.55);
+    --card-bg-hover: rgba(30, 64, 175, 0.08);
+    --card-bg-active: rgba(30, 64, 175, 0.14);
+    --card-border: rgba(15, 40, 100, 0.12);
+    --input-bg: rgba(255, 255, 255, 0.45);
+    --shadow: 0 16px 50px rgba(30, 60, 120, 0.18);
+    --vignette: rgba(180, 210, 245, 0.4);
+    --top-glow: rgba(255, 220, 140, 0.22);
     --grad-start: #0a1730;
-    --grad-end: #1d4ed8;
-  }
-  body, .glass, #panel, #now-chip, .brand,
-  .icon-btn, .rail-btn, #tab-rail, #tooltip, #vignette,
-  .wc-card, .selected-card, .concept, .chess-side,
-  .btn, .sw-display, .pom-stat,
-  .search-wrap input, .row input, .row select, .empty-state {
-    transition: background 1.2s ease, background-color 1.2s ease,
-                border-color 1.2s ease, color 1.2s ease,
-                box-shadow 1.2s ease;
+    --grad-end: #1e40af;
+    --selected-bg: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(124, 58, 237, 0.05));
+    --selected-border: rgba(30, 64, 175, 0.25);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -77,33 +88,41 @@
   }
   button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
   input, select { font-family: inherit; color: inherit; }
+  body, .glass, #panel, #now-chip, .brand, .icon-btn, .rail-btn, #tab-rail,
+  #tooltip, #vignette, .wc-card, .selected-card, .concept, .chess-side,
+  .btn, .sw-display, .pom-stat, .search-wrap input, .row input, .row select,
+  .empty-state, .mode-switch, .mode-btn {
+    transition: background 1s ease, background-color 1s ease,
+                border-color 1s ease, color 1s ease, box-shadow 1s ease;
+  }
 
   #scene { position: fixed; inset: 0; z-index: 0; }
   #vignette {
     position: fixed; inset: 0; z-index: 1; pointer-events: none;
     background:
-      radial-gradient(ellipse at center, transparent 40%, var(--vignette) 100%),
+      radial-gradient(ellipse at center, transparent 42%, var(--vignette) 100%),
       radial-gradient(circle at 50% 0%, var(--top-glow), transparent 50%);
   }
 
-  /* ============== GLASS CHIP PRIMITIVE ============== */
+  /* ===== GLASS PRIMITIVES ===== */
   .glass {
-    background: var(--glass-soft);
-    border: 1px solid var(--glass-edge);
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid var(--panel-edge);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
     box-shadow: var(--shadow);
   }
 
-  /* ============== TOP BAR ============== */
+  /* ===== TOPBAR ===== */
   #topbar {
     position: fixed; top: 22px; left: 22px; right: 22px; z-index: 10;
     display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
     pointer-events: none;
   }
   .brand {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 11px;
     padding: 7px 16px 7px 8px;
+    background: var(--topbar-bg);
     border-radius: 100px;
     pointer-events: auto;
   }
@@ -119,35 +138,62 @@
   }
   .brand h1 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.01em;
     background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .topbar-actions { display: flex; gap: 6px; pointer-events: auto; }
+  .topbar-actions { display: flex; gap: 8px; align-items: center; pointer-events: auto; }
+
+  /* Mode switch (segmented control) */
+  .mode-switch {
+    display: flex; gap: 2px;
+    padding: 4px;
+    background: var(--topbar-bg);
+    border: 1px solid var(--panel-edge);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 100px;
+    box-shadow: var(--shadow);
+  }
+  .mode-btn {
+    width: 34px; height: 30px; border-radius: 100px;
+    color: var(--text-faint);
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  .mode-btn:hover { color: var(--text); background: var(--card-bg-hover); }
+  .mode-btn.active {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 0 18px rgba(90, 179, 255, 0.4);
+  }
+  [data-theme="day"] .mode-btn.active { color: #fff; box-shadow: 0 0 14px rgba(30, 64, 175, 0.35); }
+
   .icon-btn {
     width: 36px; height: 36px; border-radius: 50%;
+    background: var(--topbar-bg);
     color: var(--text); font-size: 14px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.25s ease;
   }
   .icon-btn:hover {
-    background: rgba(90, 179, 255, 0.12);
-    border-color: rgba(90, 179, 255, 0.4);
+    background: var(--card-bg-hover);
     color: var(--accent);
     transform: translateY(-1px);
   }
   .icon-btn.active {
-    background: rgba(90, 179, 255, 0.18);
-    border-color: var(--accent);
+    background: var(--card-bg-active);
     color: var(--accent);
   }
 
-  /* ============== VERTICAL TAB RAIL ============== */
+  /* ===== VERTICAL TAB RAIL ===== */
   #tab-rail {
     position: fixed; top: 50%; right: 22px;
     transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 4px;
+    display: flex; flex-direction: column; gap: 3px;
     padding: 6px;
+    background: var(--rail-bg);
     border-radius: 100px;
     z-index: 9;
   }
@@ -160,20 +206,20 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
   }
-  .rail-btn:hover { color: var(--text); transform: scale(1.08); }
+  .rail-btn:hover { color: var(--text); transform: scale(1.08); background: var(--card-bg-hover); }
   .rail-btn.active {
-    background: rgba(90, 179, 255, 0.18);
+    background: var(--card-bg-active);
     color: var(--accent);
-    box-shadow: inset 0 0 0 1px rgba(90, 179, 255, 0.4),
-                0 0 24px rgba(90, 179, 255, 0.25);
+    box-shadow: inset 0 0 0 1px var(--accent),
+                0 0 24px rgba(90, 179, 255, 0.18);
   }
   .rail-btn .label-pop {
     position: absolute; right: calc(100% + 12px); top: 50%;
     transform: translateY(-50%) translateX(8px);
-    padding: 5px 10px;
-    background: var(--glass-mid);
-    border: 1px solid var(--glass-edge);
-    backdrop-filter: blur(20px);
+    padding: 5px 11px;
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-edge);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-radius: 6px;
     font-size: 11px; font-weight: 500;
     color: var(--text);
@@ -185,16 +231,18 @@
     opacity: 1; transform: translateY(-50%) translateX(0);
   }
 
-  /* ============== FLOATING PANEL ============== */
+  /* ===== FLOATING PANEL ===== */
   #panel {
     position: fixed; top: 50%; right: 86px;
     transform: translateY(-50%) translateX(24px) scale(0.97);
-    width: 340px; max-width: calc(100vw - 110px);
-    max-height: 72vh;
+    width: 360px; max-width: calc(100vw - 110px);
+    max-height: 74vh;
+    background: var(--panel-bg);
     border-radius: 22px;
     z-index: 9;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                background 1s ease, border-color 1s ease;
     display: flex; flex-direction: column;
     overflow: hidden;
   }
@@ -204,39 +252,47 @@
   }
   .panel-container {
     overflow-y: auto;
-    scrollbar-width: thin; scrollbar-color: rgba(140,200,255,0.18) transparent;
+    scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
   }
   .panel-container::-webkit-scrollbar { width: 5px; }
-  .panel-container::-webkit-scrollbar-thumb { background: rgba(140,200,255,0.18); border-radius: 6px; }
-  .panel-section { display: none; padding: 22px 22px 22px; animation: fadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+  .panel-container::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 6px; }
+  .panel-section { display: none; padding: 22px; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
   .panel-section.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
   h2 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px; font-weight: 600; margin-bottom: 4px;
+    font-size: 18px; font-weight: 600; margin-bottom: 4px;
     letter-spacing: -0.005em;
+    color: var(--text);
   }
   h3 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--text-faint);
-    margin: 20px 0 10px;
+    margin: 22px 0 10px;
   }
   h3:first-child { margin-top: 0; }
-  p { font-size: 12px; line-height: 1.6; color: var(--text-dim); }
+  p { font-size: 12.5px; line-height: 1.6; color: var(--text-dim); }
 
-  /* ============== NOW CHIP (bottom centered) ============== */
+  /* ===== NOW CHIP ===== */
   #now-chip {
     position: fixed; bottom: 28px; left: 50%;
     transform: translateX(-50%) translateY(12px);
-    display: flex; align-items: center; gap: 18px;
+    display: flex; align-items: center; gap: 16px;
     padding: 10px 22px 10px 14px;
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-edge);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    box-shadow: var(--shadow);
     border-radius: 100px;
     z-index: 8;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                background 1s ease, border-color 1s ease;
     max-width: calc(100vw - 220px);
+    cursor: pointer;
   }
   #now-chip.show {
     opacity: 1; pointer-events: auto;
@@ -245,27 +301,25 @@
   #now-chip .dot {
     width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent-pin);
-    box-shadow: 0 0 12px var(--accent-pin);
+    box-shadow: 0 0 14px var(--accent-pin);
     animation: pulse-dot 2.4s ease-in-out infinite;
     flex-shrink: 0;
   }
   @keyframes pulse-dot {
     0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
+    50% { opacity: 1; transform: scale(1.5); }
   }
-  #now-chip .city-block {
-    display: flex; flex-direction: column;
-    min-width: 0;
-  }
+  #now-chip .city-block { display: flex; flex-direction: column; min-width: 0; }
   #now-chip .city-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px; font-weight: 500;
-    letter-spacing: 0.02em;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--text);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   #now-chip .city-meta {
     font-size: 10px; color: var(--text-faint);
-    text-transform: uppercase; letter-spacing: 0.15em; margin-top: 1px;
+    text-transform: uppercase; letter-spacing: 0.16em; margin-top: 1px;
   }
   #now-chip .time-block {
     display: flex; align-items: baseline; gap: 6px;
@@ -285,139 +339,164 @@
   }
   #now-chip .offset-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: var(--text-faint);
-    padding: 2px 7px; border-radius: 100px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
+    font-size: 10px; color: var(--text-dim);
+    padding: 2px 8px; border-radius: 100px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
   }
   #now-chip .close {
     width: 22px; height: 22px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: var(--text-faint);
-    background: rgba(255,255,255,0.04);
+    font-size: 11px; color: var(--text-faint);
+    background: var(--card-bg);
     transition: all 0.2s;
   }
-  #now-chip .close:hover { color: var(--text); background: rgba(248,113,113,0.15); }
+  #now-chip .close:hover { color: var(--bad); background: var(--card-bg-hover); }
 
-  /* ============== SELECTED CITY DETAILS (in panel) ============== */
+  /* ===== SELECTED CITY CARD ===== */
   .selected-card {
     padding: 18px;
-    background: linear-gradient(135deg, rgba(90,179,255,0.06), rgba(183,140,255,0.03));
-    border: 1px solid rgba(90, 179, 255, 0.18);
-    border-radius: 14px;
+    background: var(--selected-bg);
+    border: 1px solid var(--selected-border);
+    border-radius: 16px;
     position: relative; overflow: hidden;
   }
   .selected-card::before {
     content: ''; position: absolute; top: -50%; right: -30%;
     width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(90,179,255,0.12), transparent 70%);
+    background: radial-gradient(circle, rgba(90,179,255,0.14), transparent 70%);
     pointer-events: none;
+  }
+  [data-theme="day"] .selected-card::before {
+    background: radial-gradient(circle, rgba(30,64,175,0.1), transparent 70%);
   }
   .selected-card .city-name {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--text);
   }
   .selected-card .country {
     font-size: 10px; color: var(--text-dim);
-    text-transform: uppercase; letter-spacing: 0.18em; margin-top: 2px;
+    text-transform: uppercase; letter-spacing: 0.18em; margin-top: 3px;
+    font-weight: 500;
   }
   .selected-card .big-time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 36px; font-weight: 300; letter-spacing: -0.02em;
-    margin-top: 12px; line-height: 1;
+    font-size: 38px; font-weight: 300; letter-spacing: -0.02em;
+    margin-top: 14px; line-height: 1;
     background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .selected-card .big-date {
     font-size: 11px; color: var(--text-dim); margin-top: 6px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em; font-weight: 500;
   }
   .selected-card .meta-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    margin-top: 14px; padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,0.07);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid var(--line-strong);
     position: relative;
   }
   .meta-grid .item .k {
     font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em;
-    color: var(--text-faint);
+    color: var(--text-faint); font-weight: 600;
   }
   .meta-grid .item .v {
     font-family: 'JetBrains Mono', monospace; font-size: 12px;
     color: var(--text); margin-top: 3px;
   }
   .empty-state {
-    text-align: center; padding: 26px 16px;
-    border: 1px dashed var(--line-strong); border-radius: 14px;
+    text-align: center; padding: 28px 16px;
+    border: 1px dashed var(--line-strong); border-radius: 16px;
+    background: var(--card-bg);
   }
   .empty-state h2 { margin-bottom: 6px; }
 
-  /* ============== WORLD CLOCKS GRID ============== */
+  /* ===== WORLD CLOCKS GRID ===== */
   #world-clocks-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
   }
   .wc-card {
-    padding: 10px 12px; border-radius: 10px;
-    background: rgba(255,255,255,0.015);
-    border: 1px solid var(--line);
-    cursor: pointer; transition: all 0.25s ease;
+    padding: 11px 13px; border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer; transition: all 0.22s ease;
+    position: relative;
   }
   .wc-card:hover {
-    background: rgba(90,179,255,0.06);
-    border-color: rgba(90,179,255,0.22);
+    background: var(--card-bg-hover);
+    border-color: var(--accent);
     transform: translateY(-1px);
   }
   .wc-card.active {
-    background: rgba(90,179,255,0.1);
+    background: var(--card-bg-active);
     border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
   }
-  .wc-card .city { font-size: 11px; font-weight: 500; }
+  .wc-card .city { font-size: 11.5px; font-weight: 600; color: var(--text); }
   .wc-card .time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px; font-weight: 400;
-    margin-top: 3px;
+    font-size: 16px; font-weight: 400;
+    margin-top: 4px;
     color: var(--accent);
+    letter-spacing: -0.01em;
   }
   .wc-card .offset {
-    font-size: 9px; color: var(--text-faint); margin-top: 1px;
-    letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: 9px; color: var(--text-faint); margin-top: 2px;
+    letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
   }
 
-  /* ============== SEARCH ============== */
+  /* ===== SEARCH ===== */
   .search-wrap { position: relative; margin: 8px 0 12px; }
   .search-wrap input {
-    width: 100%; padding: 9px 12px 9px 32px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line-strong);
+    width: 100%; padding: 10px 12px 10px 34px;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
     border-radius: 100px;
-    font-size: 12px;
-    transition: border-color 0.25s, background 0.25s;
+    font-size: 12.5px;
+    color: var(--text);
+    transition: all 0.25s;
   }
+  .search-wrap input::placeholder { color: var(--text-faint); }
   .search-wrap input:focus {
     outline: none; border-color: var(--accent);
-    background: rgba(90,179,255,0.04);
+    background: var(--card-bg-hover);
   }
   .search-wrap::before {
-    content: '⌕'; position: absolute; left: 12px; top: 50%;
+    content: '⌕'; position: absolute; left: 13px; top: 50%;
     transform: translateY(-50%); color: var(--text-faint); font-size: 14px;
   }
 
-  /* ============== CHESS CLOCK ============== */
+  /* ===== CHESS CLOCK ===== */
   .chess-board {
     display: grid; grid-template-columns: 1fr; gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .chess-side {
     padding: 18px 14px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line);
+    border: 1px solid var(--card-border);
     border-radius: 14px;
     text-align: center;
     cursor: pointer;
     transition: all 0.35s ease;
   }
-  .chess-side.white { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); }
-  .chess-side.black { background: linear-gradient(135deg, rgba(15,22,40,0.5), rgba(8,12,22,0.25)); }
+  .chess-side.white {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+  }
+  [data-theme="day"] .chess-side.white {
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+  }
+  .chess-side.black {
+    background: linear-gradient(135deg, rgba(15,22,40,0.5), rgba(8,12,22,0.25));
+  }
+  [data-theme="day"] .chess-side.black {
+    background: linear-gradient(135deg, rgba(15,22,40,0.85), rgba(15,22,40,0.7));
+    color: #e9eefc;
+  }
+  [data-theme="day"] .chess-side.black .label,
+  [data-theme="day"] .chess-side.black .moves {
+    color: rgba(233, 238, 252, 0.75);
+  }
   .chess-side.active {
     border-color: var(--good);
     box-shadow: 0 0 0 1px var(--good), 0 0 30px rgba(74, 222, 128, 0.2);
@@ -428,144 +507,148 @@
   }
   .chess-side .label {
     font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em;
-    color: var(--text-dim);
+    color: var(--text-dim); font-weight: 600;
   }
   .chess-side .time {
     font-family: 'JetBrains Mono', monospace;
     font-size: 38px; font-weight: 300; letter-spacing: -0.02em;
     margin-top: 6px; line-height: 1;
   }
-  .chess-side .moves { font-size: 10px; color: var(--text-faint); margin-top: 6px; }
+  .chess-side .moves { font-size: 10px; color: var(--text-faint); margin-top: 6px; font-weight: 500; }
 
-  /* ============== BUTTONS / ROWS ============== */
+  /* ===== BUTTONS / ROWS ===== */
   .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
   .btn {
     padding: 8px 14px; border-radius: 100px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--line-strong);
-    font-size: 11px; font-weight: 500;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    font-size: 11.5px; font-weight: 500;
+    color: var(--text);
     transition: all 0.2s ease;
   }
-  .btn:hover { background: rgba(90,179,255,0.08); border-color: var(--accent); color: var(--text); }
-  .btn.primary { background: var(--accent); color: #04101e; border-color: var(--accent); font-weight: 600; }
-  .btn.primary:hover { background: #82c8ff; }
-  .btn.danger { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--bad); }
+  .btn:hover { background: var(--card-bg-hover); border-color: var(--accent); }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .btn.primary:hover { filter: brightness(1.1); }
+  .btn.danger { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.3); color: var(--bad); }
+  [data-theme="day"] .btn.danger { background: rgba(185, 28, 28, 0.08); border-color: rgba(185, 28, 28, 0.25); }
   .row {
     display: flex; gap: 6px; align-items: center;
     margin-top: 10px; flex-wrap: wrap;
   }
   .row label {
     font-size: 10px; color: var(--text-faint);
-    text-transform: uppercase; letter-spacing: 0.14em;
+    text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
   }
   .row select, .row input[type="number"] {
     padding: 6px 9px; border-radius: 8px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line-strong);
-    font-size: 11px; font-family: 'JetBrains Mono', monospace;
-    width: 56px;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    font-size: 11.5px; font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    width: 60px;
   }
   .row select { width: auto; }
   .row select:focus, .row input:focus { outline: none; border-color: var(--accent); }
 
-  /* ============== STOPWATCH ============== */
+  /* ===== STOPWATCH ===== */
   .sw-display {
-    text-align: center; padding: 24px 16px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    margin-bottom: 12px;
+    text-align: center; padding: 26px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    margin-bottom: 14px;
   }
   .sw-display .main {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 42px; font-weight: 300; letter-spacing: -0.02em;
+    font-size: 44px; font-weight: 300; letter-spacing: -0.02em;
     line-height: 1;
     background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .sw-display .ms {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px; color: var(--text-dim); margin-top: 4px; font-weight: 300;
+    font-size: 16px; color: var(--text-dim); margin-top: 4px; font-weight: 300;
   }
   .laps {
-    margin-top: 12px; max-height: 180px; overflow-y: auto;
-    border-top: 1px solid var(--line); padding-top: 8px;
+    margin-top: 14px; max-height: 200px; overflow-y: auto;
+    border-top: 1px solid var(--line); padding-top: 10px;
   }
   .lap-row {
-    display: grid; grid-template-columns: 30px 1fr 1fr;
+    display: grid; grid-template-columns: 32px 1fr 1fr;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     padding: 5px 0; border-bottom: 1px solid var(--line);
   }
-  .lap-row .n { color: var(--text-faint); }
+  .lap-row .n { color: var(--text-faint); font-weight: 600; }
   .lap-row .split { color: var(--text-dim); text-align: right; }
   .lap-row .total { color: var(--text); text-align: right; }
   .lap-row.fastest .split { color: var(--good); }
   .lap-row.slowest .split { color: var(--bad); }
 
-  /* ============== POMODORO ============== */
-  .pom-circle-wrap { display: flex; justify-content: center; padding: 14px 0; }
-  .pom-circle { position: relative; width: 200px; height: 200px; }
+  /* ===== POMODORO ===== */
+  .pom-circle-wrap { display: flex; justify-content: center; padding: 16px 0; }
+  .pom-circle { position: relative; width: 210px; height: 210px; }
   .pom-circle svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .pom-circle .track { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; }
+  .pom-circle .track { fill: none; stroke: var(--line-strong); stroke-width: 6; }
   .pom-circle .progress {
     fill: none; stroke: var(--accent); stroke-width: 6;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;
-    filter: drop-shadow(0 0 10px rgba(90,179,255,0.4));
+    filter: drop-shadow(0 0 12px rgba(90,179,255,0.4));
   }
-  .pom-circle.break .progress { stroke: var(--good); filter: drop-shadow(0 0 10px rgba(74,222,128,0.4)); }
-  .pom-circle.long-break .progress { stroke: var(--accent-2); filter: drop-shadow(0 0 10px rgba(183,140,255,0.4)); }
+  .pom-circle.break .progress { stroke: var(--good); filter: drop-shadow(0 0 12px rgba(74,222,128,0.4)); }
+  .pom-circle.long-break .progress { stroke: var(--accent-2); filter: drop-shadow(0 0 12px rgba(183,140,255,0.4)); }
   .pom-center {
     position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
   }
   .pom-center .phase {
     font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em;
-    color: var(--text-dim);
+    color: var(--text-dim); font-weight: 600;
   }
   .pom-center .time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 36px; font-weight: 300; margin-top: 4px;
+    font-size: 38px; font-weight: 300; margin-top: 4px;
     background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .pom-center .session-no { font-size: 10px; color: var(--text-faint); margin-top: 3px; }
+  .pom-center .session-no { font-size: 10px; color: var(--text-faint); margin-top: 3px; font-weight: 500; }
   .pom-stats {
     display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
-    margin-top: 12px;
+    margin-top: 14px;
   }
   .pom-stat {
-    padding: 9px; text-align: center;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px; text-align: center;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border); border-radius: 12px;
   }
   .pom-stat .v {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 16px; color: var(--accent); font-weight: 400;
+    font-size: 17px; color: var(--accent); font-weight: 500;
   }
   .pom-stat .k {
     font-size: 9px; color: var(--text-faint);
-    text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px;
+    text-transform: uppercase; letter-spacing: 0.14em; margin-top: 3px; font-weight: 600;
   }
 
-  /* ============== CONCEPTS ============== */
+  /* ===== CONCEPTS ===== */
   .concept {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--line);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 12px;
     margin-bottom: 6px;
     overflow: hidden;
   }
   .concept summary {
     padding: 12px 14px;
-    font-weight: 500; font-size: 12px;
+    font-weight: 600; font-size: 12.5px;
+    color: var(--text);
     cursor: pointer;
     list-style: none;
     display: flex; justify-content: space-between; align-items: center;
     transition: background 0.25s;
   }
   .concept summary::-webkit-details-marker { display: none; }
-  .concept summary:hover { background: rgba(90,179,255,0.04); }
+  .concept summary:hover { background: var(--card-bg-hover); }
   .concept summary::after {
     content: '+'; font-size: 18px; color: var(--text-faint);
     transition: transform 0.35s ease;
@@ -578,50 +661,79 @@
   .concept .body p + p { margin-top: 8px; }
   .concept .body code {
     font-family: 'JetBrains Mono', monospace;
-    background: rgba(90,179,255,0.08); color: var(--accent);
+    background: var(--card-bg-hover); color: var(--accent);
     padding: 1px 6px; border-radius: 4px; font-size: 11px;
   }
-  .concept .body em { color: var(--text); font-style: normal; font-weight: 500; }
+  .concept .body em { color: var(--text); font-style: normal; font-weight: 600; }
 
-  /* ============== TOOLTIP ============== */
+  /* ===== TOOLTIP ===== */
   #tooltip {
     position: fixed; pointer-events: none; z-index: 20;
     padding: 6px 12px;
     border-radius: 100px;
-    font-size: 11px; font-weight: 500;
-    background: var(--glass-mid);
-    border: 1px solid var(--glass-edge);
+    font-size: 11px; font-weight: 600;
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-edge);
+    color: var(--text);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    opacity: 0; transform: translate(-50%, -150%);
+    opacity: 0; transform: translate(-50%, -160%);
     transition: opacity 0.2s;
     white-space: nowrap;
   }
   #tooltip.show { opacity: 1; }
   #tooltip .t-time {
     font-family: 'JetBrains Mono', monospace;
-    color: var(--accent); margin-left: 8px;
+    color: var(--accent); margin-left: 8px; font-weight: 400;
   }
 
-  /* ============== HINT ============== */
+  /* ===== HINT ===== */
   #hint {
     position: fixed; bottom: 28px; left: 28px; z-index: 5;
     font-size: 10px; color: var(--text-faint);
-    letter-spacing: 0.12em;
-    opacity: 0.8;
+    letter-spacing: 0.12em; font-weight: 500;
+    opacity: 0.85;
     transition: opacity 0.6s;
   }
   #hint kbd {
     font-family: 'JetBrains Mono', monospace;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--line);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 4px;
     padding: 1px 6px; font-size: 9px;
     color: var(--text-dim);
     margin: 0 2px;
   }
-  #hint.faded { opacity: 0.25; }
+  #hint.faded { opacity: 0.3; }
 
-  /* ============== LOADER ============== */
+  /* ===== LIVE BADGE (Sun position) ===== */
+  #live-badge {
+    position: fixed; top: 78px; left: 22px; z-index: 8;
+    display: none; align-items: center; gap: 10px;
+    padding: 8px 14px;
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-edge);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-radius: 100px;
+    font-size: 11px; color: var(--text-dim);
+    box-shadow: var(--shadow);
+  }
+  #live-badge.show { display: flex; }
+  #live-badge .sun-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ffd76b;
+    box-shadow: 0 0 12px #ffd76b;
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+  #live-badge .label {
+    font-weight: 600; color: var(--text);
+    letter-spacing: 0.06em;
+  }
+  #live-badge .coord {
+    font-family: 'JetBrains Mono', monospace; color: var(--accent);
+    font-size: 10.5px;
+  }
+
+  /* ===== LOADER ===== */
   #loading {
     position: fixed; inset: 0; z-index: 100;
     background: var(--bg-0);
@@ -632,15 +744,15 @@
   #loading.gone { opacity: 0; visibility: hidden; }
   .loading-orb {
     width: 50px; height: 50px; border-radius: 50%;
-    border: 1px solid rgba(90,179,255,0.15);
+    border: 1px solid rgba(90,179,255,0.18);
     border-top-color: var(--accent);
     animation: spin 1.2s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  #loading p { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-faint); }
+  #loading p { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-faint); font-weight: 500; }
 
-  /* ============== RESPONSIVE ============== */
-  @media (max-width: 720px) {
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 760px) {
     #panel { right: 78px; width: calc(100vw - 100px); }
     #now-chip { max-width: calc(100vw - 110px); padding: 8px 16px 8px 12px; gap: 12px; }
     #now-chip .time-block { padding-left: 12px; }
@@ -648,6 +760,7 @@
     #hint { display: none; }
     #world-clocks-grid { grid-template-columns: 1fr; }
     .chess-side .time { font-size: 32px; }
+    #live-badge { top: 70px; font-size: 10px; padding: 6px 12px; }
   }
 </style>
 </head>
@@ -663,11 +776,21 @@
       <h1>ChronoSphere</h1>
     </div>
     <div class="topbar-actions">
-      <button class="icon-btn glass" id="toggle-theme" title="Day / Night">☀</button>
+      <div class="mode-switch" id="mode-switch">
+        <button class="mode-btn" data-mode="night" title="Night — city lights">☾</button>
+        <button class="mode-btn" data-mode="day" title="Day — fully lit">☀</button>
+        <button class="mode-btn" data-mode="live" title="Live — real sun position">◑</button>
+      </div>
       <button class="icon-btn glass" id="reset-view" title="Reset camera">⟲</button>
-      <button class="icon-btn glass active" id="toggle-spin" title="Auto-rotate">◐</button>
+      <button class="icon-btn glass active" id="toggle-spin" title="Auto-rotate">↻</button>
     </div>
   </header>
+
+  <div id="live-badge">
+    <div class="sun-dot"></div>
+    <span class="label">LIVE</span>
+    <span class="coord" id="live-sun-coord">Sun overhead — calculating…</span>
+  </div>
 
   <nav id="tab-rail" class="glass">
     <button class="rail-btn" data-tab="clocks" title="World Clocks">
@@ -687,20 +810,20 @@
     </button>
   </nav>
 
-  <aside id="panel" class="glass">
+  <aside id="panel">
     <div class="panel-container">
 
       <section class="panel-section" data-panel="clocks">
         <div id="selected-city">
           <div class="empty-state">
             <h2>Pick a place</h2>
-            <p>Click any glowing pin on the globe to see local time, timezone, and offset details.</p>
+            <p>Click any glowing pin on the globe to see local time and timezone details.</p>
           </div>
         </div>
 
         <h3>World Clocks</h3>
         <div class="search-wrap">
-          <input id="city-search" type="text" placeholder="Search 40+ cities…" autocomplete="off" spellcheck="false" />
+          <input id="city-search" type="text" placeholder="Search 42 cities…" autocomplete="off" spellcheck="false" />
         </div>
         <div id="world-clocks-grid"></div>
       </section>
@@ -810,8 +933,17 @@
         <details class="concept" open>
           <summary>UTC — Coordinated Universal Time</summary>
           <div class="body">
-            <p><em>UTC</em> is the world's primary time standard. It descends from GMT (Greenwich Mean Time) but is governed by an ensemble of <code>400+</code> atomic clocks across 80+ labs.</p>
+            <p><em>UTC</em> is the world's primary time standard. It descends from GMT but is governed by an ensemble of <code>400+</code> atomic clocks across 80+ labs.</p>
             <p>Every timezone is an offset from UTC: New York is <code>UTC−5</code> in winter, <code>UTC−4</code> in summer. UTC itself never observes DST.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>The day/night terminator</summary>
+          <div class="body">
+            <p>The <em>terminator</em> is the line dividing day from night on Earth. It moves westward at roughly <code>1670 km/h</code> at the equator.</p>
+            <p>It isn't perfectly sharp — atmospheric scattering creates twilight zones spanning ~<em>18° of arc</em>. The Sun's declination (currently ±23.45°) tilts the terminator north or south through the seasons.</p>
+            <p>Switch to <em>Live</em> mode to see the actual terminator on the globe right now.</p>
           </div>
         </details>
 
@@ -826,8 +958,8 @@
         <details class="concept">
           <summary>Daylight Saving Time</summary>
           <div class="body">
-            <p>DST shifts clocks forward in spring and back in autumn. Roughly <em>40%</em> of countries do it. Equatorial nations rarely bother — day length barely changes.</p>
-            <p>Arizona (except the Navajo Nation), Hawaii, and most of Asia skip it entirely.</p>
+            <p>DST shifts clocks forward in spring and back in autumn. Roughly <em>40%</em> of countries do it. Equatorial nations rarely bother.</p>
+            <p>Arizona, Hawaii, and most of Asia skip it entirely.</p>
           </div>
         </details>
 
@@ -843,38 +975,29 @@
           <summary>Leap Seconds</summary>
           <div class="body">
             <p>Earth's rotation is slowing. The IERS inserts a <em>leap second</em> when needed — making <code>23:59:60</code> a valid moment.</p>
-            <p>27 leap seconds since 1972. The CGPM voted to <em>abolish them by 2035</em> — they wreak havoc on finance and GPS.</p>
+            <p>27 leap seconds since 1972. The CGPM voted to <em>abolish them by 2035</em>.</p>
           </div>
         </details>
 
         <details class="concept">
           <summary>Unix Time</summary>
           <div class="body">
-            <p>Seconds elapsed since <code>1970-01-01 00:00:00 UTC</code>. Currently about <em>1.7 billion</em>.</p>
-            <p>32-bit signed integers overflow at <code>2038-01-19 03:14:07 UTC</code> — the <em>Y2038 problem</em>. 64-bit is good until the heat death of the sun.</p>
+            <p>Seconds since <code>1970-01-01 00:00:00 UTC</code>. Currently about <em>1.7 billion</em>.</p>
+            <p>32-bit signed integers overflow at <code>2038-01-19 03:14:07 UTC</code> — the <em>Y2038 problem</em>.</p>
           </div>
         </details>
 
         <details class="concept">
           <summary>Atomic Clocks</summary>
           <div class="body">
-            <p>The SI second = <code>9,192,631,770</code> oscillations of caesium-133. Optical lattice clocks (strontium, ytterbium) are <em>100× more accurate</em> — drift one second every 15 billion years.</p>
-            <p>GPS requires nanosecond sync, since light travels ~30 cm per nanosecond.</p>
+            <p>The SI second = <code>9,192,631,770</code> oscillations of caesium-133. Optical lattice clocks are <em>100× more accurate</em> — drift one second every 15 billion years.</p>
           </div>
         </details>
 
         <details class="concept">
           <summary>Time Dilation</summary>
           <div class="body">
-            <p>Einstein: time flows slower in stronger gravity and at higher speeds. GPS satellites' clocks tick <em>+45 µs/day</em> from weaker gravity and <em>−7 µs/day</em> from orbital speed. Net: +38µs/day.</p>
-            <p>Without correcting for this, GPS positions would drift by <em>~10 km/day</em>.</p>
-          </div>
-        </details>
-
-        <details class="concept">
-          <summary>ISO 8601</summary>
-          <div class="body">
-            <p>The unambiguous format: <code>2026-05-31T14:30:00Z</code>. <code>Z</code> = UTC ("Zulu"). Always sortable as a string.</p>
+            <p>Einstein: time flows slower in stronger gravity and at higher speeds. GPS satellite clocks tick <em>+38 µs/day</em> faster than ground clocks. Without correction, GPS positions would drift <em>~10 km/day</em>.</p>
           </div>
         </details>
 
@@ -892,11 +1015,11 @@
           <div class="body">
             <p>Each city has lat/lon. To map to a 3D sphere:</p>
             <p><code>φ = (90 − lat) × π/180</code><br/><code>θ = (lon + 180) × π/180</code><br/><code>x = −r·sin(φ)·cos(θ)</code><br/><code>y = r·cos(φ)</code><br/><code>z = r·sin(φ)·sin(θ)</code></p>
-            <p>IANA timezone strings (e.g. <code>America/Los_Angeles</code>) are resolved via the browser's <code>Intl.DateTimeFormat</code>, which handles DST automatically.</p>
+            <p>IANA timezone strings are resolved via the browser's <code>Intl.DateTimeFormat</code>, which handles DST automatically.</p>
           </div>
         </details>
 
-        <p style="text-align:center;margin-top:18px;color:var(--text-faint);font-size:10px;letter-spacing:0.18em;text-transform:uppercase">
+        <p style="text-align:center;margin-top:18px;color:var(--text-faint);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600">
           ChronoSphere · 2026
         </p>
       </section>
@@ -904,7 +1027,7 @@
     </div>
   </aside>
 
-  <div id="tooltip" class="glass"></div>
+  <div id="tooltip"></div>
   <div id="hint">
     <kbd>Drag</kbd> rotate &nbsp; <kbd>Scroll</kbd> zoom &nbsp; <kbd>Click</kbd> a pin
   </div>
@@ -970,30 +1093,35 @@
     ];
 
     // ============================================================
-    // THEME (day / night) — simulates day/night Earth visuals
+    // MODE STATE — Night / Day / Live
     // ============================================================
+    const MODES = ['night', 'day', 'live'];
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    let theme = prefersLight ? 'day' : 'night';
-    document.documentElement.dataset.theme = theme;
-    function setTheme(t) {
-      theme = t;
-      document.documentElement.dataset.theme = t;
-      const btn = document.getElementById('toggle-theme');
-      if (btn) {
-        btn.textContent = t === 'day' ? '☾' : '☀';
-        btn.title = t === 'day' ? 'Switch to Night' : 'Switch to Day';
-      }
+    let mode = prefersLight ? 'day' : 'night';
+
+    function setMode(m) {
+      if (!MODES.includes(m)) return;
+      mode = m;
+      // UI theme: live shares its base color scheme based on time of day at user's location,
+      // but for the page chrome we treat 'live' as a separate visual (default to dark page chrome).
+      const pageTheme = (m === 'day') ? 'day' : 'night';
+      document.documentElement.dataset.theme = pageTheme;
+      document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === m);
+      });
+      const liveBadge = document.getElementById('live-badge');
+      if (liveBadge) liveBadge.classList.toggle('show', m === 'live');
     }
+    document.documentElement.dataset.theme = mode === 'day' ? 'day' : 'night';
 
     // ============================================================
     // SCENE SETUP
     // ============================================================
     const container = document.getElementById('scene');
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x04060c, 0.02);
+    scene.fog = new THREE.FogExp2(0x04060c, 0.012);
 
-    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-    // Start far for cinematic intro
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 2000);
     camera.position.set(0, 1.2, 9);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -1002,28 +1130,51 @@
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
-    // Lights
+    // Lights (we'll tween based on mode)
     const ambient = new THREE.AmbientLight(0x4060a0, 0.55);
     scene.add(ambient);
     const sun = new THREE.DirectionalLight(0xfff2dd, 1.3);
     sun.position.set(5, 3, 5);
     scene.add(sun);
-    const rim = new THREE.DirectionalLight(0x5ab3ff, 0.7);
+    const rim = new THREE.DirectionalLight(0x5ab3ff, 0.6);
     rim.position.set(-5, 1, -3);
     scene.add(rim);
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.04;       // smoother trailing
-    controls.rotateSpeed = 0.35;          // slower drag rotation
-    controls.zoomSpeed = 0.55;            // slower zoom
+    controls.dampingFactor = 0.04;
+    controls.rotateSpeed = 0.35;
+    controls.zoomSpeed = 0.55;
     controls.minDistance = 1.6;
-    controls.maxDistance = 12;
+    controls.maxDistance = 14;
     controls.enablePan = false;
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.08;      // SLOW cinematic auto-rotate
-    controls.enabled = false;             // disabled during intro
+    controls.autoRotateSpeed = 0.08;
+    controls.enabled = false;
+
+    // ============================================================
+    // SUN POSITION (Live mode — real-time subsolar point)
+    // ============================================================
+    function getSubsolarPoint(date) {
+      const utcH = date.getUTCHours() + date.getUTCMinutes()/60 + date.getUTCSeconds()/3600;
+      const start = Date.UTC(date.getUTCFullYear(), 0, 0);
+      const dayOfYear = Math.floor((date.getTime() - start) / 86400000);
+      // Declination: simple sinusoidal approximation
+      const decl = 23.45 * Math.sin(2 * Math.PI * (284 + dayOfYear) / 365);
+      // Subsolar longitude (negative because Earth rotates eastward)
+      const subLon = -15 * (utcH - 12);
+      return { lat: decl, lon: subLon };
+    }
+    function latLonToVec3(lat, lon, radius) {
+      const phi = (90 - lat) * Math.PI / 180;
+      const theta = (lon + 180) * Math.PI / 180;
+      return new THREE.Vector3(
+        -radius * Math.sin(phi) * Math.cos(theta),
+         radius * Math.cos(phi),
+         radius * Math.sin(phi) * Math.sin(theta)
+      );
+    }
 
     // ============================================================
     // GLOBE
@@ -1032,6 +1183,7 @@
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
 
+    // Fallback ocean material (visible until shader loads)
     const oceanGeo = new THREE.SphereGeometry(GLOBE_R, 96, 96);
     const oceanMat = new THREE.MeshPhongMaterial({
       color: 0x0a1a3a,
@@ -1042,6 +1194,7 @@
     const ocean = new THREE.Mesh(oceanGeo, oceanMat);
     globeGroup.add(ocean);
 
+    // Load both textures, then build shader material
     const texLoader = new THREE.TextureLoader();
     function loadTex(url) {
       return new Promise((resolve) => {
@@ -1052,6 +1205,7 @@
         );
       });
     }
+
     let earthShader = null;
     Promise.all([
       loadTex('https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg'),
@@ -1064,9 +1218,9 @@
         uniforms: {
           dayMap:    { value: d },
           nightMap:  { value: n },
-          mixFactor: { value: theme === 'day' ? 1 : 0 },
+          modeBlend: { value: mode === 'night' ? 0 : mode === 'day' ? 1 : 2 },
           sunDir:    { value: new THREE.Vector3(5, 3, 5).normalize() },
-          ambient:   { value: 0.18 },
+          ambient:   { value: 0.16 },
         },
         vertexShader: `
           varying vec2 vUv;
@@ -1080,20 +1234,37 @@
         fragmentShader: `
           uniform sampler2D dayMap;
           uniform sampler2D nightMap;
-          uniform float mixFactor;
+          uniform float modeBlend;  // 0=night, 1=day, 2=live
           uniform vec3 sunDir;
           uniform float ambient;
           varying vec2 vUv;
           varying vec3 vN;
+
           void main() {
             vec3 day = texture2D(dayMap, vUv).rgb;
-            vec3 night = texture2D(nightMap, vUv).rgb * 1.35;
-            float l = max(0.0, dot(normalize(vN), normalize(sunDir)));
-            vec3 dayLit = day * (ambient + l * 1.05);
-            // City lights still glow on the dark side in day mode
-            float darkSide = 1.0 - smoothstep(0.0, 0.28, l);
-            vec3 dayBlend = dayLit + night * darkSide * 0.55 * mixFactor;
-            vec3 col = mix(night, dayBlend, mixFactor);
+            vec3 night = texture2D(nightMap, vUv).rgb;
+
+            // Stylized full-night (city lights everywhere)
+            vec3 nightCol = night * 1.5;
+
+            // Stylized full-day (bright blue marble)
+            vec3 dayCol = day * 1.1;
+
+            // Real lit (Live mode)
+            float l = dot(normalize(vN), normalize(sunDir));
+            float dayMask = smoothstep(-0.15, 0.18, l);
+            vec3 lit = day * (ambient + max(0.0, l) * 1.05);
+            // Subtle blue twilight tint near terminator
+            float twilight = (1.0 - abs(l * 4.0)) * smoothstep(-0.2, 0.0, l);
+            lit += vec3(0.1, 0.2, 0.35) * twilight * 0.4;
+            vec3 liveCol = mix(night * 1.6, lit, dayMask);
+
+            vec3 col;
+            if (modeBlend < 1.0) {
+              col = mix(nightCol, dayCol, modeBlend);
+            } else {
+              col = mix(dayCol, liveCol, modeBlend - 1.0);
+            }
             gl_FragColor = vec4(col, 1.0);
           }
         `,
@@ -1102,18 +1273,18 @@
       ocean.material.needsUpdate = true;
     });
 
-    // Wireframe overlay
+    // Wireframe overlay (faded in day/live)
     const gridGeo = new THREE.SphereGeometry(GLOBE_R * 1.001, 36, 24);
     const gridMat = new THREE.MeshBasicMaterial({
       color: 0x5ab3ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.08,
+      opacity: 0.07,
     });
     const gridMesh = new THREE.Mesh(gridGeo, gridMat);
     globeGroup.add(gridMesh);
 
-    // Atmosphere shader
+    // Atmosphere shader (back-side glow)
     const atmoGeo = new THREE.SphereGeometry(GLOBE_R * 1.20, 64, 64);
     const atmoMat = new THREE.ShaderMaterial({
       uniforms: {
@@ -1143,50 +1314,209 @@
     const atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
     scene.add(atmosphere);
 
-    // Starfield (slowly counter-rotates)
-    const starGeo = new THREE.BufferGeometry();
-    const starCount = 2500;
-    const starPositions = new Float32Array(starCount * 3);
-    const starColors = new Float32Array(starCount * 3);
-    const starSizes = new Float32Array(starCount);
-    for (let i = 0; i < starCount; i++) {
-      const r = 40 + Math.random() * 80;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      starPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      starPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      starPositions[i * 3 + 2] = r * Math.cos(phi);
-      const tint = 0.55 + Math.random() * 0.45;
-      starColors[i * 3] = tint;
-      starColors[i * 3 + 1] = tint;
-      starColors[i * 3 + 2] = Math.min(1, tint + Math.random() * 0.25);
-      starSizes[i] = Math.random() < 0.92 ? 0.08 : 0.18;
+    // ============================================================
+    // STARFIELD + GALACTIC PLANE
+    // ============================================================
+    function buildStars() {
+      const geo = new THREE.BufferGeometry();
+      const N = 4500;
+      const positions = new Float32Array(N * 3);
+      const colors = new Float32Array(N * 3);
+      // Galactic plane orientation: tilt the disk for visual depth
+      const planeTilt = 0.35;
+      const cosT = Math.cos(planeTilt), sinT = Math.sin(planeTilt);
+      for (let i = 0; i < N; i++) {
+        // 60% of stars concentrated along galactic plane, rest scattered
+        const inPlane = Math.random() < 0.55;
+        const r = 60 + Math.random() * 120;
+        const theta = Math.random() * Math.PI * 2;
+        let y, x, z;
+        if (inPlane) {
+          const yJitter = (Math.random() - 0.5) * 0.12;
+          y = r * yJitter;
+          x = r * Math.cos(theta);
+          z = r * Math.sin(theta);
+        } else {
+          const phi = Math.acos(2 * Math.random() - 1);
+          x = r * Math.sin(phi) * Math.cos(theta);
+          y = r * Math.sin(phi) * Math.sin(theta);
+          z = r * Math.cos(phi);
+        }
+        // Apply tilt
+        const yt = y * cosT - z * sinT;
+        const zt = y * sinT + z * cosT;
+        positions[i * 3]     = x;
+        positions[i * 3 + 1] = yt;
+        positions[i * 3 + 2] = zt;
+        // Star color — slight blue/yellow variance
+        const t = Math.random();
+        if (t < 0.7) {
+          const v = 0.7 + Math.random() * 0.3;
+          colors[i*3] = v; colors[i*3+1] = v; colors[i*3+2] = v;
+        } else if (t < 0.85) {
+          colors[i*3] = 0.8 + Math.random()*0.2; colors[i*3+1] = 0.85; colors[i*3+2] = 1.0;
+        } else {
+          colors[i*3] = 1.0; colors[i*3+1] = 0.9; colors[i*3+2] = 0.7;
+        }
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      return geo;
     }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+    const starGeo = buildStars();
     const starMat = new THREE.PointsMaterial({
-      size: 0.11,
+      size: 0.13,
       sizeAttenuation: true,
       vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
+      depthWrite: false,
     });
     const stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
+    // Bright nebula glow patches (sprites)
+    const nebulaGroup = new THREE.Group();
+    scene.add(nebulaGroup);
+    function makeNebulaTexture() {
+      const c = document.createElement('canvas');
+      c.width = c.height = 128;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grad.addColorStop(0, 'rgba(180, 220, 255, 0.7)');
+      grad.addColorStop(0.3, 'rgba(120, 140, 220, 0.25)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+      return new THREE.CanvasTexture(c);
+    }
+    const nebTex = makeNebulaTexture();
+    const NEBULAS = [
+      { pos: [80, 12, -40], col: 0x8aa8ff, sz: 24 },
+      { pos: [-60, -8, -90], col: 0xff9aa8, sz: 28 },
+      { pos: [50, -25, 70], col: 0xaaffd4, sz: 22 },
+      { pos: [-100, 15, 20], col: 0xc8a8ff, sz: 26 },
+    ];
+    NEBULAS.forEach(n => {
+      const mat = new THREE.SpriteMaterial({
+        map: nebTex,
+        color: n.col,
+        transparent: true,
+        opacity: 0.25,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const sp = new THREE.Sprite(mat);
+      sp.position.set(...n.pos);
+      sp.scale.set(n.sz, n.sz, 1);
+      nebulaGroup.add(sp);
+    });
+
+    // ============================================================
+    // SUN — distant bright sphere with halo
+    // ============================================================
+    const sunGroup = new THREE.Group();
+    scene.add(sunGroup);
+    const SUN_DIST = 80;
+    const sunCoreGeo = new THREE.SphereGeometry(2.2, 32, 32);
+    const sunCoreMat = new THREE.MeshBasicMaterial({ color: 0xfff0c4, fog: false });
+    const sunCore = new THREE.Mesh(sunCoreGeo, sunCoreMat);
+    sunGroup.add(sunCore);
+    // Halo
+    const sunHaloGeo = new THREE.SphereGeometry(4.5, 32, 32);
+    const sunHaloMat = new THREE.ShaderMaterial({
+      uniforms: { color: { value: new THREE.Color(0xffcc66) } },
+      vertexShader: `
+        varying vec3 vN;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        varying vec3 vN;
+        void main() {
+          float i = pow(0.85 - dot(vN, vec3(0, 0, 1)), 3.0);
+          gl_FragColor = vec4(color, 1.0) * i;
+        }
+      `,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      depthWrite: false,
+    });
+    const sunHalo = new THREE.Mesh(sunHaloGeo, sunHaloMat);
+    sunGroup.add(sunHalo);
+    // Outer corona (sprite)
+    const coronaSpriteMat = new THREE.SpriteMaterial({
+      map: nebTex,
+      color: 0xffd76b,
+      transparent: true,
+      opacity: 0.6,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const corona = new THREE.Sprite(coronaSpriteMat);
+    corona.scale.set(22, 22, 1);
+    sunGroup.add(corona);
+
+    // ============================================================
+    // MOON — orbits Earth
+    // ============================================================
+    const moonGroup = new THREE.Group();
+    scene.add(moonGroup);
+    const MOON_DIST = 4.5;     // scaled (real ratio is ~60)
+    const MOON_R = 0.27;       // real ratio of Moon to Earth radius
+    const moonGeo = new THREE.SphereGeometry(MOON_R, 48, 48);
+    // Procedural moon material fallback
+    const moonMat = new THREE.MeshPhongMaterial({
+      color: 0xb0b0b0,
+      emissive: 0x101015,
+      shininess: 4,
+      specular: 0x222222,
+    });
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moonGroup.add(moon);
+    // Subtle halo
+    const moonHaloGeo = new THREE.SphereGeometry(MOON_R * 1.4, 32, 32);
+    const moonHaloMat = new THREE.ShaderMaterial({
+      uniforms: { color: { value: new THREE.Color(0x9fb6e0) } },
+      vertexShader: `
+        varying vec3 vN;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        varying vec3 vN;
+        void main() {
+          float i = pow(0.85 - dot(vN, vec3(0, 0, 1)), 3.0) * 0.5;
+          gl_FragColor = vec4(color, 1.0) * i;
+        }
+      `,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      depthWrite: false,
+    });
+    const moonHalo = new THREE.Mesh(moonHaloGeo, moonHaloMat);
+    moonGroup.add(moonHalo);
+
+    // Try to load real moon texture
+    loadTex('https://unpkg.com/three-globe@2.31.0/example/img/moon.jpg').then(tex => {
+      if (tex) {
+        moonMat.map = tex;
+        moonMat.color.set(0xffffff);
+        moonMat.needsUpdate = true;
+      }
+    });
+
     // ============================================================
     // CITY PINS
     // ============================================================
-    function latLonToVec3(lat, lon, radius) {
-      const phi = (90 - lat) * Math.PI / 180;
-      const theta = (lon + 180) * Math.PI / 180;
-      return new THREE.Vector3(
-        -radius * Math.sin(phi) * Math.cos(theta),
-         radius * Math.cos(phi),
-         radius * Math.sin(phi) * Math.sin(theta)
-      );
-    }
-
     const pinGroup = new THREE.Group();
     globeGroup.add(pinGroup);
 
@@ -1197,7 +1527,7 @@
     const pinMeshes = [];
 
     CITIES.forEach((city, i) => {
-      const pillarMat = new THREE.MeshBasicMaterial({ color: 0xff5e8a, transparent: true, opacity: 0.5 });
+      const pillarMat = new THREE.MeshBasicMaterial({ color: 0xff5e8a, transparent: true, opacity: 0.55 });
       const pillar = new THREE.Mesh(pillarGeo, pillarMat);
       const pillarPos = latLonToVec3(city.lat, city.lon, GLOBE_R * 1.018);
       pillar.position.copy(pillarPos);
@@ -1217,7 +1547,7 @@
         color: 0xff5e8a,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.45,
+        opacity: 0.5,
       });
       const halo = new THREE.Mesh(haloGeo, haloMat);
       halo.position.copy(pinPos);
@@ -1235,7 +1565,7 @@
     let hoveredPin = null;
     let selectedCityIdx = null;
 
-    function setPinColor(pin, color, opacity = 0.45) {
+    function setPinColor(pin, color, opacity = 0.5) {
       pin.material.color.set(color);
       pin.userData.halo.material.color.set(color);
       pin.userData.halo.material.opacity = opacity;
@@ -1250,11 +1580,11 @@
       const newHover = hits.length ? hits[0].object : null;
       if (newHover !== hoveredPin) {
         if (hoveredPin && hoveredPin.userData.idx !== selectedCityIdx) {
-          setPinColor(hoveredPin, 0xff5e8a, 0.45);
+          setPinColor(hoveredPin, 0xff5e8a, 0.5);
         }
         hoveredPin = newHover;
         if (hoveredPin && hoveredPin.userData.idx !== selectedCityIdx) {
-          setPinColor(hoveredPin, 0x5ab3ff, 0.7);
+          setPinColor(hoveredPin, 0x5ab3ff, 0.75);
           renderer.domElement.style.cursor = 'pointer';
         } else if (!hoveredPin) {
           renderer.domElement.style.cursor = 'grab';
@@ -1277,7 +1607,6 @@
         const idx = hoveredPin.userData.idx;
         selectCity(idx);
         flyToCity(idx);
-        // hide hint after first interaction
         document.getElementById('hint').classList.add('faded');
       }
     }
@@ -1292,7 +1621,6 @@
       animateCamera(target, 2200, true);
     }
 
-    // Cubic ease in-out
     function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
 
     let cameraAnimating = false;
@@ -1300,16 +1628,13 @@
       const startPos = camera.position.clone();
       const startTime = performance.now();
       cameraAnimating = true;
-      // Pause auto-rotate during cinematic move
       const wasAutoRotating = controls.autoRotate;
       controls.autoRotate = false;
       document.getElementById('toggle-spin').classList.remove('active');
-
       function step() {
         const t = Math.min(1, (performance.now() - startTime) / duration);
         const eased = easeInOutCubic(t);
         if (slerp) {
-          // Spherical interpolation to keep distance from origin natural
           const sp = startPos.clone().normalize();
           const ep = targetPos.clone().normalize();
           const angle = Math.acos(Math.min(1, Math.max(-1, sp.dot(ep))));
@@ -1334,11 +1659,7 @@
       step();
     }
 
-    // ============================================================
-    // INTRO CAMERA
-    // ============================================================
     function runIntro() {
-      // From (0, 1.2, 9) to (0, 0.3, 4.2), slow & long
       animateCamera(new THREE.Vector3(0, 0.3, 4.2), 3000, true);
       setTimeout(() => {
         controls.enabled = true;
@@ -1356,26 +1677,19 @@
       return new Intl.DateTimeFormat('en-GB', opts).format(new Date());
     }
     function formatHM(tz) {
-      return new Intl.DateTimeFormat('en-GB', {
-        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz
-      }).format(new Date());
+      return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(new Date());
     }
     function formatSec(tz) {
-      return new Intl.DateTimeFormat('en-GB', {
-        second: '2-digit', timeZone: tz
-      }).format(new Date());
+      return new Intl.DateTimeFormat('en-GB', { second: '2-digit', timeZone: tz }).format(new Date());
     }
     function formatDate(tz) {
       return new Intl.DateTimeFormat('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-        timeZone: tz,
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: tz,
       }).format(new Date());
     }
     function getOffset(tz) {
       try {
-        const f = new Intl.DateTimeFormat('en-US', {
-          timeZone: tz, timeZoneName: 'shortOffset', hour: 'numeric'
-        }).formatToParts(new Date());
+        const f = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset', hour: 'numeric' }).formatToParts(new Date());
         const part = f.find(p => p.type === 'timeZoneName');
         if (part) {
           const raw = part.value.replace('GMT', 'UTC');
@@ -1393,9 +1707,7 @@
     }
     function getTzAbbr(tz) {
       try {
-        const f = new Intl.DateTimeFormat('en-US', {
-          timeZone: tz, timeZoneName: 'short', hour: 'numeric'
-        }).formatToParts(new Date());
+        const f = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short', hour: 'numeric' }).formatToParts(new Date());
         const part = f.find(p => p.type === 'timeZoneName');
         return part ? part.value : tz;
       } catch (e) { return tz; }
@@ -1422,10 +1734,8 @@
     const wcGrid = document.getElementById('world-clocks-grid');
     const citySearch = document.getElementById('city-search');
 
-    // Build the now-chip element
     const nowChip = document.createElement('div');
     nowChip.id = 'now-chip';
-    nowChip.className = 'glass';
     nowChip.innerHTML = `
       <div class="dot"></div>
       <div class="city-block">
@@ -1442,10 +1752,8 @@
     document.body.appendChild(nowChip);
     document.getElementById('chip-close').addEventListener('click', (e) => {
       e.stopPropagation();
-      // restore selected pin color
       if (selectedCityIdx !== null) {
-        const p = pinMeshes[selectedCityIdx];
-        setPinColor(p, 0xff5e8a, 0.45);
+        setPinColor(pinMeshes[selectedCityIdx], 0xff5e8a, 0.5);
       }
       selectedCityIdx = null;
       nowChip.classList.remove('show');
@@ -1454,20 +1762,15 @@
     });
     nowChip.addEventListener('click', (e) => {
       if (e.target.id === 'chip-close') return;
-      // open the clocks panel and scroll selected into view
       openPanel('clocks');
     });
 
     function selectCity(idx) {
-      // Reset previous selected pin
       if (selectedCityIdx !== null && selectedCityIdx !== idx) {
-        const p = pinMeshes[selectedCityIdx];
-        setPinColor(p, 0xff5e8a, 0.45);
+        setPinColor(pinMeshes[selectedCityIdx], 0xff5e8a, 0.5);
       }
       selectedCityIdx = idx;
-      // Highlight new selected pin (gold/accent)
-      const p = pinMeshes[idx];
-      setPinColor(p, 0xffb86b, 0.75);
+      setPinColor(pinMeshes[idx], 0xffb86b, 0.8);
       renderSelectedCity();
       renderWorldClocks();
       renderNowChip();
@@ -1488,7 +1791,7 @@
       if (selectedCityIdx === null) {
         selectedCityEl.innerHTML = `<div class="empty-state">
           <h2>Pick a place</h2>
-          <p>Click any glowing pin on the globe to see local time, timezone, and offset details.</p>
+          <p>Click any glowing pin on the globe to see local time and timezone details.</p>
         </div>`;
         return;
       }
@@ -1542,7 +1845,6 @@
         const d = document.getElementById('sel-date');
         if (t) t.textContent = formatTime(c.tz);
         if (d) d.textContent = formatDate(c.tz);
-        // now-chip
         document.getElementById('chip-time').textContent = formatHM(c.tz);
         document.getElementById('chip-sec').textContent = formatSec(c.tz);
       }
@@ -1554,11 +1856,10 @@
     renderWorldClocks();
 
     // ============================================================
-    // TAB RAIL / PANEL TOGGLE
+    // PANEL / TABS
     // ============================================================
     const panel = document.getElementById('panel');
     let activePanel = null;
-
     function openPanel(name) {
       activePanel = name;
       document.querySelectorAll('.rail-btn').forEach(b => {
@@ -1574,7 +1875,6 @@
       document.querySelectorAll('.rail-btn').forEach(b => b.classList.remove('active'));
       panel.classList.remove('show');
     }
-
     document.querySelectorAll('.rail-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const name = btn.dataset.tab;
@@ -1588,65 +1888,52 @@
       animateCamera(new THREE.Vector3(0, 0.3, 4.2), 1600, true);
     });
 
-    // Theme toggle (day / night)
-    setTheme(theme); // init button label
-    document.getElementById('toggle-theme').addEventListener('click', () => {
-      setTheme(theme === 'day' ? 'night' : 'day');
-    });
-
-    // Toggle spin
+    // Spin
     const spinBtn = document.getElementById('toggle-spin');
     spinBtn.addEventListener('click', () => {
       controls.autoRotate = !controls.autoRotate;
       spinBtn.classList.toggle('active', controls.autoRotate);
     });
 
-    // Click outside the panel closes it (but not on rail, chip, or topbar)
+    // Mode switch
+    document.querySelectorAll('.mode-btn').forEach(b => {
+      b.addEventListener('click', () => setMode(b.dataset.mode));
+    });
+    setMode(mode); // initial sync
+
+    // Outside-click closes panel
     document.addEventListener('click', (e) => {
       if (!activePanel) return;
       const inPanel = panel.contains(e.target);
       const inRail = document.getElementById('tab-rail').contains(e.target);
       const inTop = document.getElementById('topbar').contains(e.target);
       const inChip = nowChip.contains(e.target);
+      const inBadge = document.getElementById('live-badge').contains(e.target);
       const onCanvas = e.target === renderer.domElement;
-      if (!inPanel && !inRail && !inTop && !inChip && onCanvas) {
-        // Only close on globe clicks if not clicking a pin
+      if (!inPanel && !inRail && !inTop && !inChip && !inBadge && onCanvas) {
         if (!hoveredPin) closePanel();
       }
     });
 
     // ============================================================
-    // CHESS CLOCK
+    // CHESS / STOPWATCH / POMODORO  (unchanged logic, only style touched)
     // ============================================================
     const chess = {
-      whiteMs: 5 * 60 * 1000,
-      blackMs: 5 * 60 * 1000,
-      initialMs: 5 * 60 * 1000,
-      incMs: 3000,
-      mode: 'fischer',
-      active: 'white',
-      running: false,
-      whiteMoves: 0,
-      blackMoves: 0,
-      bronsteinDelayLeft: 0,
-      flagged: null,
+      whiteMs: 5*60*1000, blackMs: 5*60*1000, initialMs: 5*60*1000,
+      incMs: 3000, mode: 'fischer', active: 'white', running: false,
+      whiteMoves: 0, blackMoves: 0, bronsteinDelayLeft: 0, flagged: null,
     };
-
     const chessWhite = document.getElementById('chess-white');
     const chessBlack = document.getElementById('chess-black');
     const chessWhiteTime = document.getElementById('chess-white-time');
     const chessBlackTime = document.getElementById('chess-black-time');
     const chessWhiteMoves = document.getElementById('chess-white-moves');
     const chessBlackMoves = document.getElementById('chess-black-moves');
-
     function fmtChess(ms) {
       if (ms < 0) ms = 0;
-      const totalSec = ms / 1000;
-      const m = Math.floor(totalSec / 60);
-      const s = totalSec % 60;
-      if (m >= 10) {
-        return `${String(m).padStart(2,'0')}:${String(Math.floor(s)).padStart(2,'0')}`;
-      }
+      const t = ms / 1000;
+      const m = Math.floor(t / 60); const s = t % 60;
+      if (m >= 10) return `${String(m).padStart(2,'0')}:${String(Math.floor(s)).padStart(2,'0')}`;
       return `${String(m).padStart(2,'0')}:${s.toFixed(1).padStart(4,'0')}`;
     }
     function renderChess() {
@@ -1675,34 +1962,27 @@
     chessBlack.addEventListener('click', () => chessSwitch('black'));
     document.getElementById('chess-start').addEventListener('click', () => {
       if (chess.flagged) return;
-      chess.running = true;
-      renderChess();
+      chess.running = true; renderChess();
     });
     document.getElementById('chess-pause').addEventListener('click', () => {
-      chess.running = !chess.running;
-      renderChess();
+      chess.running = !chess.running; renderChess();
     });
     document.getElementById('chess-reset').addEventListener('click', () => {
       chess.whiteMs = chess.blackMs = chess.initialMs;
       chess.whiteMoves = chess.blackMoves = 0;
-      chess.running = false;
-      chess.active = 'white';
-      chess.flagged = null;
-      chess.bronsteinDelayLeft = 0;
+      chess.running = false; chess.active = 'white';
+      chess.flagged = null; chess.bronsteinDelayLeft = 0;
       renderChess();
     });
     document.getElementById('chess-apply').addEventListener('click', () => {
       const m = parseInt(document.getElementById('chess-min').value) || 5;
       const inc = parseInt(document.getElementById('chess-inc').value) || 0;
-      const mode = document.getElementById('chess-mode').value;
+      const md = document.getElementById('chess-mode').value;
       chess.initialMs = m * 60 * 1000;
-      chess.incMs = inc * 1000;
-      chess.mode = mode;
+      chess.incMs = inc * 1000; chess.mode = md;
       chess.whiteMs = chess.blackMs = chess.initialMs;
       chess.whiteMoves = chess.blackMoves = 0;
-      chess.running = false;
-      chess.active = 'white';
-      chess.flagged = null;
+      chess.running = false; chess.active = 'white'; chess.flagged = null;
       renderChess();
     });
     document.querySelectorAll('[data-preset]').forEach(btn => {
@@ -1723,12 +2003,8 @@
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' && activePanel === 'chess') {
         e.preventDefault();
-        if (!chess.running && !chess.flagged) {
-          chess.running = true;
-          renderChess();
-        } else if (chess.running) {
-          chessSwitch(chess.active);
-        }
+        if (!chess.running && !chess.flagged) { chess.running = true; renderChess(); }
+        else if (chess.running) chessSwitch(chess.active);
       }
     });
     function tickChess(dt) {
@@ -1749,9 +2025,7 @@
     }
     renderChess();
 
-    // ============================================================
-    // STOPWATCH
-    // ============================================================
+    // Stopwatch
     const sw = { startedAt: 0, elapsed: 0, running: false, laps: [] };
     const swMain = document.getElementById('sw-main');
     const swMs = document.getElementById('sw-ms');
@@ -1789,13 +2063,11 @@
       if (sw.running) {
         sw.startedAt = performance.now();
         e.target.textContent = 'Stop';
-        e.target.classList.add('danger');
-        e.target.classList.remove('primary');
+        e.target.classList.add('danger'); e.target.classList.remove('primary');
       } else {
         sw.elapsed += performance.now() - sw.startedAt;
         e.target.textContent = 'Start';
-        e.target.classList.add('primary');
-        e.target.classList.remove('danger');
+        e.target.classList.add('primary'); e.target.classList.remove('danger');
       }
     });
     document.getElementById('sw-lap').addEventListener('click', () => {
@@ -1806,20 +2078,16 @@
       sw.startedAt = 0; sw.elapsed = 0; sw.running = false; sw.laps = [];
       const btn = document.getElementById('sw-start');
       btn.textContent = 'Start';
-      btn.classList.add('primary');
-      btn.classList.remove('danger');
+      btn.classList.add('primary'); btn.classList.remove('danger');
       renderSw(); renderLaps();
     });
 
-    // ============================================================
-    // POMODORO
-    // ============================================================
+    // Pomodoro
     const pom = {
       workMin: 25, breakMin: 5, longMin: 15,
       phase: 'work', session: 1,
-      msLeft: 25 * 60 * 1000, msTotal: 25 * 60 * 1000,
-      running: false,
-      completed: 0, streak: 0, focusedMs: 0,
+      msLeft: 25*60*1000, msTotal: 25*60*1000,
+      running: false, completed: 0, streak: 0, focusedMs: 0,
     };
     const pomPhase = document.getElementById('pom-phase');
     const pomTime = document.getElementById('pom-time');
@@ -1830,7 +2098,6 @@
     const pomStreak = document.getElementById('pom-streak');
     const pomFocused = document.getElementById('pom-focused');
     const CIRCUMFERENCE = 2 * Math.PI * 44;
-
     function setPomPhase(phase) {
       pom.phase = phase;
       pomCircle.classList.remove('break', 'long-break');
@@ -1884,7 +2151,7 @@
       btn.textContent = 'Start'; btn.classList.add('primary');
       renderPom();
     });
-    ['pom-work', 'pom-break', 'pom-long'].forEach(id => {
+    ['pom-work','pom-break','pom-long'].forEach(id => {
       document.getElementById(id).addEventListener('change', (e) => {
         const val = Math.max(1, parseInt(e.target.value) || 1);
         if (id === 'pom-work') pom.workMin = val;
@@ -1912,14 +2179,15 @@
     // ============================================================
     // MAIN LOOP
     // ============================================================
-    const COLOR_GLOW_DAY = new THREE.Color(0xa0d0ff);
-    const COLOR_GLOW_NIGHT = new THREE.Color(0x5ab3ff);
+    const COLOR_GLOW_DAY  = new THREE.Color(0xa0d0ff);
+    const COLOR_GLOW_NITE = new THREE.Color(0x5ab3ff);
+    const COLOR_GLOW_LIVE = new THREE.Color(0x6cc0ff);
     let lastNow = performance.now();
     let secondCounter = 0;
     let pulsePhase = 0;
     let driftPhase = 0;
     let atmoPhase = 0;
-    const tmpVec = new THREE.Vector3();
+    let moonAngle = Math.random() * Math.PI * 2;
 
     function animate() {
       requestAnimationFrame(animate);
@@ -1933,7 +2201,7 @@
       if (chess.running) renderChess();
       if (pom.running) renderPom();
 
-      // Halo pulse (slow & gentle)
+      // Halo pulse
       pulsePhase += dt * 0.0014;
       const pulse = 0.5 + 0.5 * Math.sin(pulsePhase);
       pinMeshes.forEach(p => {
@@ -1941,11 +2209,8 @@
         const baseScale = isSel ? 1.25 : 1.0;
         const s = baseScale + pulse * (isSel ? 0.55 : 0.3);
         p.userData.halo.scale.set(s, s, s);
-        if (!isSel) {
-          p.userData.halo.material.opacity = 0.18 + pulse * 0.28;
-        } else {
-          p.userData.halo.material.opacity = 0.45 + pulse * 0.35;
-        }
+        if (!isSel) p.userData.halo.material.opacity = 0.18 + pulse * 0.3;
+        else p.userData.halo.material.opacity = 0.5 + pulse * 0.4;
         p.userData.halo.lookAt(camera.position);
       });
 
@@ -1953,30 +2218,88 @@
       atmoPhase += dt * 0.0008;
       atmoMat.uniforms.intensity.value = 0.85 + Math.sin(atmoPhase) * 0.18;
 
-      // Theme tween (day ↔ night) — smooth Earth/lighting/UI transition
-      const themeLerp = Math.min(1, dt / 1400);
-      if (earthShader) {
-        const target = theme === 'day' ? 1 : 0;
-        const cur = earthShader.uniforms.mixFactor.value;
-        earthShader.uniforms.mixFactor.value = cur + (target - cur) * themeLerp;
+      // ===== SUN POSITION =====
+      // Determine sun direction:
+      //  - night/day stylized: a fixed cinematic direction (front-upper-right)
+      //  - live: subsolar point computed from real UTC time
+      let sunDirTarget;
+      if (mode === 'live') {
+        const ssp = getSubsolarPoint(new Date());
+        sunDirTarget = latLonToVec3(ssp.lat, ssp.lon, 1).normalize();
+        // Update live badge
+        const liveCoord = document.getElementById('live-sun-coord');
+        if (liveCoord) {
+          const latStr = ssp.lat.toFixed(1) + '°' + (ssp.lat >= 0 ? 'N' : 'S').replace(/^/, ssp.lat >= 0 ? '' : '');
+          const lonStr = Math.abs(ssp.lon).toFixed(1) + '°' + (ssp.lon >= 0 ? 'E' : 'W');
+          liveCoord.textContent = `Sun above ${Math.abs(ssp.lat).toFixed(1)}°${ssp.lat >= 0 ? 'N' : 'S'} · ${Math.abs(ssp.lon).toFixed(1)}°${ssp.lon >= 0 ? 'E' : 'W'}`;
+        }
+      } else {
+        sunDirTarget = new THREE.Vector3(0.7, 0.4, 0.6).normalize();
       }
-      sun.intensity     += ((theme === 'day' ? 2.1  : 1.3 ) - sun.intensity)     * themeLerp;
-      ambient.intensity += ((theme === 'day' ? 0.85 : 0.55) - ambient.intensity) * themeLerp;
-      rim.intensity     += ((theme === 'day' ? 0.25 : 0.7 ) - rim.intensity)     * themeLerp;
-      starMat.opacity   += ((theme === 'day' ? 0    : 0.85) - starMat.opacity)   * themeLerp;
-      gridMat.opacity   += ((theme === 'day' ? 0.04 : 0.08) - gridMat.opacity)   * themeLerp;
-      atmoMat.uniforms.glowColor.value.lerp(
-        theme === 'day' ? COLOR_GLOW_DAY : COLOR_GLOW_NIGHT, themeLerp * 0.5
-      );
 
-      // Star slow counter-rotation
-      stars.rotation.y += dt * 0.000012;
-      stars.rotation.x += dt * 0.000005;
+      // Position sun mesh (smoothly lerp toward target direction)
+      if (sunGroup.userData.dir) {
+        sunGroup.userData.dir.lerp(sunDirTarget, Math.min(1, dt / 1500));
+      } else {
+        sunGroup.userData.dir = sunDirTarget.clone();
+      }
+      sunGroup.position.copy(sunGroup.userData.dir).multiplyScalar(SUN_DIST);
+      // Earth shader sunDir
+      if (earthShader) {
+        earthShader.uniforms.sunDir.value.copy(sunGroup.userData.dir);
+      }
+      // Three.js directional light follows the sun for moon shading
+      sun.position.copy(sunGroup.userData.dir).multiplyScalar(20);
 
-      // Subtle camera "breathing" — only when not animating or actively rotating
+      // ===== MOON ORBIT =====
+      // In live mode use real lunar speed; otherwise a visible but slow speed
+      const moonSpeed = mode === 'live'
+        ? (2 * Math.PI) / (27.32 * 86400000)  // rad/ms — real
+        : (2 * Math.PI) / (60000 * 0.5);       // ~30s per orbit for visual
+      moonAngle += dt * moonSpeed;
+      const moonInclination = 5.14 * Math.PI / 180;
+      const mx = Math.cos(moonAngle) * MOON_DIST;
+      const mz = Math.sin(moonAngle) * MOON_DIST;
+      const my = Math.sin(moonAngle * 0.5) * MOON_DIST * Math.sin(moonInclination);
+      moonGroup.position.set(mx, my, mz);
+      moon.lookAt(0, 0, 0); // tidal lock
+      moon.rotateY(Math.PI);
+
+      // ===== MODE TWEEN =====
+      const lerp = Math.min(1, dt / 1400);
+      if (earthShader) {
+        const target = mode === 'night' ? 0 : mode === 'day' ? 1 : 2;
+        const cur = earthShader.uniforms.modeBlend.value;
+        earthShader.uniforms.modeBlend.value = cur + (target - cur) * lerp;
+      }
+      const targetSunIntensity   = mode === 'day' ? 2.0 : mode === 'live' ? 1.6 : 1.2;
+      const targetAmbIntensity   = mode === 'day' ? 0.85 : mode === 'live' ? 0.5 : 0.55;
+      const targetRimIntensity   = mode === 'day' ? 0.25 : mode === 'live' ? 0.35 : 0.65;
+      const targetStarOpacity    = mode === 'day' ? 0 : mode === 'live' ? 0.7 : 0.9;
+      const targetGridOpacity    = mode === 'day' ? 0.03 : mode === 'live' ? 0.05 : 0.07;
+      const targetSunVisible     = mode === 'night' ? 0 : 1;
+      const targetMoonVisible    = mode === 'night' ? 1 : mode === 'live' ? 1 : 0.85;
+      const targetNebulaOpacity  = mode === 'day' ? 0 : 0.3;
+      sun.intensity        += (targetSunIntensity - sun.intensity)         * lerp;
+      ambient.intensity    += (targetAmbIntensity - ambient.intensity)     * lerp;
+      rim.intensity        += (targetRimIntensity - rim.intensity)         * lerp;
+      starMat.opacity      += (targetStarOpacity - starMat.opacity)        * lerp;
+      gridMat.opacity      += (targetGridOpacity - gridMat.opacity)        * lerp;
+      sunCoreMat.opacity   = (sunCoreMat.opacity ?? 1);
+      sunCore.visible = sunHalo.visible = corona.visible = targetSunVisible > 0.5;
+      sunCoreMat.transparent = true;
+      sunCoreMat.opacity   += (targetSunVisible - sunCoreMat.opacity)      * lerp;
+      sunHaloMat.uniforms && (sunHaloMat.opacity = targetSunVisible);
+      moon.visible = moonHalo.visible = targetMoonVisible > 0.5;
+      nebulaGroup.children.forEach(s => {
+        s.material.opacity += (targetNebulaOpacity - s.material.opacity) * lerp;
+      });
+      const targetGlow = mode === 'day' ? COLOR_GLOW_DAY : mode === 'live' ? COLOR_GLOW_LIVE : COLOR_GLOW_NITE;
+      atmoMat.uniforms.glowColor.value.lerp(targetGlow, lerp * 0.5);
+
+      // Subtle camera drift
       driftPhase += dt * 0.0006;
       if (!cameraAnimating && controls.autoRotate) {
-        // Tiny radial drift to feel alive
         const drift = Math.sin(driftPhase) * 0.015;
         camera.position.multiplyScalar(1 + drift * 0.0008);
       }
@@ -1994,24 +2317,21 @@
 
     animate();
 
-    // Hide loader & run intro
+    // Hide loader & intro
     setTimeout(() => {
       document.getElementById('loading').classList.add('gone');
       runIntro();
     }, 600);
 
-    // Auto-select user's locale-matched city after intro completes
+    // Auto-select user's locale-matched city
     setTimeout(() => {
       try {
         const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const match = CITIES.findIndex(c => c.tz === userTz);
-        if (match >= 0) {
-          selectCity(match);
-        }
+        if (match >= 0) selectCity(match);
       } catch (e) {}
     }, 3800);
 
-    // Fade hint after ~10s
     setTimeout(() => document.getElementById('hint').classList.add('faded'), 10000);
   </script>
 </body>

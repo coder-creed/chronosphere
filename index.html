@@ -457,6 +457,50 @@
     border-radius: 100px; transition: width 0.6s ease;
   }
 
+  /* Weather card */
+  .weather-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center; gap: 14px;
+    margin-top: 8px; padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(120, 180, 255, 0.08), rgba(255, 200, 120, 0.04));
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    min-height: 64px;
+    position: relative;
+  }
+  [data-theme="day"] .weather-card {
+    background: linear-gradient(135deg, rgba(120, 180, 255, 0.18), rgba(255, 200, 120, 0.1));
+  }
+  .weather-icon { font-size: 38px; line-height: 1; }
+  .weather-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .weather-temp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px; font-weight: 400;
+    color: var(--text); letter-spacing: -0.02em;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .weather-desc {
+    font-size: 11px; color: var(--text-dim); font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .weather-meta {
+    display: flex; flex-direction: column; gap: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text-faint);
+    text-align: right; white-space: nowrap;
+  }
+  .weather-meta span { display: inline-block; }
+  .weather-card.loading .weather-icon { opacity: 0.4; animation: pulse-weather 1.4s ease-in-out infinite; }
+  .weather-card.loading .weather-temp { color: var(--text-faint); -webkit-text-fill-color: var(--text-faint); }
+  @keyframes pulse-weather { 0%,100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+  .weather-feel {
+    font-size: 9.5px; color: var(--text-faint);
+    margin-top: 2px; letter-spacing: 0.04em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   /* ===== WORLD CLOCKS GRID ===== */
   #world-clocks-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
@@ -1706,6 +1750,185 @@
     const gridMesh = new THREE.Mesh(gridGeo, gridMat);
     globeGroup.add(gridMesh);
 
+    // ===== CLOUDS — sphere using real cloud-cover data =====
+    const cloudGroup = new THREE.Group();
+    globeGroup.add(cloudGroup);
+    const cloudGeo = new THREE.SphereGeometry(GLOBE_R * 1.012, 96, 96);
+    const cloudMat = new THREE.ShaderMaterial({
+      uniforms: {
+        cloudMap:  { value: null },
+        sunDir:    { value: new THREE.Vector3(1, 0, 0) },
+        modeBlend: { value: mode === 'night' ? 0 : mode === 'day' ? 1 : 2 },
+        ambient:   { value: 0.25 },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vN;
+        void main() {
+          vUv = uv;
+          vN = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D cloudMap;
+        uniform vec3 sunDir;
+        uniform float modeBlend;
+        uniform float ambient;
+        varying vec2 vUv;
+        varying vec3 vN;
+        void main() {
+          vec4 c = texture2D(cloudMap, vUv);
+          float alpha = c.a;
+          float l = dot(normalize(vN), normalize(sunDir));
+          float lit = max(0.0, l);
+          vec3 brightness;
+          float modeAlpha;
+          if (modeBlend < 1.0) {
+            // night → day: fade in, unlit white
+            modeAlpha = modeBlend;
+            brightness = vec3(1.0);
+          } else {
+            // day → live: keep alpha, shift toward sun-shaded
+            float t = modeBlend - 1.0;
+            modeAlpha = 1.0;
+            brightness = mix(vec3(1.05), vec3(ambient + lit * 1.4), t);
+          }
+          gl_FragColor = vec4(brightness, alpha * modeAlpha * 0.92);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+    });
+    const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+    cloudMesh.visible = false; // until texture loads
+    cloudGroup.add(cloudMesh);
+
+    // Fetch real cloud-cover and build a texture
+    const CLOUD_LATS = [-60, -40, -20, 0, 20, 40, 60];
+    const CLOUD_LONS = [];
+    for (let lon = -180; lon < 180; lon += 30) CLOUD_LONS.push(lon + 15); // 12 lons centered on each 30° band
+    async function fetchCloudData() {
+      const latArr = [], lonArr = [];
+      for (const la of CLOUD_LATS) for (const lo of CLOUD_LONS) { latArr.push(la); lonArr.push(lo); }
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latArr.join(',')}&longitude=${lonArr.join(',')}&current=cloud_cover`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const arr = Array.isArray(data) ? data : [data];
+        const grid = [];
+        let idx = 0;
+        for (let i = 0; i < CLOUD_LATS.length; i++) {
+          grid[i] = [];
+          for (let j = 0; j < CLOUD_LONS.length; j++) {
+            const p = arr[idx++];
+            grid[i][j] = (p && p.current && typeof p.current.cloud_cover === 'number') ? p.current.cloud_cover : 30;
+          }
+        }
+        return grid;
+      } catch (e) {
+        // Fallback: random cloud cover for visual fallback
+        const grid = [];
+        for (let i = 0; i < CLOUD_LATS.length; i++) {
+          grid[i] = [];
+          for (let j = 0; j < CLOUD_LONS.length; j++) {
+            grid[i][j] = 20 + Math.random() * 60;
+          }
+        }
+        return grid;
+      }
+    }
+    function buildCloudTexture(grid) {
+      const W = 1024, H = 512;
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+      const img = ctx.createImageData(W, H);
+      const lats = CLOUD_LATS, lons = CLOUD_LONS;
+      const NLA = lats.length, NLO = lons.length;
+      function sampleGrid(lat, lon) {
+        // Find bracketing lat indices
+        let i0 = 0, i1 = NLA - 1;
+        if (lat <= lats[0]) { i0 = i1 = 0; }
+        else if (lat >= lats[NLA - 1]) { i0 = i1 = NLA - 1; }
+        else {
+          for (let i = 0; i < NLA - 1; i++) {
+            if (lat >= lats[i] && lat <= lats[i + 1]) { i0 = i; i1 = i + 1; break; }
+          }
+        }
+        const ty = (i0 === i1) ? 0 : (lat - lats[i0]) / (lats[i1] - lats[i0]);
+        // Lon: wrap around
+        let j0 = NLO - 1, j1 = 0, tx = 0;
+        for (let j = 0; j < NLO - 1; j++) {
+          if (lon >= lons[j] && lon <= lons[j + 1]) {
+            j0 = j; j1 = j + 1;
+            tx = (lon - lons[j0]) / (lons[j1] - lons[j0]);
+            break;
+          }
+        }
+        if (lon < lons[0]) {
+          j0 = NLO - 1; j1 = 0;
+          tx = (lon + 180 + (180 - lons[NLO - 1])) / 30;
+        } else if (lon > lons[NLO - 1]) {
+          j0 = NLO - 1; j1 = 0;
+          tx = (lon - lons[NLO - 1]) / 30;
+        }
+        const v00 = grid[i0][j0], v01 = grid[i0][j1];
+        const v10 = grid[i1][j0], v11 = grid[i1][j1];
+        return v00 * (1 - tx) * (1 - ty) + v01 * tx * (1 - ty) + v10 * (1 - tx) * ty + v11 * tx * ty;
+      }
+      // Hashed value noise (cheap multi-octave)
+      function hash(x, y) {
+        const s = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+        return s - Math.floor(s);
+      }
+      function vnoise(x, y) {
+        const x0 = Math.floor(x), y0 = Math.floor(y);
+        const fx = x - x0, fy = y - y0;
+        const a = hash(x0, y0), b = hash(x0 + 1, y0);
+        const c = hash(x0, y0 + 1), d = hash(x0 + 1, y0 + 1);
+        const ux = fx * fx * (3 - 2 * fx);
+        const uy = fy * fy * (3 - 2 * fy);
+        return a * (1 - ux) * (1 - uy) + b * ux * (1 - uy) + c * (1 - ux) * uy + d * ux * uy;
+      }
+      for (let y = 0; y < H; y++) {
+        const lat = 90 - (y / H) * 180;
+        for (let x = 0; x < W; x++) {
+          const lon = (x / W) * 360 - 180;
+          const cover = sampleGrid(lat, lon); // 0..100
+          let n = 0;
+          n += vnoise(x * 0.025, y * 0.025) * 0.55;
+          n += vnoise(x * 0.07,  y * 0.07)  * 0.3;
+          n += vnoise(x * 0.18,  y * 0.18)  * 0.15;
+          // Bias noise so dense areas form realistic cloud structures
+          n = Math.pow(n, 0.85);
+          // Combine: cover% modulates baseline, noise adds structure
+          const base = (cover / 100);
+          // Cloud density: dense where both base & noise high
+          let density = base * 0.55 + n * base * 0.9;
+          density = Math.max(0, Math.min(1, density * 1.2 - 0.08));
+          const alpha = Math.round(density * 255);
+          const i = (y * W + x) * 4;
+          img.data[i] = 255; img.data[i + 1] = 255; img.data[i + 2] = 255;
+          img.data[i + 3] = alpha;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      return tex;
+    }
+    async function refreshClouds() {
+      const grid = await fetchCloudData();
+      const tex = buildCloudTexture(grid);
+      if (cloudMat.uniforms.cloudMap.value) cloudMat.uniforms.cloudMap.value.dispose();
+      cloudMat.uniforms.cloudMap.value = tex;
+      cloudMat.needsUpdate = true;
+      cloudMesh.visible = true;
+    }
+    refreshClouds();
+    setInterval(refreshClouds, 30 * 60 * 1000); // every 30 min
+
     // Atmosphere shader (back-side glow)
     const atmoGeo = new THREE.SphereGeometry(GLOBE_R * 1.20, 64, 64);
     const atmoMat = new THREE.ShaderMaterial({
@@ -1999,6 +2222,28 @@
     });
 
     // ============================================================
+    // CITY LIGHT GLOWS — additive golden sprites at each city
+    // ============================================================
+    const cityLights = [];
+    CITIES.forEach((c) => {
+      const mat = new THREE.SpriteMaterial({
+        map: nebTex,
+        color: 0xffcc66,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const sp = new THREE.Sprite(mat);
+      const pos = latLonToVec3(c.lat, c.lon, GLOBE_R * 1.005);
+      sp.position.copy(pos);
+      sp.scale.set(0.045, 0.045, 1);
+      sp.userData.dir = pos.clone().normalize();
+      globeGroup.add(sp);
+      cityLights.push(sp);
+    });
+
+    // ============================================================
     // INTERACTION
     // ============================================================
     const raycaster = new THREE.Raycaster();
@@ -2223,6 +2468,88 @@
       return { phase, illumination, emoji: PHASE_EMOJI[idx], name: PHASE_NAME[idx] };
     }
 
+    // ============ WEATHER (Open-Meteo) ============
+    const weatherCache = new Map(); // city.name -> { data, expires }
+    const WEATHER_TTL = 10 * 60 * 1000; // 10 min
+    async function fetchWeather(city) {
+      const cached = weatherCache.get(city.name);
+      if (cached && cached.expires > Date.now()) return cached.data;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}` +
+        `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,pressure_msl&timezone=auto`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const data = await res.json();
+        weatherCache.set(city.name, { data, expires: Date.now() + WEATHER_TTL });
+        return data;
+      } catch (e) { return null; }
+    }
+    function weatherIcon(code, isDay) {
+      if (code === 0) return isDay ? '☀️' : '🌙';
+      if (code === 1) return isDay ? '🌤️' : '🌙';
+      if (code === 2) return isDay ? '⛅' : '☁️';
+      if (code === 3) return '☁️';
+      if (code === 45 || code === 48) return '🌫️';
+      if (code >= 51 && code <= 57) return '🌦️';
+      if (code >= 61 && code <= 65) return '🌧️';
+      if (code >= 66 && code <= 67) return '🌧️';
+      if (code >= 71 && code <= 77) return '🌨️';
+      if (code >= 80 && code <= 82) return '🌧️';
+      if (code >= 85 && code <= 86) return '🌨️';
+      if (code === 95) return '⛈️';
+      if (code >= 96) return '⛈️';
+      return '🌡️';
+    }
+    function weatherDesc(code) {
+      const m = {
+        0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
+        45:'Fog', 48:'Rime fog',
+        51:'Light drizzle', 53:'Drizzle', 55:'Heavy drizzle',
+        56:'Freezing drizzle', 57:'Freezing drizzle',
+        61:'Light rain', 63:'Rain', 65:'Heavy rain',
+        66:'Freezing rain', 67:'Freezing rain',
+        71:'Light snow', 73:'Snow', 75:'Heavy snow', 77:'Snow grains',
+        80:'Rain showers', 81:'Rain showers', 82:'Violent showers',
+        85:'Snow showers', 86:'Heavy snow showers',
+        95:'Thunderstorm', 96:'Thunder w/ hail', 99:'Thunder w/ hail',
+      };
+      return m[code] || 'Unknown';
+    }
+    function compassDir(deg) {
+      const d = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+      return d[Math.round(((deg % 360) / 22.5)) % 16];
+    }
+    function renderWeatherInto(el, city, data) {
+      if (!data || !data.current) {
+        el.innerHTML = `<div class="weather-card"><div class="weather-icon" style="opacity:0.4">🌡️</div>
+          <div class="weather-info"><div class="weather-temp" style="font-size:14px;-webkit-text-fill-color:var(--text-faint)">No data</div>
+          <div class="weather-desc">Weather unavailable</div></div></div>`;
+        return;
+      }
+      const cur = data.current;
+      const code = cur.weather_code ?? 0;
+      const isDay = cur.is_day === 1;
+      const temp = Math.round(cur.temperature_2m);
+      const feels = Math.round(cur.apparent_temperature);
+      const wind = Math.round(cur.wind_speed_10m);
+      const dir = cur.wind_direction_10m != null ? compassDir(cur.wind_direction_10m) : '';
+      el.innerHTML = `
+        <div class="weather-card" title="Live data · Open-Meteo">
+          <div class="weather-icon">${weatherIcon(code, isDay)}</div>
+          <div class="weather-info">
+            <div class="weather-temp">${temp}°C</div>
+            <div class="weather-desc">${weatherDesc(code)}</div>
+            <div class="weather-feel">Feels ${feels}°</div>
+          </div>
+          <div class="weather-meta">
+            <span>💧 ${Math.round(cur.relative_humidity_2m)}%</span>
+            <span>💨 ${wind} km/h ${dir}</span>
+            <span>☁️ ${Math.round(cur.cloud_cover)}%</span>
+          </div>
+        </div>
+      `;
+    }
+
     // ============================================================
     // SELECTED CITY (panel + now-chip)
     // ============================================================
@@ -2326,9 +2653,26 @@
             </div>
             <div class="moon-bar"><div class="moon-bar-fill" style="width:${lp.illumination * 100}%"></div></div>
           </div>
+          <div id="weather-slot">
+            <div class="weather-card loading">
+              <div class="weather-icon">🌡️</div>
+              <div class="weather-info">
+                <div class="weather-temp">—</div>
+                <div class="weather-desc">Fetching live weather…</div>
+              </div>
+            </div>
+          </div>
         </div>
       `;
+      // Async-load weather; if user switches city mid-flight, ignore stale response
+      const ticket = ++weatherTicket;
+      fetchWeather(c).then(data => {
+        if (ticket !== weatherTicket) return;
+        const slot = document.getElementById('weather-slot');
+        if (slot) renderWeatherInto(slot, c, data);
+      });
     }
+    let weatherTicket = 0;
 
     function renderWorldClocks() {
       const q = (citySearch.value || '').toLowerCase().trim();
@@ -2994,6 +3338,26 @@
       atmoMat.uniforms.sunDir.value.copy(sunGroup.userData.dir);
       const liveTarget = mode === 'live' ? 1 : 0;
       atmoMat.uniforms.liveBlend.value += (liveTarget - atmoMat.uniforms.liveBlend.value) * Math.min(1, dt / 1400);
+      // Cloud shader sun + mode tween, plus slow drift
+      cloudMat.uniforms.sunDir.value.copy(sunGroup.userData.dir);
+      const cloudTarget = mode === 'night' ? 0 : mode === 'day' ? 1 : 2;
+      cloudMat.uniforms.modeBlend.value += (cloudTarget - cloudMat.uniforms.modeBlend.value) * Math.min(1, dt / 1400);
+      cloudGroup.rotation.y += dt * 0.00002; // gentle drift
+
+      // City light glow: brightness scales with how deeply each city is in night
+      const sunDirNow = sunGroup.userData.dir;
+      const cityNightBase = mode === 'night' ? 0.85 : mode === 'live' ? 1.4 : 0.15;
+      for (let i = 0; i < cityLights.length; i++) {
+        const sp = cityLights[i];
+        const facing = sp.userData.dir.dot(sunDirNow);
+        const nightness = Math.max(0, -facing - 0.02);
+        let vis;
+        if (mode === 'night') vis = 0.85;
+        else if (mode === 'live') vis = nightness * 1.6;
+        else vis = 0.12;
+        // Smooth toward target
+        sp.material.opacity += (Math.min(1, vis) - sp.material.opacity) * Math.min(1, dt / 700);
+      }
       // Three.js directional light follows the sun for moon shading
       sun.position.copy(sunGroup.userData.dir).multiplyScalar(20);
 

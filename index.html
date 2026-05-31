@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ChronoSphere — A Universe of Time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root, [data-theme="night"] {
+    --bg-0: #04060c;
+    --bg-1: #080d17;
+    --text: #e7eefc;
+    --text-dim: #97a6c4;
+    --text-faint: #5d6d8e;
+    --accent: #5ab3ff;
+    --accent-2: #b78cff;
+    --accent-3: #ffb86b;
+    --accent-pin: #ff5e8a;
+    --good: #4ade80;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --line: rgba(140, 200, 255, 0.08);
+    --line-strong: rgba(140, 200, 255, 0.18);
+    --glass-soft: rgba(10, 15, 28, 0.28);
+    --glass-mid: rgba(10, 15, 28, 0.45);
+    --glass-edge: rgba(140, 200, 255, 0.12);
+    --shadow: 0 16px 60px rgba(0, 0, 0, 0.5);
+    --vignette: rgba(4, 6, 12, 0.65);
+    --top-glow: rgba(90, 179, 255, 0.05);
+    --grad-start: #ffffff;
+    --grad-end: #9ec8ff;
+  }
+  [data-theme="day"] {
+    --bg-0: #9bbfe8;
+    --bg-1: #dfeaf8;
+    --text: #0a1730;
+    --text-dim: #3d5478;
+    --text-faint: #7a8aa8;
+    --accent: #1d4ed8;
+    --accent-2: #7c3aed;
+    --accent-3: #d97706;
+    --accent-pin: #db2777;
+    --good: #16a34a;
+    --warn: #d97706;
+    --bad: #dc2626;
+    --line: rgba(30, 70, 160, 0.1);
+    --line-strong: rgba(30, 70, 160, 0.22);
+    --glass-soft: rgba(255, 255, 255, 0.42);
+    --glass-mid: rgba(255, 255, 255, 0.68);
+    --glass-edge: rgba(255, 255, 255, 0.78);
+    --shadow: 0 16px 60px rgba(30, 60, 120, 0.18);
+    --vignette: rgba(160, 200, 240, 0.35);
+    --top-glow: rgba(255, 220, 150, 0.18);
+    --grad-start: #0a1730;
+    --grad-end: #1d4ed8;
+  }
+  body, .glass, #panel, #now-chip, .brand,
+  .icon-btn, .rail-btn, #tab-rail, #tooltip, #vignette,
+  .wc-card, .selected-card, .concept, .chess-side,
+  .btn, .sw-display, .pom-stat,
+  .search-wrap input, .row input, .row select, .empty-state {
+    transition: background 1.2s ease, background-color 1.2s ease,
+                border-color 1.2s ease, color 1.2s ease,
+                box-shadow 1.2s ease;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: radial-gradient(ellipse at center, var(--bg-1) 0%, var(--bg-0) 80%);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    cursor: default;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, select { font-family: inherit; color: inherit; }
+
+  #scene { position: fixed; inset: 0; z-index: 0; }
+  #vignette {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 40%, var(--vignette) 100%),
+      radial-gradient(circle at 50% 0%, var(--top-glow), transparent 50%);
+  }
+
+  /* ============== GLASS CHIP PRIMITIVE ============== */
+  .glass {
+    background: var(--glass-soft);
+    border: 1px solid var(--glass-edge);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    box-shadow: var(--shadow);
+  }
+
+  /* ============== TOP BAR ============== */
+  #topbar {
+    position: fixed; top: 22px; left: 22px; right: 22px; z-index: 10;
+    display: flex; justify-content: space-between; align-items: center;
+    pointer-events: none;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 16px 7px 8px;
+    border-radius: 100px;
+    pointer-events: auto;
+  }
+  .logo {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #9fd3ff, #2563eb 50%, #0a1530 100%);
+    box-shadow: 0 0 18px rgba(90, 179, 255, 0.45), inset 0 0 8px rgba(255,255,255,0.18);
+    position: relative;
+  }
+  .logo::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.22);
+  }
+  .brand h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+    background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .topbar-actions { display: flex; gap: 6px; pointer-events: auto; }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    color: var(--text); font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s ease;
+  }
+  .icon-btn:hover {
+    background: rgba(90, 179, 255, 0.12);
+    border-color: rgba(90, 179, 255, 0.4);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .icon-btn.active {
+    background: rgba(90, 179, 255, 0.18);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ============== VERTICAL TAB RAIL ============== */
+  #tab-rail {
+    position: fixed; top: 50%; right: 22px;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 6px;
+    border-radius: 100px;
+    z-index: 9;
+  }
+  .rail-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 17px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  .rail-btn:hover { color: var(--text); transform: scale(1.08); }
+  .rail-btn.active {
+    background: rgba(90, 179, 255, 0.18);
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(90, 179, 255, 0.4),
+                0 0 24px rgba(90, 179, 255, 0.25);
+  }
+  .rail-btn .label-pop {
+    position: absolute; right: calc(100% + 12px); top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    padding: 5px 10px;
+    background: var(--glass-mid);
+    border: 1px solid var(--glass-edge);
+    backdrop-filter: blur(20px);
+    border-radius: 6px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: all 0.2s ease;
+  }
+  .rail-btn:hover .label-pop {
+    opacity: 1; transform: translateY(-50%) translateX(0);
+  }
+
+  /* ============== FLOATING PANEL ============== */
+  #panel {
+    position: fixed; top: 50%; right: 86px;
+    transform: translateY(-50%) translateX(24px) scale(0.97);
+    width: 340px; max-width: calc(100vw - 110px);
+    max-height: 72vh;
+    border-radius: 22px;
+    z-index: 9;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #panel.show {
+    opacity: 1; pointer-events: auto;
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+  .panel-container {
+    overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: rgba(140,200,255,0.18) transparent;
+  }
+  .panel-container::-webkit-scrollbar { width: 5px; }
+  .panel-container::-webkit-scrollbar-thumb { background: rgba(140,200,255,0.18); border-radius: 6px; }
+  .panel-section { display: none; padding: 22px 22px 22px; animation: fadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+  .panel-section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px; font-weight: 600; margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-faint);
+    margin: 20px 0 10px;
+  }
+  h3:first-child { margin-top: 0; }
+  p { font-size: 12px; line-height: 1.6; color: var(--text-dim); }
+
+  /* ============== NOW CHIP (bottom centered) ============== */
+  #now-chip {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    display: flex; align-items: center; gap: 18px;
+    padding: 10px 22px 10px 14px;
+    border-radius: 100px;
+    z-index: 8;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: calc(100vw - 220px);
+  }
+  #now-chip.show {
+    opacity: 1; pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  #now-chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-pin);
+    box-shadow: 0 0 12px var(--accent-pin);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+  #now-chip .city-block {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  #now-chip .city-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.02em;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  #now-chip .city-meta {
+    font-size: 10px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.15em; margin-top: 1px;
+  }
+  #now-chip .time-block {
+    display: flex; align-items: baseline; gap: 6px;
+    padding-left: 18px;
+    border-left: 1px solid var(--line-strong);
+  }
+  #now-chip .time-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px; font-weight: 400;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  #now-chip .time-sec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--text-dim); font-weight: 300;
+  }
+  #now-chip .offset-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text-faint);
+    padding: 2px 7px; border-radius: 100px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+  #now-chip .close {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--text-faint);
+    background: rgba(255,255,255,0.04);
+    transition: all 0.2s;
+  }
+  #now-chip .close:hover { color: var(--text); background: rgba(248,113,113,0.15); }
+
+  /* ============== SELECTED CITY DETAILS (in panel) ============== */
+  .selected-card {
+    padding: 18px;
+    background: linear-gradient(135deg, rgba(90,179,255,0.06), rgba(183,140,255,0.03));
+    border: 1px solid rgba(90, 179, 255, 0.18);
+    border-radius: 14px;
+    position: relative; overflow: hidden;
+  }
+  .selected-card::before {
+    content: ''; position: absolute; top: -50%; right: -30%;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(90,179,255,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .selected-card .city-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .selected-card .country {
+    font-size: 10px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.18em; margin-top: 2px;
+  }
+  .selected-card .big-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px; font-weight: 300; letter-spacing: -0.02em;
+    margin-top: 12px; line-height: 1;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .selected-card .big-date {
+    font-size: 11px; color: var(--text-dim); margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .selected-card .meta-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+  }
+  .meta-grid .item .k {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-faint);
+  }
+  .meta-grid .item .v {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--text); margin-top: 3px;
+  }
+  .empty-state {
+    text-align: center; padding: 26px 16px;
+    border: 1px dashed var(--line-strong); border-radius: 14px;
+  }
+  .empty-state h2 { margin-bottom: 6px; }
+
+  /* ============== WORLD CLOCKS GRID ============== */
+  #world-clocks-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  }
+  .wc-card {
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.015);
+    border: 1px solid var(--line);
+    cursor: pointer; transition: all 0.25s ease;
+  }
+  .wc-card:hover {
+    background: rgba(90,179,255,0.06);
+    border-color: rgba(90,179,255,0.22);
+    transform: translateY(-1px);
+  }
+  .wc-card.active {
+    background: rgba(90,179,255,0.1);
+    border-color: var(--accent);
+  }
+  .wc-card .city { font-size: 11px; font-weight: 500; }
+  .wc-card .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px; font-weight: 400;
+    margin-top: 3px;
+    color: var(--accent);
+  }
+  .wc-card .offset {
+    font-size: 9px; color: var(--text-faint); margin-top: 1px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ============== SEARCH ============== */
+  .search-wrap { position: relative; margin: 8px 0 12px; }
+  .search-wrap input {
+    width: 100%; padding: 9px 12px 9px 32px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    font-size: 12px;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .search-wrap input:focus {
+    outline: none; border-color: var(--accent);
+    background: rgba(90,179,255,0.04);
+  }
+  .search-wrap::before {
+    content: '⌕'; position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%); color: var(--text-faint); font-size: 14px;
+  }
+
+  /* ============== CHESS CLOCK ============== */
+  .chess-board {
+    display: grid; grid-template-columns: 1fr; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .chess-side {
+    padding: 18px 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.35s ease;
+  }
+  .chess-side.white { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); }
+  .chess-side.black { background: linear-gradient(135deg, rgba(15,22,40,0.5), rgba(8,12,22,0.25)); }
+  .chess-side.active {
+    border-color: var(--good);
+    box-shadow: 0 0 0 1px var(--good), 0 0 30px rgba(74, 222, 128, 0.2);
+  }
+  .chess-side.flag {
+    border-color: var(--bad);
+    box-shadow: 0 0 0 1px var(--bad), 0 0 30px rgba(248, 113, 113, 0.3);
+  }
+  .chess-side .label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em;
+    color: var(--text-dim);
+  }
+  .chess-side .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 38px; font-weight: 300; letter-spacing: -0.02em;
+    margin-top: 6px; line-height: 1;
+  }
+  .chess-side .moves { font-size: 10px; color: var(--text-faint); margin-top: 6px; }
+
+  /* ============== BUTTONS / ROWS ============== */
+  .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .btn {
+    padding: 8px 14px; border-radius: 100px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-strong);
+    font-size: 11px; font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .btn:hover { background: rgba(90,179,255,0.08); border-color: var(--accent); color: var(--text); }
+  .btn.primary { background: var(--accent); color: #04101e; border-color: var(--accent); font-weight: 600; }
+  .btn.primary:hover { background: #82c8ff; }
+  .btn.danger { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--bad); }
+  .row {
+    display: flex; gap: 6px; align-items: center;
+    margin-top: 10px; flex-wrap: wrap;
+  }
+  .row label {
+    font-size: 10px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.14em;
+  }
+  .row select, .row input[type="number"] {
+    padding: 6px 9px; border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line-strong);
+    font-size: 11px; font-family: 'JetBrains Mono', monospace;
+    width: 56px;
+  }
+  .row select { width: auto; }
+  .row select:focus, .row input:focus { outline: none; border-color: var(--accent); }
+
+  /* ============== STOPWATCH ============== */
+  .sw-display {
+    text-align: center; padding: 24px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .sw-display .main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 42px; font-weight: 300; letter-spacing: -0.02em;
+    line-height: 1;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sw-display .ms {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px; color: var(--text-dim); margin-top: 4px; font-weight: 300;
+  }
+  .laps {
+    margin-top: 12px; max-height: 180px; overflow-y: auto;
+    border-top: 1px solid var(--line); padding-top: 8px;
+  }
+  .lap-row {
+    display: grid; grid-template-columns: 30px 1fr 1fr;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    padding: 5px 0; border-bottom: 1px solid var(--line);
+  }
+  .lap-row .n { color: var(--text-faint); }
+  .lap-row .split { color: var(--text-dim); text-align: right; }
+  .lap-row .total { color: var(--text); text-align: right; }
+  .lap-row.fastest .split { color: var(--good); }
+  .lap-row.slowest .split { color: var(--bad); }
+
+  /* ============== POMODORO ============== */
+  .pom-circle-wrap { display: flex; justify-content: center; padding: 14px 0; }
+  .pom-circle { position: relative; width: 200px; height: 200px; }
+  .pom-circle svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .pom-circle .track { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; }
+  .pom-circle .progress {
+    fill: none; stroke: var(--accent); stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;
+    filter: drop-shadow(0 0 10px rgba(90,179,255,0.4));
+  }
+  .pom-circle.break .progress { stroke: var(--good); filter: drop-shadow(0 0 10px rgba(74,222,128,0.4)); }
+  .pom-circle.long-break .progress { stroke: var(--accent-2); filter: drop-shadow(0 0 10px rgba(183,140,255,0.4)); }
+  .pom-center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .pom-center .phase {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em;
+    color: var(--text-dim);
+  }
+  .pom-center .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px; font-weight: 300; margin-top: 4px;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .pom-center .session-no { font-size: 10px; color: var(--text-faint); margin-top: 3px; }
+  .pom-stats {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+    margin-top: 12px;
+  }
+  .pom-stat {
+    padding: 9px; text-align: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line); border-radius: 10px;
+  }
+  .pom-stat .v {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; color: var(--accent); font-weight: 400;
+  }
+  .pom-stat .k {
+    font-size: 9px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px;
+  }
+
+  /* ============== CONCEPTS ============== */
+  .concept {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .concept summary {
+    padding: 12px 14px;
+    font-weight: 500; font-size: 12px;
+    cursor: pointer;
+    list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.25s;
+  }
+  .concept summary::-webkit-details-marker { display: none; }
+  .concept summary:hover { background: rgba(90,179,255,0.04); }
+  .concept summary::after {
+    content: '+'; font-size: 18px; color: var(--text-faint);
+    transition: transform 0.35s ease;
+  }
+  .concept[open] summary::after { transform: rotate(45deg); color: var(--accent); }
+  .concept .body {
+    padding: 0 14px 14px;
+    font-size: 12px; line-height: 1.65; color: var(--text-dim);
+  }
+  .concept .body p + p { margin-top: 8px; }
+  .concept .body code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(90,179,255,0.08); color: var(--accent);
+    padding: 1px 6px; border-radius: 4px; font-size: 11px;
+  }
+  .concept .body em { color: var(--text); font-style: normal; font-weight: 500; }
+
+  /* ============== TOOLTIP ============== */
+  #tooltip {
+    position: fixed; pointer-events: none; z-index: 20;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px; font-weight: 500;
+    background: var(--glass-mid);
+    border: 1px solid var(--glass-edge);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    opacity: 0; transform: translate(-50%, -150%);
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  #tooltip.show { opacity: 1; }
+  #tooltip .t-time {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent); margin-left: 8px;
+  }
+
+  /* ============== HINT ============== */
+  #hint {
+    position: fixed; bottom: 28px; left: 28px; z-index: 5;
+    font-size: 10px; color: var(--text-faint);
+    letter-spacing: 0.12em;
+    opacity: 0.8;
+    transition: opacity 0.6s;
+  }
+  #hint kbd {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px; font-size: 9px;
+    color: var(--text-dim);
+    margin: 0 2px;
+  }
+  #hint.faded { opacity: 0.25; }
+
+  /* ============== LOADER ============== */
+  #loading {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg-0);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 18px;
+    transition: opacity 1.2s ease, visibility 1.2s;
+  }
+  #loading.gone { opacity: 0; visibility: hidden; }
+  .loading-orb {
+    width: 50px; height: 50px; border-radius: 50%;
+    border: 1px solid rgba(90,179,255,0.15);
+    border-top-color: var(--accent);
+    animation: spin 1.2s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading p { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-faint); }
+
+  /* ============== RESPONSIVE ============== */
+  @media (max-width: 720px) {
+    #panel { right: 78px; width: calc(100vw - 100px); }
+    #now-chip { max-width: calc(100vw - 110px); padding: 8px 16px 8px 12px; gap: 12px; }
+    #now-chip .time-block { padding-left: 12px; }
+    #now-chip .time-main { font-size: 18px; }
+    #hint { display: none; }
+    #world-clocks-grid { grid-template-columns: 1fr; }
+    .chess-side .time { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+  <div id="loading"><div class="loading-orb"></div><p>Calibrating ChronoSphere…</p></div>
+
+  <div id="scene"></div>
+  <div id="vignette"></div>
+
+  <header id="topbar">
+    <div class="brand glass">
+      <div class="logo"></div>
+      <h1>ChronoSphere</h1>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn glass" id="toggle-theme" title="Day / Night">☀</button>
+      <button class="icon-btn glass" id="reset-view" title="Reset camera">⟲</button>
+      <button class="icon-btn glass active" id="toggle-spin" title="Auto-rotate">◐</button>
+    </div>
+  </header>
+
+  <nav id="tab-rail" class="glass">
+    <button class="rail-btn" data-tab="clocks" title="World Clocks">
+      🌐<span class="label-pop">World Clocks</span>
+    </button>
+    <button class="rail-btn" data-tab="chess" title="Chess Clock">
+      ♞<span class="label-pop">Chess Clock</span>
+    </button>
+    <button class="rail-btn" data-tab="stopwatch" title="Stopwatch">
+      ⏱<span class="label-pop">Stopwatch</span>
+    </button>
+    <button class="rail-btn" data-tab="pomodoro" title="Pomodoro">
+      ◔<span class="label-pop">Pomodoro</span>
+    </button>
+    <button class="rail-btn" data-tab="concepts" title="Time Concepts">
+      ✦<span class="label-pop">Time, Explained</span>
+    </button>
+  </nav>
+
+  <aside id="panel" class="glass">
+    <div class="panel-container">
+
+      <section class="panel-section" data-panel="clocks">
+        <div id="selected-city">
+          <div class="empty-state">
+            <h2>Pick a place</h2>
+            <p>Click any glowing pin on the globe to see local time, timezone, and offset details.</p>
+          </div>
+        </div>
+
+        <h3>World Clocks</h3>
+        <div class="search-wrap">
+          <input id="city-search" type="text" placeholder="Search 40+ cities…" autocomplete="off" spellcheck="false" />
+        </div>
+        <div id="world-clocks-grid"></div>
+      </section>
+
+      <section class="panel-section" data-panel="chess">
+        <h2>Chess Clock</h2>
+        <p style="margin-bottom:12px">Tap a side to pass the turn. Press <em style="color:var(--text)">Space</em> to switch or start.</p>
+
+        <div class="chess-board">
+          <div class="chess-side black" id="chess-black">
+            <div class="label">Black</div>
+            <div class="time" id="chess-black-time">05:00.0</div>
+            <div class="moves" id="chess-black-moves">0 moves</div>
+          </div>
+          <div class="chess-side white active" id="chess-white">
+            <div class="label">White</div>
+            <div class="time" id="chess-white-time">05:00.0</div>
+            <div class="moves" id="chess-white-moves">0 moves</div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn primary" id="chess-start">Start</button>
+          <button class="btn" id="chess-pause">Pause</button>
+          <button class="btn danger" id="chess-reset">Reset</button>
+        </div>
+
+        <div class="row">
+          <label>Mode</label>
+          <select id="chess-mode">
+            <option value="fischer">Fischer (+inc)</option>
+            <option value="bronstein">Bronstein (delay)</option>
+            <option value="sudden">Sudden Death</option>
+          </select>
+          <label>Min</label>
+          <input type="number" id="chess-min" value="5" min="1" max="180" />
+          <label>Inc</label>
+          <input type="number" id="chess-inc" value="3" min="0" max="60" />
+          <button class="btn" id="chess-apply">Apply</button>
+        </div>
+
+        <h3>Presets</h3>
+        <div class="btn-row">
+          <button class="btn" data-preset="bullet">Bullet 1+0</button>
+          <button class="btn" data-preset="blitz">Blitz 3+2</button>
+          <button class="btn" data-preset="rapid">Rapid 10+5</button>
+          <button class="btn" data-preset="classical">90+30</button>
+        </div>
+      </section>
+
+      <section class="panel-section" data-panel="stopwatch">
+        <h2 style="margin-bottom:12px">Stopwatch</h2>
+        <div class="sw-display">
+          <div class="main" id="sw-main">00:00:00</div>
+          <div class="ms" id="sw-ms">.000</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="sw-start">Start</button>
+          <button class="btn" id="sw-lap">Lap</button>
+          <button class="btn danger" id="sw-reset">Reset</button>
+        </div>
+        <div class="laps" id="sw-laps"></div>
+      </section>
+
+      <section class="panel-section" data-panel="pomodoro">
+        <h2>Pomodoro</h2>
+        <p>Focused intervals, gentle breaks. Long break every 4 sessions.</p>
+
+        <div class="pom-circle-wrap">
+          <div class="pom-circle" id="pom-circle">
+            <svg viewBox="0 0 100 100">
+              <circle class="track" cx="50" cy="50" r="44"></circle>
+              <circle class="progress" id="pom-progress" cx="50" cy="50" r="44"
+                stroke-dasharray="276.46" stroke-dashoffset="0"></circle>
+            </svg>
+            <div class="pom-center">
+              <div class="phase" id="pom-phase">Focus</div>
+              <div class="time" id="pom-time">25:00</div>
+              <div class="session-no" id="pom-session">Session 1 of 4</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn primary" id="pom-start">Start</button>
+          <button class="btn" id="pom-skip">Skip</button>
+          <button class="btn danger" id="pom-reset">Reset</button>
+        </div>
+
+        <div class="row">
+          <label>Work</label><input type="number" id="pom-work" value="25" min="1" max="120" />
+          <label>Break</label><input type="number" id="pom-break" value="5" min="1" max="30" />
+          <label>Long</label><input type="number" id="pom-long" value="15" min="5" max="60" />
+        </div>
+
+        <div class="pom-stats">
+          <div class="pom-stat"><div class="v" id="pom-completed">0</div><div class="k">Done</div></div>
+          <div class="pom-stat"><div class="v" id="pom-streak">0</div><div class="k">Streak</div></div>
+          <div class="pom-stat"><div class="v" id="pom-focused">0m</div><div class="k">Focused</div></div>
+        </div>
+      </section>
+
+      <section class="panel-section" data-panel="concepts">
+        <h2>Time, Explained</h2>
+        <p style="margin-bottom:14px">Tap a concept to expand.</p>
+
+        <details class="concept" open>
+          <summary>UTC — Coordinated Universal Time</summary>
+          <div class="body">
+            <p><em>UTC</em> is the world's primary time standard. It descends from GMT (Greenwich Mean Time) but is governed by an ensemble of <code>400+</code> atomic clocks across 80+ labs.</p>
+            <p>Every timezone is an offset from UTC: New York is <code>UTC−5</code> in winter, <code>UTC−4</code> in summer. UTC itself never observes DST.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>GMT vs UTC</summary>
+          <div class="body">
+            <p><em>GMT</em> is a timezone (the legal time of the UK in winter). <em>UTC</em> is a time standard. In casual use they're identical, but UTC is precise to the nanosecond, while GMT was originally astronomical.</p>
+            <p>They can drift apart by up to <code>0.9 s</code> — corrected by leap seconds.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Daylight Saving Time</summary>
+          <div class="body">
+            <p>DST shifts clocks forward in spring and back in autumn. Roughly <em>40%</em> of countries do it. Equatorial nations rarely bother — day length barely changes.</p>
+            <p>Arizona (except the Navajo Nation), Hawaii, and most of Asia skip it entirely.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Time Zones — why 24 isn't 24</summary>
+          <div class="body">
+            <p>Earth has <em>38+ time zones</em>. Some use 30- or 45-minute offsets: India is <code>UTC+5:30</code>, Nepal <code>UTC+5:45</code>.</p>
+            <p>China spans 5 geographical zones but uses just one (<code>UTC+8</code>). Russia uses 11.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Leap Seconds</summary>
+          <div class="body">
+            <p>Earth's rotation is slowing. The IERS inserts a <em>leap second</em> when needed — making <code>23:59:60</code> a valid moment.</p>
+            <p>27 leap seconds since 1972. The CGPM voted to <em>abolish them by 2035</em> — they wreak havoc on finance and GPS.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Unix Time</summary>
+          <div class="body">
+            <p>Seconds elapsed since <code>1970-01-01 00:00:00 UTC</code>. Currently about <em>1.7 billion</em>.</p>
+            <p>32-bit signed integers overflow at <code>2038-01-19 03:14:07 UTC</code> — the <em>Y2038 problem</em>. 64-bit is good until the heat death of the sun.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Atomic Clocks</summary>
+          <div class="body">
+            <p>The SI second = <code>9,192,631,770</code> oscillations of caesium-133. Optical lattice clocks (strontium, ytterbium) are <em>100× more accurate</em> — drift one second every 15 billion years.</p>
+            <p>GPS requires nanosecond sync, since light travels ~30 cm per nanosecond.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Time Dilation</summary>
+          <div class="body">
+            <p>Einstein: time flows slower in stronger gravity and at higher speeds. GPS satellites' clocks tick <em>+45 µs/day</em> from weaker gravity and <em>−7 µs/day</em> from orbital speed. Net: +38µs/day.</p>
+            <p>Without correcting for this, GPS positions would drift by <em>~10 km/day</em>.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>ISO 8601</summary>
+          <div class="body">
+            <p>The unambiguous format: <code>2026-05-31T14:30:00Z</code>. <code>Z</code> = UTC ("Zulu"). Always sortable as a string.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>Chess Clock Modes</summary>
+          <div class="body">
+            <p><em>Sudden Death</em>: fixed time, whoever flags loses.</p>
+            <p><em>Fischer</em>: a fixed increment is <em>added</em> after each move.</p>
+            <p><em>Bronstein</em>: clock pauses N seconds before draining. You never gain time, only avoid losing it on quick moves.</p>
+          </div>
+        </details>
+
+        <details class="concept">
+          <summary>How the globe knows where pins go</summary>
+          <div class="body">
+            <p>Each city has lat/lon. To map to a 3D sphere:</p>
+            <p><code>φ = (90 − lat) × π/180</code><br/><code>θ = (lon + 180) × π/180</code><br/><code>x = −r·sin(φ)·cos(θ)</code><br/><code>y = r·cos(φ)</code><br/><code>z = r·sin(φ)·sin(θ)</code></p>
+            <p>IANA timezone strings (e.g. <code>America/Los_Angeles</code>) are resolved via the browser's <code>Intl.DateTimeFormat</code>, which handles DST automatically.</p>
+          </div>
+        </details>
+
+        <p style="text-align:center;margin-top:18px;color:var(--text-faint);font-size:10px;letter-spacing:0.18em;text-transform:uppercase">
+          ChronoSphere · 2026
+        </p>
+      </section>
+
+    </div>
+  </aside>
+
+  <div id="tooltip" class="glass"></div>
+  <div id="hint">
+    <kbd>Drag</kbd> rotate &nbsp; <kbd>Scroll</kbd> zoom &nbsp; <kbd>Click</kbd> a pin
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // ============================================================
+    // CITY DATA
+    // ============================================================
+    const CITIES = [
+      { name: 'New York',      country: 'USA',          tz: 'America/New_York',          lat:  40.7128, lon:  -74.0060 },
+      { name: 'Los Angeles',   country: 'USA',          tz: 'America/Los_Angeles',       lat:  34.0522, lon: -118.2437 },
+      { name: 'Chicago',       country: 'USA',          tz: 'America/Chicago',           lat:  41.8781, lon:  -87.6298 },
+      { name: 'Toronto',       country: 'Canada',       tz: 'America/Toronto',           lat:  43.6532, lon:  -79.3832 },
+      { name: 'Vancouver',     country: 'Canada',       tz: 'America/Vancouver',         lat:  49.2827, lon: -123.1207 },
+      { name: 'Mexico City',   country: 'Mexico',       tz: 'America/Mexico_City',       lat:  19.4326, lon:  -99.1332 },
+      { name: 'São Paulo',     country: 'Brazil',       tz: 'America/Sao_Paulo',         lat: -23.5505, lon:  -46.6333 },
+      { name: 'Buenos Aires',  country: 'Argentina',    tz: 'America/Argentina/Buenos_Aires', lat: -34.6037, lon: -58.3816 },
+      { name: 'Lima',          country: 'Peru',         tz: 'America/Lima',              lat: -12.0464, lon:  -77.0428 },
+      { name: 'Bogotá',        country: 'Colombia',     tz: 'America/Bogota',            lat:   4.7110, lon:  -74.0721 },
+      { name: 'Reykjavík',     country: 'Iceland',      tz: 'Atlantic/Reykjavik',        lat:  64.1466, lon:  -21.9426 },
+      { name: 'London',        country: 'UK',           tz: 'Europe/London',             lat:  51.5074, lon:   -0.1278 },
+      { name: 'Paris',         country: 'France',       tz: 'Europe/Paris',              lat:  48.8566, lon:    2.3522 },
+      { name: 'Berlin',        country: 'Germany',      tz: 'Europe/Berlin',             lat:  52.5200, lon:   13.4050 },
+      { name: 'Madrid',        country: 'Spain',        tz: 'Europe/Madrid',             lat:  40.4168, lon:   -3.7038 },
+      { name: 'Rome',          country: 'Italy',        tz: 'Europe/Rome',               lat:  41.9028, lon:   12.4964 },
+      { name: 'Athens',        country: 'Greece',       tz: 'Europe/Athens',             lat:  37.9838, lon:   23.7275 },
+      { name: 'Stockholm',     country: 'Sweden',       tz: 'Europe/Stockholm',          lat:  59.3293, lon:   18.0686 },
+      { name: 'Moscow',        country: 'Russia',       tz: 'Europe/Moscow',             lat:  55.7558, lon:   37.6173 },
+      { name: 'Istanbul',      country: 'Türkiye',      tz: 'Europe/Istanbul',           lat:  41.0082, lon:   28.9784 },
+      { name: 'Cairo',         country: 'Egypt',        tz: 'Africa/Cairo',              lat:  30.0444, lon:   31.2357 },
+      { name: 'Lagos',         country: 'Nigeria',      tz: 'Africa/Lagos',              lat:   6.5244, lon:    3.3792 },
+      { name: 'Nairobi',       country: 'Kenya',        tz: 'Africa/Nairobi',            lat:  -1.2921, lon:   36.8219 },
+      { name: 'Johannesburg',  country: 'South Africa', tz: 'Africa/Johannesburg',       lat: -26.2041, lon:   28.0473 },
+      { name: 'Dubai',         country: 'UAE',          tz: 'Asia/Dubai',                lat:  25.2048, lon:   55.2708 },
+      { name: 'Tehran',        country: 'Iran',         tz: 'Asia/Tehran',               lat:  35.6892, lon:   51.3890 },
+      { name: 'Mumbai',        country: 'India',        tz: 'Asia/Kolkata',              lat:  19.0760, lon:   72.8777 },
+      { name: 'Delhi',         country: 'India',        tz: 'Asia/Kolkata',              lat:  28.6139, lon:   77.2090 },
+      { name: 'Kathmandu',     country: 'Nepal',        tz: 'Asia/Kathmandu',            lat:  27.7172, lon:   85.3240 },
+      { name: 'Bangkok',       country: 'Thailand',     tz: 'Asia/Bangkok',              lat:  13.7563, lon:  100.5018 },
+      { name: 'Singapore',     country: 'Singapore',    tz: 'Asia/Singapore',            lat:   1.3521, lon:  103.8198 },
+      { name: 'Jakarta',       country: 'Indonesia',    tz: 'Asia/Jakarta',              lat:  -6.2088, lon:  106.8456 },
+      { name: 'Hong Kong',     country: 'Hong Kong',    tz: 'Asia/Hong_Kong',            lat:  22.3193, lon:  114.1694 },
+      { name: 'Beijing',       country: 'China',        tz: 'Asia/Shanghai',             lat:  39.9042, lon:  116.4074 },
+      { name: 'Shanghai',      country: 'China',        tz: 'Asia/Shanghai',             lat:  31.2304, lon:  121.4737 },
+      { name: 'Seoul',         country: 'S. Korea',     tz: 'Asia/Seoul',                lat:  37.5665, lon:  126.9780 },
+      { name: 'Tokyo',         country: 'Japan',        tz: 'Asia/Tokyo',                lat:  35.6762, lon:  139.6503 },
+      { name: 'Sydney',        country: 'Australia',    tz: 'Australia/Sydney',          lat: -33.8688, lon:  151.2093 },
+      { name: 'Perth',         country: 'Australia',    tz: 'Australia/Perth',           lat: -31.9523, lon:  115.8613 },
+      { name: 'Auckland',      country: 'New Zealand',  tz: 'Pacific/Auckland',          lat: -36.8485, lon:  174.7633 },
+      { name: 'Honolulu',      country: 'USA',          tz: 'Pacific/Honolulu',          lat:  21.3069, lon: -157.8583 },
+      { name: 'Anchorage',     country: 'USA',          tz: 'America/Anchorage',         lat:  61.2181, lon: -149.9003 },
+    ];
+
+    // ============================================================
+    // THEME (day / night) — simulates day/night Earth visuals
+    // ============================================================
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    let theme = prefersLight ? 'day' : 'night';
+    document.documentElement.dataset.theme = theme;
+    function setTheme(t) {
+      theme = t;
+      document.documentElement.dataset.theme = t;
+      const btn = document.getElementById('toggle-theme');
+      if (btn) {
+        btn.textContent = t === 'day' ? '☾' : '☀';
+        btn.title = t === 'day' ? 'Switch to Night' : 'Switch to Day';
+      }
+    }
+
+    // ============================================================
+    // SCENE SETUP
+    // ============================================================
+    const container = document.getElementById('scene');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x04060c, 0.02);
+
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Start far for cinematic intro
+    camera.position.set(0, 1.2, 9);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0x4060a0, 0.55);
+    scene.add(ambient);
+    const sun = new THREE.DirectionalLight(0xfff2dd, 1.3);
+    sun.position.set(5, 3, 5);
+    scene.add(sun);
+    const rim = new THREE.DirectionalLight(0x5ab3ff, 0.7);
+    rim.position.set(-5, 1, -3);
+    scene.add(rim);
+
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.04;       // smoother trailing
+    controls.rotateSpeed = 0.35;          // slower drag rotation
+    controls.zoomSpeed = 0.55;            // slower zoom
+    controls.minDistance = 1.6;
+    controls.maxDistance = 12;
+    controls.enablePan = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.08;      // SLOW cinematic auto-rotate
+    controls.enabled = false;             // disabled during intro
+
+    // ============================================================
+    // GLOBE
+    // ============================================================
+    const GLOBE_R = 1;
+    const globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+
+    const oceanGeo = new THREE.SphereGeometry(GLOBE_R, 96, 96);
+    const oceanMat = new THREE.MeshPhongMaterial({
+      color: 0x0a1a3a,
+      emissive: 0x081530,
+      shininess: 35,
+      specular: 0x4080c0,
+    });
+    const ocean = new THREE.Mesh(oceanGeo, oceanMat);
+    globeGroup.add(ocean);
+
+    const texLoader = new THREE.TextureLoader();
+    function loadTex(url) {
+      return new Promise((resolve) => {
+        texLoader.load(url,
+          (t) => { t.colorSpace = THREE.SRGBColorSpace; resolve(t); },
+          undefined,
+          () => resolve(null)
+        );
+      });
+    }
+    let earthShader = null;
+    Promise.all([
+      loadTex('https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg'),
+      loadTex('https://unpkg.com/three-globe@2.31.0/example/img/earth-night.jpg'),
+    ]).then(([dayTex, nightTex]) => {
+      const d = dayTex || nightTex;
+      const n = nightTex || dayTex;
+      if (!d && !n) return;
+      earthShader = new THREE.ShaderMaterial({
+        uniforms: {
+          dayMap:    { value: d },
+          nightMap:  { value: n },
+          mixFactor: { value: theme === 'day' ? 1 : 0 },
+          sunDir:    { value: new THREE.Vector3(5, 3, 5).normalize() },
+          ambient:   { value: 0.18 },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          varying vec3 vN;
+          void main() {
+            vUv = uv;
+            vN = normalize(mat3(modelMatrix) * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D dayMap;
+          uniform sampler2D nightMap;
+          uniform float mixFactor;
+          uniform vec3 sunDir;
+          uniform float ambient;
+          varying vec2 vUv;
+          varying vec3 vN;
+          void main() {
+            vec3 day = texture2D(dayMap, vUv).rgb;
+            vec3 night = texture2D(nightMap, vUv).rgb * 1.35;
+            float l = max(0.0, dot(normalize(vN), normalize(sunDir)));
+            vec3 dayLit = day * (ambient + l * 1.05);
+            // City lights still glow on the dark side in day mode
+            float darkSide = 1.0 - smoothstep(0.0, 0.28, l);
+            vec3 dayBlend = dayLit + night * darkSide * 0.55 * mixFactor;
+            vec3 col = mix(night, dayBlend, mixFactor);
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+      });
+      ocean.material = earthShader;
+      ocean.material.needsUpdate = true;
+    });
+
+    // Wireframe overlay
+    const gridGeo = new THREE.SphereGeometry(GLOBE_R * 1.001, 36, 24);
+    const gridMat = new THREE.MeshBasicMaterial({
+      color: 0x5ab3ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.08,
+    });
+    const gridMesh = new THREE.Mesh(gridGeo, gridMat);
+    globeGroup.add(gridMesh);
+
+    // Atmosphere shader
+    const atmoGeo = new THREE.SphereGeometry(GLOBE_R * 1.20, 64, 64);
+    const atmoMat = new THREE.ShaderMaterial({
+      uniforms: {
+        glowColor: { value: new THREE.Color(0x5ab3ff) },
+        intensity: { value: 1.0 },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 glowColor;
+        uniform float intensity;
+        varying vec3 vNormal;
+        void main() {
+          float i = pow(0.78 - dot(vNormal, vec3(0, 0, 1.0)), 2.4) * intensity;
+          gl_FragColor = vec4(glowColor, 1.0) * i;
+        }
+      `,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+    });
+    const atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
+    scene.add(atmosphere);
+
+    // Starfield (slowly counter-rotates)
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 2500;
+    const starPositions = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+    const starSizes = new Float32Array(starCount);
+    for (let i = 0; i < starCount; i++) {
+      const r = 40 + Math.random() * 80;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      starPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      starPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPositions[i * 3 + 2] = r * Math.cos(phi);
+      const tint = 0.55 + Math.random() * 0.45;
+      starColors[i * 3] = tint;
+      starColors[i * 3 + 1] = tint;
+      starColors[i * 3 + 2] = Math.min(1, tint + Math.random() * 0.25);
+      starSizes[i] = Math.random() < 0.92 ? 0.08 : 0.18;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+    const starMat = new THREE.PointsMaterial({
+      size: 0.11,
+      sizeAttenuation: true,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+    });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    // ============================================================
+    // CITY PINS
+    // ============================================================
+    function latLonToVec3(lat, lon, radius) {
+      const phi = (90 - lat) * Math.PI / 180;
+      const theta = (lon + 180) * Math.PI / 180;
+      return new THREE.Vector3(
+        -radius * Math.sin(phi) * Math.cos(theta),
+         radius * Math.cos(phi),
+         radius * Math.sin(phi) * Math.sin(theta)
+      );
+    }
+
+    const pinGroup = new THREE.Group();
+    globeGroup.add(pinGroup);
+
+    const pinGeo = new THREE.SphereGeometry(0.011, 12, 12);
+    const haloGeo = new THREE.RingGeometry(0.014, 0.024, 24);
+    const pillarGeo = new THREE.CylinderGeometry(0.0008, 0.0025, 0.035, 6);
+
+    const pinMeshes = [];
+
+    CITIES.forEach((city, i) => {
+      const pillarMat = new THREE.MeshBasicMaterial({ color: 0xff5e8a, transparent: true, opacity: 0.5 });
+      const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+      const pillarPos = latLonToVec3(city.lat, city.lon, GLOBE_R * 1.018);
+      pillar.position.copy(pillarPos);
+      pillar.lookAt(0, 0, 0);
+      pillar.rotateX(Math.PI / 2);
+      globeGroup.add(pillar);
+
+      const pinMat = new THREE.MeshBasicMaterial({ color: 0xff5e8a });
+      const pin = new THREE.Mesh(pinGeo, pinMat);
+      const pinPos = latLonToVec3(city.lat, city.lon, GLOBE_R * 1.038);
+      pin.position.copy(pinPos);
+      pin.userData = { city, idx: i, pillar };
+      pinGroup.add(pin);
+      pinMeshes.push(pin);
+
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: 0xff5e8a,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.45,
+      });
+      const halo = new THREE.Mesh(haloGeo, haloMat);
+      halo.position.copy(pinPos);
+      halo.lookAt(0, 0, 0);
+      pin.userData.halo = halo;
+      globeGroup.add(halo);
+    });
+
+    // ============================================================
+    // INTERACTION
+    // ============================================================
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const tooltip = document.getElementById('tooltip');
+    let hoveredPin = null;
+    let selectedCityIdx = null;
+
+    function setPinColor(pin, color, opacity = 0.45) {
+      pin.material.color.set(color);
+      pin.userData.halo.material.color.set(color);
+      pin.userData.halo.material.opacity = opacity;
+      pin.userData.pillar.material.color.set(color);
+    }
+
+    function onPointerMove(e) {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(pinMeshes);
+      const newHover = hits.length ? hits[0].object : null;
+      if (newHover !== hoveredPin) {
+        if (hoveredPin && hoveredPin.userData.idx !== selectedCityIdx) {
+          setPinColor(hoveredPin, 0xff5e8a, 0.45);
+        }
+        hoveredPin = newHover;
+        if (hoveredPin && hoveredPin.userData.idx !== selectedCityIdx) {
+          setPinColor(hoveredPin, 0x5ab3ff, 0.7);
+          renderer.domElement.style.cursor = 'pointer';
+        } else if (!hoveredPin) {
+          renderer.domElement.style.cursor = 'grab';
+        }
+      }
+      if (hoveredPin) {
+        const c = hoveredPin.userData.city;
+        const t = formatTime(c.tz, false);
+        tooltip.innerHTML = `<strong>${c.name}</strong><span class="t-time">${t}</span>`;
+        tooltip.style.left = e.clientX + 'px';
+        tooltip.style.top = e.clientY + 'px';
+        tooltip.classList.add('show');
+      } else {
+        tooltip.classList.remove('show');
+      }
+    }
+
+    function onClick() {
+      if (hoveredPin) {
+        const idx = hoveredPin.userData.idx;
+        selectCity(idx);
+        flyToCity(idx);
+        // hide hint after first interaction
+        document.getElementById('hint').classList.add('faded');
+      }
+    }
+
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
+    renderer.domElement.addEventListener('click', onClick);
+    renderer.domElement.style.cursor = 'grab';
+
+    function flyToCity(idx) {
+      const city = CITIES[idx];
+      const target = latLonToVec3(city.lat, city.lon, 2.8);
+      animateCamera(target, 2200, true);
+    }
+
+    // Cubic ease in-out
+    function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+
+    let cameraAnimating = false;
+    function animateCamera(targetPos, duration, slerp = false) {
+      const startPos = camera.position.clone();
+      const startTime = performance.now();
+      cameraAnimating = true;
+      // Pause auto-rotate during cinematic move
+      const wasAutoRotating = controls.autoRotate;
+      controls.autoRotate = false;
+      document.getElementById('toggle-spin').classList.remove('active');
+
+      function step() {
+        const t = Math.min(1, (performance.now() - startTime) / duration);
+        const eased = easeInOutCubic(t);
+        if (slerp) {
+          // Spherical interpolation to keep distance from origin natural
+          const sp = startPos.clone().normalize();
+          const ep = targetPos.clone().normalize();
+          const angle = Math.acos(Math.min(1, Math.max(-1, sp.dot(ep))));
+          const startLen = startPos.length();
+          const endLen = targetPos.length();
+          const len = startLen + (endLen - startLen) * eased;
+          if (angle < 0.0001) {
+            camera.position.copy(sp).multiplyScalar(len);
+          } else {
+            const sinA = Math.sin(angle);
+            const a = Math.sin((1 - eased) * angle) / sinA;
+            const b = Math.sin(eased * angle) / sinA;
+            camera.position.copy(sp.multiplyScalar(a).add(ep.multiplyScalar(b))).multiplyScalar(len);
+          }
+        } else {
+          camera.position.lerpVectors(startPos, targetPos, eased);
+        }
+        camera.lookAt(0, 0, 0);
+        if (t < 1) requestAnimationFrame(step);
+        else cameraAnimating = false;
+      }
+      step();
+    }
+
+    // ============================================================
+    // INTRO CAMERA
+    // ============================================================
+    function runIntro() {
+      // From (0, 1.2, 9) to (0, 0.3, 4.2), slow & long
+      animateCamera(new THREE.Vector3(0, 0.3, 4.2), 3000, true);
+      setTimeout(() => {
+        controls.enabled = true;
+        controls.autoRotate = true;
+        document.getElementById('toggle-spin').classList.add('active');
+      }, 3000);
+    }
+
+    // ============================================================
+    // CLOCK FORMATTING
+    // ============================================================
+    function formatTime(tz, withSec = true) {
+      const opts = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz };
+      if (withSec) opts.second = '2-digit';
+      return new Intl.DateTimeFormat('en-GB', opts).format(new Date());
+    }
+    function formatHM(tz) {
+      return new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz
+      }).format(new Date());
+    }
+    function formatSec(tz) {
+      return new Intl.DateTimeFormat('en-GB', {
+        second: '2-digit', timeZone: tz
+      }).format(new Date());
+    }
+    function formatDate(tz) {
+      return new Intl.DateTimeFormat('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        timeZone: tz,
+      }).format(new Date());
+    }
+    function getOffset(tz) {
+      try {
+        const f = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz, timeZoneName: 'shortOffset', hour: 'numeric'
+        }).formatToParts(new Date());
+        const part = f.find(p => p.type === 'timeZoneName');
+        if (part) {
+          const raw = part.value.replace('GMT', 'UTC');
+          return raw === 'UTC' ? 'UTC±0' : raw;
+        }
+      } catch (e) {}
+      const now = new Date();
+      const local = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+      const utc = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+      const offsetMin = Math.round((local - utc) / 60000);
+      const sign = offsetMin >= 0 ? '+' : '-';
+      const h = Math.floor(Math.abs(offsetMin) / 60);
+      const m = Math.abs(offsetMin) % 60;
+      return `UTC${sign}${h}${m ? ':' + String(m).padStart(2, '0') : ''}`;
+    }
+    function getTzAbbr(tz) {
+      try {
+        const f = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz, timeZoneName: 'short', hour: 'numeric'
+        }).formatToParts(new Date());
+        const part = f.find(p => p.type === 'timeZoneName');
+        return part ? part.value : tz;
+      } catch (e) { return tz; }
+    }
+    function isDST(tz) {
+      const jan = new Date(new Date().getFullYear(), 0, 1);
+      const jul = new Date(new Date().getFullYear(), 6, 1);
+      const janOff = getOffsetMinutes(jan, tz);
+      const julOff = getOffsetMinutes(jul, tz);
+      const now = getOffsetMinutes(new Date(), tz);
+      const std = Math.min(janOff, julOff);
+      return now > std;
+    }
+    function getOffsetMinutes(date, tz) {
+      const local = new Date(date.toLocaleString('en-US', { timeZone: tz }));
+      const utc = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+      return Math.round((local - utc) / 60000);
+    }
+
+    // ============================================================
+    // SELECTED CITY (panel + now-chip)
+    // ============================================================
+    const selectedCityEl = document.getElementById('selected-city');
+    const wcGrid = document.getElementById('world-clocks-grid');
+    const citySearch = document.getElementById('city-search');
+
+    // Build the now-chip element
+    const nowChip = document.createElement('div');
+    nowChip.id = 'now-chip';
+    nowChip.className = 'glass';
+    nowChip.innerHTML = `
+      <div class="dot"></div>
+      <div class="city-block">
+        <div class="city-name" id="chip-city">—</div>
+        <div class="city-meta" id="chip-meta">—</div>
+      </div>
+      <div class="time-block">
+        <div class="time-main" id="chip-time">--:--</div>
+        <div class="time-sec" id="chip-sec">00</div>
+        <div class="offset-tag" id="chip-offset">UTC</div>
+      </div>
+      <button class="close" id="chip-close" title="Clear">✕</button>
+    `;
+    document.body.appendChild(nowChip);
+    document.getElementById('chip-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      // restore selected pin color
+      if (selectedCityIdx !== null) {
+        const p = pinMeshes[selectedCityIdx];
+        setPinColor(p, 0xff5e8a, 0.45);
+      }
+      selectedCityIdx = null;
+      nowChip.classList.remove('show');
+      renderSelectedCity();
+      renderWorldClocks();
+    });
+    nowChip.addEventListener('click', (e) => {
+      if (e.target.id === 'chip-close') return;
+      // open the clocks panel and scroll selected into view
+      openPanel('clocks');
+    });
+
+    function selectCity(idx) {
+      // Reset previous selected pin
+      if (selectedCityIdx !== null && selectedCityIdx !== idx) {
+        const p = pinMeshes[selectedCityIdx];
+        setPinColor(p, 0xff5e8a, 0.45);
+      }
+      selectedCityIdx = idx;
+      // Highlight new selected pin (gold/accent)
+      const p = pinMeshes[idx];
+      setPinColor(p, 0xffb86b, 0.75);
+      renderSelectedCity();
+      renderWorldClocks();
+      renderNowChip();
+      nowChip.classList.add('show');
+    }
+
+    function renderNowChip() {
+      if (selectedCityIdx === null) { nowChip.classList.remove('show'); return; }
+      const c = CITIES[selectedCityIdx];
+      document.getElementById('chip-city').textContent = c.name;
+      document.getElementById('chip-meta').textContent = `${c.country} · ${getTzAbbr(c.tz)}`;
+      document.getElementById('chip-time').textContent = formatHM(c.tz);
+      document.getElementById('chip-sec').textContent = formatSec(c.tz);
+      document.getElementById('chip-offset').textContent = getOffset(c.tz);
+    }
+
+    function renderSelectedCity() {
+      if (selectedCityIdx === null) {
+        selectedCityEl.innerHTML = `<div class="empty-state">
+          <h2>Pick a place</h2>
+          <p>Click any glowing pin on the globe to see local time, timezone, and offset details.</p>
+        </div>`;
+        return;
+      }
+      const c = CITIES[selectedCityIdx];
+      const dst = isDST(c.tz);
+      selectedCityEl.innerHTML = `
+        <div class="selected-card">
+          <div class="city-name">${c.name}</div>
+          <div class="country">${c.country} · ${getTzAbbr(c.tz)}</div>
+          <div class="big-time" id="sel-time">${formatTime(c.tz)}</div>
+          <div class="big-date" id="sel-date">${formatDate(c.tz)}</div>
+          <div class="meta-grid">
+            <div class="item"><div class="k">Offset</div><div class="v">${getOffset(c.tz)}</div></div>
+            <div class="item"><div class="k">Timezone</div><div class="v" style="font-size:11px">${c.tz}</div></div>
+            <div class="item"><div class="k">Latitude</div><div class="v">${c.lat.toFixed(2)}°</div></div>
+            <div class="item"><div class="k">Longitude</div><div class="v">${c.lon.toFixed(2)}°</div></div>
+            <div class="item"><div class="k">DST Active</div><div class="v" style="color:${dst ? 'var(--good)' : 'var(--text-faint)'}">${dst ? 'Yes' : 'No'}</div></div>
+            <div class="item"><div class="k">Unix</div><div class="v" style="font-size:11px">${Math.floor(Date.now()/1000)}</div></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWorldClocks() {
+      const q = (citySearch.value || '').toLowerCase().trim();
+      const filtered = CITIES
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => !q || c.name.toLowerCase().includes(q) || c.country.toLowerCase().includes(q));
+      wcGrid.innerHTML = filtered.map(({ c, i }) => `
+        <div class="wc-card ${i === selectedCityIdx ? 'active' : ''}" data-idx="${i}">
+          <div class="city">${c.name}</div>
+          <div class="time" data-tz="${c.tz}">${formatTime(c.tz, false)}</div>
+          <div class="offset">${c.country} · ${getOffset(c.tz)}</div>
+        </div>
+      `).join('') || '<p style="text-align:center;color:var(--text-faint);padding:20px">No matches.</p>';
+      wcGrid.querySelectorAll('.wc-card').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.idx);
+          selectCity(idx);
+          flyToCity(idx);
+        });
+      });
+    }
+
+    citySearch.addEventListener('input', renderWorldClocks);
+
+    function updateAllClocks() {
+      if (selectedCityIdx !== null) {
+        const c = CITIES[selectedCityIdx];
+        const t = document.getElementById('sel-time');
+        const d = document.getElementById('sel-date');
+        if (t) t.textContent = formatTime(c.tz);
+        if (d) d.textContent = formatDate(c.tz);
+        // now-chip
+        document.getElementById('chip-time').textContent = formatHM(c.tz);
+        document.getElementById('chip-sec').textContent = formatSec(c.tz);
+      }
+      wcGrid.querySelectorAll('.time').forEach(el => {
+        el.textContent = formatTime(el.dataset.tz, false);
+      });
+    }
+
+    renderWorldClocks();
+
+    // ============================================================
+    // TAB RAIL / PANEL TOGGLE
+    // ============================================================
+    const panel = document.getElementById('panel');
+    let activePanel = null;
+
+    function openPanel(name) {
+      activePanel = name;
+      document.querySelectorAll('.rail-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === name);
+      });
+      document.querySelectorAll('.panel-section').forEach(s => {
+        s.classList.toggle('active', s.dataset.panel === name);
+      });
+      panel.classList.add('show');
+    }
+    function closePanel() {
+      activePanel = null;
+      document.querySelectorAll('.rail-btn').forEach(b => b.classList.remove('active'));
+      panel.classList.remove('show');
+    }
+
+    document.querySelectorAll('.rail-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.tab;
+        if (activePanel === name) closePanel();
+        else openPanel(name);
+      });
+    });
+
+    // Reset view
+    document.getElementById('reset-view').addEventListener('click', () => {
+      animateCamera(new THREE.Vector3(0, 0.3, 4.2), 1600, true);
+    });
+
+    // Theme toggle (day / night)
+    setTheme(theme); // init button label
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+      setTheme(theme === 'day' ? 'night' : 'day');
+    });
+
+    // Toggle spin
+    const spinBtn = document.getElementById('toggle-spin');
+    spinBtn.addEventListener('click', () => {
+      controls.autoRotate = !controls.autoRotate;
+      spinBtn.classList.toggle('active', controls.autoRotate);
+    });
+
+    // Click outside the panel closes it (but not on rail, chip, or topbar)
+    document.addEventListener('click', (e) => {
+      if (!activePanel) return;
+      const inPanel = panel.contains(e.target);
+      const inRail = document.getElementById('tab-rail').contains(e.target);
+      const inTop = document.getElementById('topbar').contains(e.target);
+      const inChip = nowChip.contains(e.target);
+      const onCanvas = e.target === renderer.domElement;
+      if (!inPanel && !inRail && !inTop && !inChip && onCanvas) {
+        // Only close on globe clicks if not clicking a pin
+        if (!hoveredPin) closePanel();
+      }
+    });
+
+    // ============================================================
+    // CHESS CLOCK
+    // ============================================================
+    const chess = {
+      whiteMs: 5 * 60 * 1000,
+      blackMs: 5 * 60 * 1000,
+      initialMs: 5 * 60 * 1000,
+      incMs: 3000,
+      mode: 'fischer',
+      active: 'white',
+      running: false,
+      whiteMoves: 0,
+      blackMoves: 0,
+      bronsteinDelayLeft: 0,
+      flagged: null,
+    };
+
+    const chessWhite = document.getElementById('chess-white');
+    const chessBlack = document.getElementById('chess-black');
+    const chessWhiteTime = document.getElementById('chess-white-time');
+    const chessBlackTime = document.getElementById('chess-black-time');
+    const chessWhiteMoves = document.getElementById('chess-white-moves');
+    const chessBlackMoves = document.getElementById('chess-black-moves');
+
+    function fmtChess(ms) {
+      if (ms < 0) ms = 0;
+      const totalSec = ms / 1000;
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      if (m >= 10) {
+        return `${String(m).padStart(2,'0')}:${String(Math.floor(s)).padStart(2,'0')}`;
+      }
+      return `${String(m).padStart(2,'0')}:${s.toFixed(1).padStart(4,'0')}`;
+    }
+    function renderChess() {
+      chessWhiteTime.textContent = fmtChess(chess.whiteMs);
+      chessBlackTime.textContent = fmtChess(chess.blackMs);
+      chessWhiteMoves.textContent = `${chess.whiteMoves} move${chess.whiteMoves !== 1 ? 's' : ''}`;
+      chessBlackMoves.textContent = `${chess.blackMoves} move${chess.blackMoves !== 1 ? 's' : ''}`;
+      chessWhite.classList.toggle('active', chess.running && chess.active === 'white' && !chess.flagged);
+      chessBlack.classList.toggle('active', chess.running && chess.active === 'black' && !chess.flagged);
+      chessWhite.classList.toggle('flag', chess.flagged === 'white');
+      chessBlack.classList.toggle('flag', chess.flagged === 'black');
+    }
+    function chessSwitch(who) {
+      if (!chess.running || chess.flagged) return;
+      if (chess.active !== who) return;
+      if (chess.mode === 'fischer') {
+        if (who === 'white') chess.whiteMs += chess.incMs;
+        else chess.blackMs += chess.incMs;
+      }
+      if (who === 'white') chess.whiteMoves++; else chess.blackMoves++;
+      chess.active = who === 'white' ? 'black' : 'white';
+      chess.bronsteinDelayLeft = chess.mode === 'bronstein' ? chess.incMs : 0;
+      renderChess();
+    }
+    chessWhite.addEventListener('click', () => chessSwitch('white'));
+    chessBlack.addEventListener('click', () => chessSwitch('black'));
+    document.getElementById('chess-start').addEventListener('click', () => {
+      if (chess.flagged) return;
+      chess.running = true;
+      renderChess();
+    });
+    document.getElementById('chess-pause').addEventListener('click', () => {
+      chess.running = !chess.running;
+      renderChess();
+    });
+    document.getElementById('chess-reset').addEventListener('click', () => {
+      chess.whiteMs = chess.blackMs = chess.initialMs;
+      chess.whiteMoves = chess.blackMoves = 0;
+      chess.running = false;
+      chess.active = 'white';
+      chess.flagged = null;
+      chess.bronsteinDelayLeft = 0;
+      renderChess();
+    });
+    document.getElementById('chess-apply').addEventListener('click', () => {
+      const m = parseInt(document.getElementById('chess-min').value) || 5;
+      const inc = parseInt(document.getElementById('chess-inc').value) || 0;
+      const mode = document.getElementById('chess-mode').value;
+      chess.initialMs = m * 60 * 1000;
+      chess.incMs = inc * 1000;
+      chess.mode = mode;
+      chess.whiteMs = chess.blackMs = chess.initialMs;
+      chess.whiteMoves = chess.blackMoves = 0;
+      chess.running = false;
+      chess.active = 'white';
+      chess.flagged = null;
+      renderChess();
+    });
+    document.querySelectorAll('[data-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = btn.dataset.preset;
+        const presets = {
+          bullet:    { min: 1,  inc: 0,  mode: 'sudden' },
+          blitz:     { min: 3,  inc: 2,  mode: 'fischer' },
+          rapid:     { min: 10, inc: 5,  mode: 'fischer' },
+          classical: { min: 90, inc: 30, mode: 'fischer' },
+        }[p];
+        document.getElementById('chess-min').value = presets.min;
+        document.getElementById('chess-inc').value = presets.inc;
+        document.getElementById('chess-mode').value = presets.mode;
+        document.getElementById('chess-apply').click();
+      });
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && activePanel === 'chess') {
+        e.preventDefault();
+        if (!chess.running && !chess.flagged) {
+          chess.running = true;
+          renderChess();
+        } else if (chess.running) {
+          chessSwitch(chess.active);
+        }
+      }
+    });
+    function tickChess(dt) {
+      if (!chess.running || chess.flagged) return;
+      let toSub = dt;
+      if (chess.mode === 'bronstein' && chess.bronsteinDelayLeft > 0) {
+        const used = Math.min(dt, chess.bronsteinDelayLeft);
+        chess.bronsteinDelayLeft -= used;
+        toSub = dt - used;
+      }
+      if (chess.active === 'white') {
+        chess.whiteMs -= toSub;
+        if (chess.whiteMs <= 0) { chess.whiteMs = 0; chess.flagged = 'white'; chess.running = false; }
+      } else {
+        chess.blackMs -= toSub;
+        if (chess.blackMs <= 0) { chess.blackMs = 0; chess.flagged = 'black'; chess.running = false; }
+      }
+    }
+    renderChess();
+
+    // ============================================================
+    // STOPWATCH
+    // ============================================================
+    const sw = { startedAt: 0, elapsed: 0, running: false, laps: [] };
+    const swMain = document.getElementById('sw-main');
+    const swMs = document.getElementById('sw-ms');
+    const swLaps = document.getElementById('sw-laps');
+    function fmtSwMain(ms) {
+      const total = Math.floor(ms / 1000);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+    function fmtSwMs(ms) { return '.' + String(Math.floor(ms % 1000)).padStart(3, '0'); }
+    function renderSw() {
+      const total = sw.running ? sw.elapsed + (performance.now() - sw.startedAt) : sw.elapsed;
+      swMain.textContent = fmtSwMain(total);
+      swMs.textContent = fmtSwMs(total);
+    }
+    function renderLaps() {
+      if (!sw.laps.length) { swLaps.innerHTML = ''; return; }
+      const splits = sw.laps.map((l, i) => i === 0 ? l : l - sw.laps[i - 1]);
+      const fastest = Math.min(...splits);
+      const slowest = Math.max(...splits);
+      swLaps.innerHTML = sw.laps.map((l, i) => {
+        const split = splits[i];
+        const cls = splits.length > 1 ? (split === fastest ? ' fastest' : split === slowest ? ' slowest' : '') : '';
+        return `<div class="lap-row${cls}">
+          <span class="n">#${i + 1}</span>
+          <span class="split">${fmtSwMain(split)}${fmtSwMs(split)}</span>
+          <span class="total">${fmtSwMain(l)}${fmtSwMs(l)}</span>
+        </div>`;
+      }).reverse().join('');
+    }
+    document.getElementById('sw-start').addEventListener('click', (e) => {
+      sw.running = !sw.running;
+      if (sw.running) {
+        sw.startedAt = performance.now();
+        e.target.textContent = 'Stop';
+        e.target.classList.add('danger');
+        e.target.classList.remove('primary');
+      } else {
+        sw.elapsed += performance.now() - sw.startedAt;
+        e.target.textContent = 'Start';
+        e.target.classList.add('primary');
+        e.target.classList.remove('danger');
+      }
+    });
+    document.getElementById('sw-lap').addEventListener('click', () => {
+      const total = sw.running ? sw.elapsed + (performance.now() - sw.startedAt) : sw.elapsed;
+      if (total > 0) { sw.laps.push(total); renderLaps(); }
+    });
+    document.getElementById('sw-reset').addEventListener('click', () => {
+      sw.startedAt = 0; sw.elapsed = 0; sw.running = false; sw.laps = [];
+      const btn = document.getElementById('sw-start');
+      btn.textContent = 'Start';
+      btn.classList.add('primary');
+      btn.classList.remove('danger');
+      renderSw(); renderLaps();
+    });
+
+    // ============================================================
+    // POMODORO
+    // ============================================================
+    const pom = {
+      workMin: 25, breakMin: 5, longMin: 15,
+      phase: 'work', session: 1,
+      msLeft: 25 * 60 * 1000, msTotal: 25 * 60 * 1000,
+      running: false,
+      completed: 0, streak: 0, focusedMs: 0,
+    };
+    const pomPhase = document.getElementById('pom-phase');
+    const pomTime = document.getElementById('pom-time');
+    const pomSession = document.getElementById('pom-session');
+    const pomProgress = document.getElementById('pom-progress');
+    const pomCircle = document.getElementById('pom-circle');
+    const pomCompleted = document.getElementById('pom-completed');
+    const pomStreak = document.getElementById('pom-streak');
+    const pomFocused = document.getElementById('pom-focused');
+    const CIRCUMFERENCE = 2 * Math.PI * 44;
+
+    function setPomPhase(phase) {
+      pom.phase = phase;
+      pomCircle.classList.remove('break', 'long-break');
+      if (phase === 'break') pomCircle.classList.add('break');
+      else if (phase === 'long-break') pomCircle.classList.add('long-break');
+      const mins = phase === 'work' ? pom.workMin : phase === 'break' ? pom.breakMin : pom.longMin;
+      pom.msTotal = mins * 60 * 1000;
+      pom.msLeft = pom.msTotal;
+      pomPhase.textContent = phase === 'work' ? 'Focus' : phase === 'break' ? 'Short Break' : 'Long Break';
+    }
+    function renderPom() {
+      const m = Math.floor(pom.msLeft / 60000);
+      const s = Math.floor((pom.msLeft % 60000) / 1000);
+      pomTime.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      pomSession.textContent = `Session ${pom.session} of 4`;
+      const pct = pom.msLeft / pom.msTotal;
+      pomProgress.style.strokeDasharray = CIRCUMFERENCE;
+      pomProgress.style.strokeDashoffset = CIRCUMFERENCE * (1 - pct);
+      pomCompleted.textContent = pom.completed;
+      pomStreak.textContent = pom.streak;
+      pomFocused.textContent = Math.floor(pom.focusedMs / 60000) + 'm';
+    }
+    function pomAdvance() {
+      if (pom.phase === 'work') {
+        pom.completed++; pom.streak++;
+        pom.focusedMs += pom.workMin * 60 * 1000;
+        if (pom.session >= 4) { pom.session = 1; setPomPhase('long-break'); }
+        else { pom.session++; setPomPhase('break'); }
+      } else { setPomPhase('work'); }
+      try {
+        const ac = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
+        osc.frequency.value = pom.phase === 'work' ? 660 : 880;
+        gain.gain.setValueAtTime(0.12, ac.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
+        osc.connect(gain); gain.connect(ac.destination);
+        osc.start(); osc.stop(ac.currentTime + 0.6);
+      } catch (e) {}
+    }
+    document.getElementById('pom-start').addEventListener('click', (e) => {
+      pom.running = !pom.running;
+      e.target.textContent = pom.running ? 'Pause' : 'Resume';
+      e.target.classList.toggle('primary', !pom.running);
+    });
+    document.getElementById('pom-skip').addEventListener('click', () => { pomAdvance(); renderPom(); });
+    document.getElementById('pom-reset').addEventListener('click', () => {
+      pom.session = 1; pom.streak = 0; pom.running = false;
+      setPomPhase('work');
+      const btn = document.getElementById('pom-start');
+      btn.textContent = 'Start'; btn.classList.add('primary');
+      renderPom();
+    });
+    ['pom-work', 'pom-break', 'pom-long'].forEach(id => {
+      document.getElementById(id).addEventListener('change', (e) => {
+        const val = Math.max(1, parseInt(e.target.value) || 1);
+        if (id === 'pom-work') pom.workMin = val;
+        if (id === 'pom-break') pom.breakMin = val;
+        if (id === 'pom-long') pom.longMin = val;
+        if (!pom.running) { setPomPhase(pom.phase); renderPom(); }
+      });
+    });
+    function tickPom(dt) {
+      if (!pom.running) return;
+      pom.msLeft -= dt;
+      if (pom.msLeft <= 0) pomAdvance();
+    }
+    setPomPhase('work'); renderPom();
+
+    // ============================================================
+    // RESIZE
+    // ============================================================
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // ============================================================
+    // MAIN LOOP
+    // ============================================================
+    const COLOR_GLOW_DAY = new THREE.Color(0xa0d0ff);
+    const COLOR_GLOW_NIGHT = new THREE.Color(0x5ab3ff);
+    let lastNow = performance.now();
+    let secondCounter = 0;
+    let pulsePhase = 0;
+    let driftPhase = 0;
+    let atmoPhase = 0;
+    const tmpVec = new THREE.Vector3();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const now = performance.now();
+      const dt = now - lastNow;
+      lastNow = now;
+
+      if (chess.running && !chess.flagged) tickChess(dt);
+      if (pom.running) tickPom(dt);
+      if (sw.running) renderSw();
+      if (chess.running) renderChess();
+      if (pom.running) renderPom();
+
+      // Halo pulse (slow & gentle)
+      pulsePhase += dt * 0.0014;
+      const pulse = 0.5 + 0.5 * Math.sin(pulsePhase);
+      pinMeshes.forEach(p => {
+        const isSel = p.userData.idx === selectedCityIdx;
+        const baseScale = isSel ? 1.25 : 1.0;
+        const s = baseScale + pulse * (isSel ? 0.55 : 0.3);
+        p.userData.halo.scale.set(s, s, s);
+        if (!isSel) {
+          p.userData.halo.material.opacity = 0.18 + pulse * 0.28;
+        } else {
+          p.userData.halo.material.opacity = 0.45 + pulse * 0.35;
+        }
+        p.userData.halo.lookAt(camera.position);
+      });
+
+      // Atmosphere breathing
+      atmoPhase += dt * 0.0008;
+      atmoMat.uniforms.intensity.value = 0.85 + Math.sin(atmoPhase) * 0.18;
+
+      // Theme tween (day ↔ night) — smooth Earth/lighting/UI transition
+      const themeLerp = Math.min(1, dt / 1400);
+      if (earthShader) {
+        const target = theme === 'day' ? 1 : 0;
+        const cur = earthShader.uniforms.mixFactor.value;
+        earthShader.uniforms.mixFactor.value = cur + (target - cur) * themeLerp;
+      }
+      sun.intensity     += ((theme === 'day' ? 2.1  : 1.3 ) - sun.intensity)     * themeLerp;
+      ambient.intensity += ((theme === 'day' ? 0.85 : 0.55) - ambient.intensity) * themeLerp;
+      rim.intensity     += ((theme === 'day' ? 0.25 : 0.7 ) - rim.intensity)     * themeLerp;
+      starMat.opacity   += ((theme === 'day' ? 0    : 0.85) - starMat.opacity)   * themeLerp;
+      gridMat.opacity   += ((theme === 'day' ? 0.04 : 0.08) - gridMat.opacity)   * themeLerp;
+      atmoMat.uniforms.glowColor.value.lerp(
+        theme === 'day' ? COLOR_GLOW_DAY : COLOR_GLOW_NIGHT, themeLerp * 0.5
+      );
+
+      // Star slow counter-rotation
+      stars.rotation.y += dt * 0.000012;
+      stars.rotation.x += dt * 0.000005;
+
+      // Subtle camera "breathing" — only when not animating or actively rotating
+      driftPhase += dt * 0.0006;
+      if (!cameraAnimating && controls.autoRotate) {
+        // Tiny radial drift to feel alive
+        const drift = Math.sin(driftPhase) * 0.015;
+        camera.position.multiplyScalar(1 + drift * 0.0008);
+      }
+
+      // 1Hz clock refresh
+      secondCounter += dt;
+      if (secondCounter >= 1000) {
+        secondCounter = 0;
+        updateAllClocks();
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Hide loader & run intro
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('gone');
+      runIntro();
+    }, 600);
+
+    // Auto-select user's locale-matched city after intro completes
+    setTimeout(() => {
+      try {
+        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const match = CITIES.findIndex(c => c.tz === userTz);
+        if (match >= 0) {
+          selectCity(match);
+        }
+      } catch (e) {}
+    }, 3800);
+
+    // Fade hint after ~10s
+    setTimeout(() => document.getElementById('hint').classList.add('faded'), 10000);
+  </script>
+</body>
+</html>

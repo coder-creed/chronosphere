@@ -412,6 +412,51 @@
   }
   .empty-state h2 { margin-bottom: 6px; }
 
+  /* Sun & Moon strips under selected city */
+  .sky-strip {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    margin-top: 12px; padding: 12px;
+    background: linear-gradient(90deg, rgba(255, 180, 80, 0.06), rgba(255, 130, 100, 0.04), rgba(60, 100, 180, 0.05));
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+  }
+  [data-theme="day"] .sky-strip {
+    background: linear-gradient(90deg, rgba(255, 180, 80, 0.18), rgba(255, 130, 100, 0.1), rgba(60, 100, 180, 0.12));
+  }
+  .sky-cell { text-align: center; }
+  .sky-cell .icon { font-size: 18px; line-height: 1; }
+  .sky-cell .k {
+    font-size: 8.5px; color: var(--text-faint); margin-top: 4px;
+    letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+  }
+  .sky-cell .v {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    color: var(--text); margin-top: 2px; font-weight: 500;
+  }
+  .moon-strip {
+    display: flex; align-items: center; gap: 14px;
+    margin-top: 8px; padding: 12px 14px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px;
+  }
+  .moon-strip .moon-emoji { font-size: 28px; line-height: 1; }
+  .moon-strip .moon-info { flex: 1; }
+  .moon-strip .moon-name {
+    font-size: 12px; font-weight: 600; color: var(--text);
+  }
+  .moon-strip .moon-meta {
+    font-size: 10.5px; color: var(--text-faint); margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .moon-bar {
+    height: 4px; width: 100%; max-width: 90px;
+    background: var(--card-border); border-radius: 100px; overflow: hidden;
+  }
+  .moon-bar-fill {
+    height: 100%; background: linear-gradient(90deg, #6f8aff, #fff);
+    border-radius: 100px; transition: width 0.6s ease;
+  }
+
   /* ===== WORLD CLOCKS GRID ===== */
   #world-clocks-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
@@ -666,6 +711,149 @@
   }
   .concept .body em { color: var(--text); font-style: normal; font-weight: 600; }
 
+  /* ===== TIMER / COUNTDOWN ===== */
+  .timer-form {
+    display: grid; grid-template-columns: 1fr; gap: 6px;
+    padding: 12px; background: var(--card-bg);
+    border: 1px solid var(--card-border); border-radius: 12px;
+    margin-bottom: 4px;
+  }
+  .timer-form input {
+    padding: 9px 12px; border-radius: 8px;
+    background: var(--input-bg); border: 1px solid var(--card-border);
+    font-size: 12.5px; color: var(--text); font-family: inherit;
+  }
+  .timer-form input[type="datetime-local"] {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color-scheme: dark;
+  }
+  [data-theme="day"] .timer-form input[type="datetime-local"] { color-scheme: light; }
+  .timer-form input:focus { outline: none; border-color: var(--accent); }
+  .timer-form input::placeholder { color: var(--text-faint); }
+  .timer-form .btn { margin-top: 2px; }
+
+  .countdown-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px; margin-bottom: 6px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; transition: all 0.25s;
+  }
+  .countdown-item.elapsed {
+    background: rgba(248,113,113,0.06);
+    border-color: rgba(248,113,113,0.2);
+  }
+  .countdown-item.soon { border-color: var(--warn); }
+  .countdown-item .cd-info { flex: 1; min-width: 0; }
+  .countdown-item .cd-name {
+    font-size: 12.5px; font-weight: 600; color: var(--text);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .countdown-item .cd-when {
+    font-size: 10px; color: var(--text-faint); margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .countdown-item .cd-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 500;
+    color: var(--accent); letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .countdown-item.elapsed .cd-time { color: var(--bad); }
+  .countdown-item .cd-del {
+    width: 24px; height: 24px; border-radius: 50%;
+    color: var(--text-faint); font-size: 13px;
+    background: transparent;
+    transition: all 0.2s;
+  }
+  .countdown-item .cd-del:hover {
+    color: var(--bad); background: rgba(248,113,113,0.1);
+  }
+
+  /* ===== PLANNER ===== */
+  .planner-ref {
+    padding: 16px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(90,179,255,0.1), rgba(183,140,255,0.04));
+    border: 1px solid var(--selected-border);
+    text-align: center; margin-bottom: 12px;
+  }
+  .planner-ref-label {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-faint); font-weight: 600;
+  }
+  .planner-ref-city {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px; font-weight: 600; color: var(--text); margin-top: 4px;
+  }
+  .planner-ref-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px; font-weight: 300; margin-top: 4px;
+    background: linear-gradient(180deg, var(--grad-start), var(--grad-end));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .planner-slider-wrap {
+    padding: 12px 4px; text-align: center;
+  }
+  .planner-slider-wrap input[type="range"] {
+    width: 100%; height: 4px;
+    -webkit-appearance: none; appearance: none;
+    background: var(--card-border); border-radius: 100px;
+    outline: none;
+  }
+  .planner-slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(90,179,255,0.5);
+    cursor: pointer;
+  }
+  .planner-slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); border: none;
+    box-shadow: 0 0 12px rgba(90,179,255,0.5);
+    cursor: pointer;
+  }
+  .planner-slider-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--text-dim); margin-top: 6px;
+  }
+  .planner-city {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; margin-bottom: 5px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 10px; transition: all 0.2s;
+  }
+  .planner-city.work {
+    background: linear-gradient(90deg, rgba(74,222,128,0.1), transparent);
+    border-color: rgba(74,222,128,0.3);
+  }
+  .planner-city.night {
+    background: linear-gradient(90deg, rgba(60,80,140,0.15), transparent);
+    border-color: rgba(60,80,140,0.3);
+  }
+  .planner-city.dawn-dusk {
+    background: linear-gradient(90deg, rgba(255,180,80,0.12), transparent);
+    border-color: rgba(255,180,80,0.3);
+  }
+  .planner-city .pl-icon { font-size: 16px; line-height: 1; }
+  .planner-city .pl-info { flex: 1; min-width: 0; }
+  .planner-city .pl-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .planner-city .pl-offset { font-size: 9.5px; color: var(--text-faint); margin-top: 1px; }
+  .planner-city .pl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 400; color: var(--accent);
+  }
+  .planner-city .pl-day {
+    font-size: 9px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-top: 1px; text-align: right;
+  }
+  .planner-city .pl-del {
+    width: 22px; height: 22px; border-radius: 50%;
+    color: var(--text-faint); font-size: 11px;
+    background: transparent; transition: all 0.2s;
+  }
+  .planner-city .pl-del:hover { color: var(--bad); }
+
   /* ===== TOOLTIP ===== */
   #tooltip {
     position: fixed; pointer-events: none; z-index: 20;
@@ -796,6 +984,12 @@
     <button class="rail-btn" data-tab="clocks" title="World Clocks">
       🌐<span class="label-pop">World Clocks</span>
     </button>
+    <button class="rail-btn" data-tab="timer" title="Countdown Timer">
+      ⏳<span class="label-pop">Countdown</span>
+    </button>
+    <button class="rail-btn" data-tab="planner" title="Meeting Planner">
+      🌓<span class="label-pop">Planner</span>
+    </button>
     <button class="rail-btn" data-tab="chess" title="Chess Clock">
       ♞<span class="label-pop">Chess Clock</span>
     </button>
@@ -823,9 +1017,58 @@
 
         <h3>World Clocks</h3>
         <div class="search-wrap">
-          <input id="city-search" type="text" placeholder="Search 42 cities…" autocomplete="off" spellcheck="false" />
+          <input id="city-search" type="text" placeholder="Search 158 cities…" autocomplete="off" spellcheck="false" />
         </div>
         <div id="world-clocks-grid"></div>
+      </section>
+
+      <section class="panel-section" data-panel="timer">
+        <h2>Countdown</h2>
+        <p style="margin-bottom:12px">Count down to any moment. Saved locally.</p>
+
+        <h3>Quick Add</h3>
+        <div class="btn-row" id="timer-presets">
+          <button class="btn" data-preset="hour1">+1 hour</button>
+          <button class="btn" data-preset="day1">+24 hrs</button>
+          <button class="btn" data-preset="week1">+1 week</button>
+          <button class="btn" data-preset="newyear">New Year</button>
+          <button class="btn" data-preset="xmas">Christmas</button>
+        </div>
+
+        <h3>Custom</h3>
+        <div class="timer-form">
+          <input type="text" id="timer-name" placeholder="Event name" maxlength="40" />
+          <input type="datetime-local" id="timer-when" />
+          <button class="btn primary" id="timer-add">Add</button>
+        </div>
+
+        <h3>Active Countdowns</h3>
+        <div id="timer-list"></div>
+      </section>
+
+      <section class="panel-section" data-panel="planner">
+        <h2>Meeting Planner</h2>
+        <p style="margin-bottom:12px">Slide to shift time. Compare across zones.</p>
+
+        <div class="planner-ref" id="planner-ref">
+          <div class="planner-ref-label">Reference</div>
+          <div class="planner-ref-city" id="planner-ref-city">—</div>
+          <div class="planner-ref-time" id="planner-ref-time">--:--</div>
+        </div>
+
+        <div class="planner-slider-wrap">
+          <input type="range" id="planner-slider" min="-12" max="12" value="0" step="1" />
+          <div class="planner-slider-label" id="planner-slider-label">Now</div>
+        </div>
+
+        <h3>Cities</h3>
+        <div id="planner-cities"></div>
+
+        <h3>Add / Remove</h3>
+        <div class="search-wrap">
+          <input id="planner-search" type="text" placeholder="Add city…" autocomplete="off" />
+        </div>
+        <div id="planner-search-results"></div>
       </section>
 
       <section class="panel-section" data-panel="chess">
@@ -1090,6 +1333,165 @@
       { name: 'Auckland',      country: 'New Zealand',  tz: 'Pacific/Auckland',          lat: -36.8485, lon:  174.7633 },
       { name: 'Honolulu',      country: 'USA',          tz: 'Pacific/Honolulu',          lat:  21.3069, lon: -157.8583 },
       { name: 'Anchorage',     country: 'USA',          tz: 'America/Anchorage',         lat:  61.2181, lon: -149.9003 },
+      // South Asia
+      { name: 'Islamabad',     country: 'Pakistan',     tz: 'Asia/Karachi',              lat:  33.6844, lon:   73.0479 },
+      { name: 'Lahore',        country: 'Pakistan',     tz: 'Asia/Karachi',              lat:  31.5497, lon:   74.3436 },
+      { name: 'Karachi',       country: 'Pakistan',     tz: 'Asia/Karachi',              lat:  24.8607, lon:   67.0011 },
+      { name: 'Dhaka',         country: 'Bangladesh',   tz: 'Asia/Dhaka',                lat:  23.8103, lon:   90.4125 },
+      { name: 'Colombo',       country: 'Sri Lanka',    tz: 'Asia/Colombo',              lat:   6.9271, lon:   79.8612 },
+      { name: 'Thimphu',       country: 'Bhutan',       tz: 'Asia/Thimphu',              lat:  27.4728, lon:   89.6390 },
+      { name: 'Yangon',        country: 'Myanmar',      tz: 'Asia/Yangon',               lat:  16.8409, lon:   96.1735 },
+      { name: 'Bengaluru',     country: 'India',        tz: 'Asia/Kolkata',              lat:  12.9716, lon:   77.5946 },
+      { name: 'Chennai',       country: 'India',        tz: 'Asia/Kolkata',              lat:  13.0827, lon:   80.2707 },
+      { name: 'Kolkata',       country: 'India',        tz: 'Asia/Kolkata',              lat:  22.5726, lon:   88.3639 },
+      // Middle East
+      { name: 'Riyadh',        country: 'Saudi Arabia', tz: 'Asia/Riyadh',               lat:  24.7136, lon:   46.6753 },
+      { name: 'Mecca',         country: 'Saudi Arabia', tz: 'Asia/Riyadh',               lat:  21.3891, lon:   39.8579 },
+      { name: 'Jeddah',        country: 'Saudi Arabia', tz: 'Asia/Riyadh',               lat:  21.4858, lon:   39.1925 },
+      { name: 'Doha',          country: 'Qatar',        tz: 'Asia/Qatar',                lat:  25.2854, lon:   51.5310 },
+      { name: 'Manama',        country: 'Bahrain',      tz: 'Asia/Bahrain',              lat:  26.2235, lon:   50.5876 },
+      { name: 'Kuwait City',   country: 'Kuwait',       tz: 'Asia/Kuwait',               lat:  29.3759, lon:   47.9774 },
+      { name: 'Muscat',        country: 'Oman',         tz: 'Asia/Muscat',               lat:  23.5859, lon:   58.4059 },
+      { name: 'Sana\'a',       country: 'Yemen',        tz: 'Asia/Aden',                 lat:  15.3694, lon:   44.1910 },
+      { name: 'Abu Dhabi',     country: 'UAE',          tz: 'Asia/Dubai',                lat:  24.4539, lon:   54.3773 },
+      { name: 'Baghdad',       country: 'Iraq',         tz: 'Asia/Baghdad',              lat:  33.3152, lon:   44.3661 },
+      { name: 'Damascus',      country: 'Syria',        tz: 'Asia/Damascus',             lat:  33.5138, lon:   36.2765 },
+      { name: 'Amman',         country: 'Jordan',       tz: 'Asia/Amman',                lat:  31.9454, lon:   35.9284 },
+      { name: 'Beirut',        country: 'Lebanon',      tz: 'Asia/Beirut',               lat:  33.8938, lon:   35.5018 },
+      { name: 'Jerusalem',     country: 'Israel',       tz: 'Asia/Jerusalem',            lat:  31.7683, lon:   35.2137 },
+      { name: 'Tel Aviv',      country: 'Israel',       tz: 'Asia/Jerusalem',            lat:  32.0853, lon:   34.7818 },
+      { name: 'Kabul',         country: 'Afghanistan',  tz: 'Asia/Kabul',                lat:  34.5553, lon:   69.2075 },
+      // Central Asia & Caucasus
+      { name: 'Almaty',        country: 'Kazakhstan',   tz: 'Asia/Almaty',               lat:  43.2220, lon:   76.8512 },
+      { name: 'Astana',        country: 'Kazakhstan',   tz: 'Asia/Almaty',               lat:  51.1605, lon:   71.4704 },
+      { name: 'Tashkent',      country: 'Uzbekistan',   tz: 'Asia/Tashkent',             lat:  41.2995, lon:   69.2401 },
+      { name: 'Bishkek',       country: 'Kyrgyzstan',   tz: 'Asia/Bishkek',              lat:  42.8746, lon:   74.5698 },
+      { name: 'Dushanbe',      country: 'Tajikistan',   tz: 'Asia/Dushanbe',             lat:  38.5598, lon:   68.7870 },
+      { name: 'Ashgabat',      country: 'Turkmenistan', tz: 'Asia/Ashgabat',             lat:  37.9601, lon:   58.3261 },
+      { name: 'Baku',          country: 'Azerbaijan',   tz: 'Asia/Baku',                 lat:  40.4093, lon:   49.8671 },
+      { name: 'Yerevan',       country: 'Armenia',      tz: 'Asia/Yerevan',              lat:  40.1792, lon:   44.4991 },
+      { name: 'Tbilisi',       country: 'Georgia',      tz: 'Asia/Tbilisi',              lat:  41.7151, lon:   44.8271 },
+      // SE Asia / East Asia extras
+      { name: 'Manila',        country: 'Philippines',  tz: 'Asia/Manila',               lat:  14.5995, lon:  120.9842 },
+      { name: 'Kuala Lumpur',  country: 'Malaysia',     tz: 'Asia/Kuala_Lumpur',         lat:   3.1390, lon:  101.6869 },
+      { name: 'Hanoi',         country: 'Vietnam',      tz: 'Asia/Ho_Chi_Minh',          lat:  21.0285, lon:  105.8542 },
+      { name: 'Ho Chi Minh',   country: 'Vietnam',      tz: 'Asia/Ho_Chi_Minh',          lat:  10.8231, lon:  106.6297 },
+      { name: 'Phnom Penh',    country: 'Cambodia',     tz: 'Asia/Phnom_Penh',           lat:  11.5564, lon:  104.9282 },
+      { name: 'Vientiane',     country: 'Laos',         tz: 'Asia/Vientiane',            lat:  17.9757, lon:  102.6331 },
+      { name: 'Taipei',        country: 'Taiwan',       tz: 'Asia/Taipei',               lat:  25.0330, lon:  121.5654 },
+      { name: 'Macau',         country: 'Macau',        tz: 'Asia/Macau',                lat:  22.1987, lon:  113.5439 },
+      { name: 'Shanghai',      country: 'China',        tz: 'Asia/Shanghai',             lat:  31.2304, lon:  121.4737 },
+      { name: 'Shenzhen',      country: 'China',        tz: 'Asia/Shanghai',             lat:  22.5431, lon:  114.0579 },
+      { name: 'Guangzhou',     country: 'China',        tz: 'Asia/Shanghai',             lat:  23.1291, lon:  113.2644 },
+      { name: 'Ulaanbaatar',   country: 'Mongolia',     tz: 'Asia/Ulaanbaatar',          lat:  47.8864, lon:  106.9057 },
+      { name: 'Pyongyang',     country: 'N. Korea',     tz: 'Asia/Pyongyang',            lat:  39.0392, lon:  125.7625 },
+      { name: 'Osaka',         country: 'Japan',        tz: 'Asia/Tokyo',                lat:  34.6937, lon:  135.5023 },
+      { name: 'Bali',          country: 'Indonesia',    tz: 'Asia/Makassar',             lat:  -8.4095, lon:  115.1889 },
+      // Russia (multi-zone)
+      { name: 'St. Petersburg',country: 'Russia',       tz: 'Europe/Moscow',             lat:  59.9311, lon:   30.3609 },
+      { name: 'Yekaterinburg', country: 'Russia',       tz: 'Asia/Yekaterinburg',        lat:  56.8389, lon:   60.6057 },
+      { name: 'Novosibirsk',   country: 'Russia',       tz: 'Asia/Novosibirsk',          lat:  55.0084, lon:   82.9357 },
+      { name: 'Vladivostok',   country: 'Russia',       tz: 'Asia/Vladivostok',          lat:  43.1198, lon:  131.8869 },
+      { name: 'Kamchatka',     country: 'Russia',       tz: 'Asia/Kamchatka',            lat:  53.0452, lon:  158.6483 },
+      // Europe extras
+      { name: 'Dublin',        country: 'Ireland',      tz: 'Europe/Dublin',             lat:  53.3498, lon:   -6.2603 },
+      { name: 'Lisbon',        country: 'Portugal',     tz: 'Europe/Lisbon',             lat:  38.7223, lon:   -9.1393 },
+      { name: 'Barcelona',     country: 'Spain',        tz: 'Europe/Madrid',             lat:  41.3851, lon:    2.1734 },
+      { name: 'Amsterdam',     country: 'Netherlands',  tz: 'Europe/Amsterdam',          lat:  52.3676, lon:    4.9041 },
+      { name: 'Brussels',      country: 'Belgium',      tz: 'Europe/Brussels',           lat:  50.8503, lon:    4.3517 },
+      { name: 'Luxembourg',    country: 'Luxembourg',   tz: 'Europe/Luxembourg',         lat:  49.6116, lon:    6.1319 },
+      { name: 'Zurich',        country: 'Switzerland',  tz: 'Europe/Zurich',             lat:  47.3769, lon:    8.5417 },
+      { name: 'Geneva',        country: 'Switzerland',  tz: 'Europe/Zurich',             lat:  46.2044, lon:    6.1432 },
+      { name: 'Vienna',        country: 'Austria',      tz: 'Europe/Vienna',             lat:  48.2082, lon:   16.3738 },
+      { name: 'Prague',        country: 'Czech Rep',    tz: 'Europe/Prague',             lat:  50.0755, lon:   14.4378 },
+      { name: 'Warsaw',        country: 'Poland',       tz: 'Europe/Warsaw',             lat:  52.2297, lon:   21.0122 },
+      { name: 'Budapest',      country: 'Hungary',      tz: 'Europe/Budapest',           lat:  47.4979, lon:   19.0402 },
+      { name: 'Sofia',         country: 'Bulgaria',     tz: 'Europe/Sofia',              lat:  42.6977, lon:   23.3219 },
+      { name: 'Bucharest',     country: 'Romania',      tz: 'Europe/Bucharest',          lat:  44.4268, lon:   26.1025 },
+      { name: 'Belgrade',      country: 'Serbia',       tz: 'Europe/Belgrade',           lat:  44.7866, lon:   20.4489 },
+      { name: 'Zagreb',        country: 'Croatia',      tz: 'Europe/Zagreb',             lat:  45.8150, lon:   15.9819 },
+      { name: 'Sarajevo',      country: 'Bosnia',       tz: 'Europe/Sarajevo',           lat:  43.8563, lon:   18.4131 },
+      { name: 'Tallinn',       country: 'Estonia',      tz: 'Europe/Tallinn',            lat:  59.4370, lon:   24.7536 },
+      { name: 'Riga',          country: 'Latvia',       tz: 'Europe/Riga',               lat:  56.9496, lon:   24.1052 },
+      { name: 'Vilnius',       country: 'Lithuania',    tz: 'Europe/Vilnius',            lat:  54.6872, lon:   25.2797 },
+      { name: 'Minsk',         country: 'Belarus',      tz: 'Europe/Minsk',              lat:  53.9006, lon:   27.5590 },
+      { name: 'Kyiv',          country: 'Ukraine',      tz: 'Europe/Kyiv',               lat:  50.4501, lon:   30.5234 },
+      { name: 'Oslo',          country: 'Norway',       tz: 'Europe/Oslo',               lat:  59.9139, lon:   10.7522 },
+      { name: 'Copenhagen',    country: 'Denmark',      tz: 'Europe/Copenhagen',         lat:  55.6761, lon:   12.5683 },
+      { name: 'Helsinki',      country: 'Finland',      tz: 'Europe/Helsinki',           lat:  60.1699, lon:   24.9384 },
+      { name: 'Munich',        country: 'Germany',      tz: 'Europe/Berlin',             lat:  48.1351, lon:   11.5820 },
+      { name: 'Milan',         country: 'Italy',        tz: 'Europe/Rome',               lat:  45.4642, lon:    9.1900 },
+      { name: 'Ankara',        country: 'Türkiye',      tz: 'Europe/Istanbul',           lat:  39.9334, lon:   32.8597 },
+      // Africa extras
+      { name: 'Casablanca',    country: 'Morocco',      tz: 'Africa/Casablanca',         lat:  33.5731, lon:   -7.5898 },
+      { name: 'Algiers',       country: 'Algeria',      tz: 'Africa/Algiers',            lat:  36.7538, lon:    3.0588 },
+      { name: 'Tunis',         country: 'Tunisia',      tz: 'Africa/Tunis',              lat:  36.8065, lon:   10.1815 },
+      { name: 'Tripoli',       country: 'Libya',        tz: 'Africa/Tripoli',            lat:  32.8872, lon:   13.1913 },
+      { name: 'Khartoum',      country: 'Sudan',        tz: 'Africa/Khartoum',           lat:  15.5007, lon:   32.5599 },
+      { name: 'Addis Ababa',   country: 'Ethiopia',     tz: 'Africa/Addis_Ababa',        lat:   9.0320, lon:   38.7469 },
+      { name: 'Kampala',       country: 'Uganda',       tz: 'Africa/Kampala',            lat:   0.3476, lon:   32.5825 },
+      { name: 'Dar es Salaam', country: 'Tanzania',     tz: 'Africa/Dar_es_Salaam',      lat:  -6.7924, lon:   39.2083 },
+      { name: 'Antananarivo',  country: 'Madagascar',   tz: 'Indian/Antananarivo',       lat: -18.8792, lon:   47.5079 },
+      { name: 'Accra',         country: 'Ghana',        tz: 'Africa/Accra',              lat:   5.6037, lon:   -0.1870 },
+      { name: 'Dakar',         country: 'Senegal',      tz: 'Africa/Dakar',              lat:  14.7167, lon:  -17.4677 },
+      { name: 'Abidjan',       country: 'Côte d\'Ivoire',tz:'Africa/Abidjan',            lat:   5.3600, lon:   -4.0083 },
+      { name: 'Kinshasa',      country: 'DRC',          tz: 'Africa/Kinshasa',           lat:  -4.4419, lon:   15.2663 },
+      { name: 'Luanda',        country: 'Angola',       tz: 'Africa/Luanda',             lat:  -8.8390, lon:   13.2894 },
+      { name: 'Cape Town',     country: 'South Africa', tz: 'Africa/Johannesburg',       lat: -33.9249, lon:   18.4241 },
+      { name: 'Harare',        country: 'Zimbabwe',     tz: 'Africa/Harare',             lat: -17.8252, lon:   31.0335 },
+      { name: 'Lusaka',        country: 'Zambia',       tz: 'Africa/Lusaka',             lat: -15.3875, lon:   28.3228 },
+      // Americas extras
+      { name: 'Washington',    country: 'USA',          tz: 'America/New_York',          lat:  38.9072, lon:  -77.0369 },
+      { name: 'Boston',        country: 'USA',          tz: 'America/New_York',          lat:  42.3601, lon:  -71.0589 },
+      { name: 'Miami',         country: 'USA',          tz: 'America/New_York',          lat:  25.7617, lon:  -80.1918 },
+      { name: 'Atlanta',       country: 'USA',          tz: 'America/New_York',          lat:  33.7490, lon:  -84.3880 },
+      { name: 'Dallas',        country: 'USA',          tz: 'America/Chicago',           lat:  32.7767, lon:  -96.7970 },
+      { name: 'Houston',       country: 'USA',          tz: 'America/Chicago',           lat:  29.7604, lon:  -95.3698 },
+      { name: 'Denver',        country: 'USA',          tz: 'America/Denver',            lat:  39.7392, lon: -104.9903 },
+      { name: 'Phoenix',       country: 'USA',          tz: 'America/Phoenix',           lat:  33.4484, lon: -112.0740 },
+      { name: 'Seattle',       country: 'USA',          tz: 'America/Los_Angeles',       lat:  47.6062, lon: -122.3321 },
+      { name: 'San Francisco', country: 'USA',          tz: 'America/Los_Angeles',       lat:  37.7749, lon: -122.4194 },
+      { name: 'Montréal',      country: 'Canada',       tz: 'America/Toronto',           lat:  45.5017, lon:  -73.5673 },
+      { name: 'Calgary',       country: 'Canada',       tz: 'America/Edmonton',          lat:  51.0447, lon: -114.0719 },
+      { name: 'Winnipeg',      country: 'Canada',       tz: 'America/Winnipeg',          lat:  49.8951, lon:  -97.1384 },
+      { name: 'Halifax',       country: 'Canada',       tz: 'America/Halifax',           lat:  44.6488, lon:  -63.5752 },
+      { name: 'St. John\'s',   country: 'Canada',       tz: 'America/St_Johns',          lat:  47.5615, lon:  -52.7126 },
+      { name: 'Havana',        country: 'Cuba',         tz: 'America/Havana',            lat:  23.1136, lon:  -82.3666 },
+      { name: 'Kingston',      country: 'Jamaica',      tz: 'America/Jamaica',           lat:  17.9714, lon:  -76.7931 },
+      { name: 'San Juan',      country: 'Puerto Rico',  tz: 'America/Puerto_Rico',       lat:  18.4655, lon:  -66.1057 },
+      { name: 'Panama City',   country: 'Panama',       tz: 'America/Panama',            lat:   8.9824, lon:  -79.5199 },
+      { name: 'San José',      country: 'Costa Rica',   tz: 'America/Costa_Rica',        lat:   9.9281, lon:  -84.0907 },
+      { name: 'Guatemala City',country: 'Guatemala',    tz: 'America/Guatemala',         lat:  14.6349, lon:  -90.5069 },
+      { name: 'Caracas',       country: 'Venezuela',    tz: 'America/Caracas',           lat:  10.4806, lon:  -66.9036 },
+      { name: 'Quito',         country: 'Ecuador',      tz: 'America/Guayaquil',         lat:  -0.1807, lon:  -78.4678 },
+      { name: 'La Paz',        country: 'Bolivia',      tz: 'America/La_Paz',            lat: -16.4897, lon:  -68.1193 },
+      { name: 'Santiago',      country: 'Chile',        tz: 'America/Santiago',          lat: -33.4489, lon:  -70.6693 },
+      { name: 'Montevideo',    country: 'Uruguay',      tz: 'America/Montevideo',        lat: -34.9011, lon:  -56.1645 },
+      { name: 'Asunción',      country: 'Paraguay',     tz: 'America/Asuncion',          lat: -25.2637, lon:  -57.5759 },
+      { name: 'Rio de Janeiro',country: 'Brazil',       tz: 'America/Sao_Paulo',         lat: -22.9068, lon:  -43.1729 },
+      { name: 'Brasília',      country: 'Brazil',       tz: 'America/Sao_Paulo',         lat: -15.7975, lon:  -47.8919 },
+      { name: 'Nuuk',          country: 'Greenland',    tz: 'America/Nuuk',              lat:  64.1814, lon:  -51.6941 },
+      { name: 'Ponta Delgada', country: 'Azores',       tz: 'Atlantic/Azores',           lat:  37.7412, lon:  -25.6756 },
+      { name: 'Praia',         country: 'Cape Verde',   tz: 'Atlantic/Cape_Verde',       lat:  14.9330, lon:  -23.5133 },
+      // Oceania / Pacific (covers UTC+8 through UTC+14 and exotic offsets)
+      { name: 'Adelaide',      country: 'Australia',    tz: 'Australia/Adelaide',        lat: -34.9285, lon:  138.6007 },
+      { name: 'Darwin',        country: 'Australia',    tz: 'Australia/Darwin',          lat: -12.4634, lon:  130.8456 },
+      { name: 'Brisbane',      country: 'Australia',    tz: 'Australia/Brisbane',        lat: -27.4698, lon:  153.0251 },
+      { name: 'Melbourne',     country: 'Australia',    tz: 'Australia/Melbourne',       lat: -37.8136, lon:  144.9631 },
+      { name: 'Hobart',        country: 'Australia',    tz: 'Australia/Hobart',          lat: -42.8821, lon:  147.3272 },
+      { name: 'Wellington',    country: 'New Zealand',  tz: 'Pacific/Auckland',          lat: -41.2865, lon:  174.7762 },
+      { name: 'Christchurch',  country: 'New Zealand',  tz: 'Pacific/Auckland',          lat: -43.5321, lon:  172.6362 },
+      { name: 'Suva',          country: 'Fiji',         tz: 'Pacific/Fiji',              lat: -18.1248, lon:  178.4501 },
+      { name: 'Apia',          country: 'Samoa',        tz: 'Pacific/Apia',              lat: -13.8506, lon: -171.7513 },
+      { name: 'Nuku\'alofa',   country: 'Tonga',        tz: 'Pacific/Tongatapu',         lat: -21.1394, lon: -175.2049 },
+      { name: 'Port Moresby',  country: 'PNG',          tz: 'Pacific/Port_Moresby',      lat:  -9.4438, lon:  147.1803 },
+      { name: 'Noumea',        country: 'New Caledonia',tz: 'Pacific/Noumea',            lat: -22.2758, lon:  166.4581 },
+      { name: 'Papeete',       country: 'Tahiti',       tz: 'Pacific/Tahiti',            lat: -17.5516, lon: -149.5585 },
+      { name: 'Kiritimati',    country: 'Kiribati',     tz: 'Pacific/Kiritimati',        lat:   1.8721, lon: -157.4278 },
+      { name: 'Pago Pago',     country: 'Am. Samoa',    tz: 'Pacific/Pago_Pago',         lat: -14.2710, lon: -170.7016 },
+      // Indian Ocean
+      { name: 'Port Louis',    country: 'Mauritius',    tz: 'Indian/Mauritius',          lat: -20.1609, lon:   57.5012 },
+      { name: 'Malé',          country: 'Maldives',     tz: 'Indian/Maldives',           lat:   4.1755, lon:   73.5093 },
     ];
 
     // ============================================================
@@ -1244,20 +1646,40 @@
             vec3 day = texture2D(dayMap, vUv).rgb;
             vec3 night = texture2D(nightMap, vUv).rgb;
 
-            // Stylized full-night (city lights everywhere)
-            vec3 nightCol = night * 1.5;
+            // Stylized full-night
+            vec3 nightCol = night * 1.6;
+            // Stylized full-day — bright everywhere
+            vec3 dayCol = day * 1.2;
 
-            // Stylized full-day (bright blue marble)
-            vec3 dayCol = day * 1.1;
+            // === LIVE — realistic illumination ===
+            vec3 N = normalize(vN);
+            vec3 L = normalize(sunDir);
+            float NdotL = dot(N, L);
 
-            // Real lit (Live mode)
-            float l = dot(normalize(vN), normalize(sunDir));
-            float dayMask = smoothstep(-0.15, 0.18, l);
-            vec3 lit = day * (ambient + max(0.0, l) * 1.05);
-            // Subtle blue twilight tint near terminator
-            float twilight = (1.0 - abs(l * 4.0)) * smoothstep(-0.2, 0.0, l);
-            lit += vec3(0.1, 0.2, 0.35) * twilight * 0.4;
-            vec3 liveCol = mix(night * 1.6, lit, dayMask);
+            // Sharp terminator with narrow twilight band (~10° spread)
+            float dayMask   = smoothstep(-0.06, 0.10, NdotL);
+            float nightMask = 1.0 - dayMask;
+
+            // Day side: bright Lambertian, slight saturation boost
+            vec3 dayLit = day * (ambient + max(0.0, NdotL) * 1.45);
+            float lum = dot(dayLit, vec3(0.299, 0.587, 0.114));
+            dayLit = mix(vec3(lum), dayLit, 1.18);
+
+            // Night side: city lights, strong only when fully dark
+            float deepNight = smoothstep(0.10, -0.06, NdotL);
+            vec3 cityLights = night * 2.8 * deepNight;
+
+            // Sunset / sunrise warm band right at terminator
+            float dusk = smoothstep(0.0, 0.06, NdotL) * (1.0 - smoothstep(0.04, 0.18, NdotL));
+            vec3 sunsetTint = vec3(1.0, 0.5, 0.18);
+            vec3 sunset = sunsetTint * dusk * 0.75;
+
+            // Pre-dawn cool blue tint just before sunrise
+            float dawn = smoothstep(-0.08, -0.02, NdotL) * (1.0 - smoothstep(-0.02, 0.04, NdotL));
+            vec3 dawnTint = vec3(0.25, 0.4, 0.7);
+            vec3 predawn = dawnTint * dawn * 0.35;
+
+            vec3 liveCol = dayLit * dayMask + cityLights * nightMask + sunset + predawn;
 
             vec3 col;
             if (modeBlend < 1.0) {
@@ -1289,22 +1711,42 @@
     const atmoMat = new THREE.ShaderMaterial({
       uniforms: {
         glowColor: { value: new THREE.Color(0x5ab3ff) },
+        sunDir:    { value: new THREE.Vector3(1, 0, 0) },
+        liveBlend: { value: 0 },
         intensity: { value: 1.0 },
       },
       vertexShader: `
         varying vec3 vNormal;
+        varying vec3 vWorldNormal;
         void main() {
           vNormal = normalize(normalMatrix * normal);
+          vWorldNormal = normalize(mat3(modelMatrix) * normal);
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragmentShader: `
         uniform vec3 glowColor;
+        uniform vec3 sunDir;
+        uniform float liveBlend;
         uniform float intensity;
         varying vec3 vNormal;
+        varying vec3 vWorldNormal;
         void main() {
-          float i = pow(0.78 - dot(vNormal, vec3(0, 0, 1.0)), 2.4) * intensity;
-          gl_FragColor = vec4(glowColor, 1.0) * i;
+          // Limb intensity from view angle
+          float rim = pow(0.78 - dot(vNormal, vec3(0, 0, 1.0)), 2.4);
+          // Sun alignment in world space (for Live realism)
+          float sunDot = dot(normalize(vWorldNormal), normalize(sunDir));
+          vec3 dayBlue   = vec3(0.55, 0.78, 1.0);
+          vec3 sunsetRed = vec3(1.0, 0.55, 0.22);
+          vec3 nightBlue = vec3(0.06, 0.12, 0.28);
+          vec3 liveColor;
+          if (sunDot > 0.0) {
+            liveColor = mix(sunsetRed, dayBlue, smoothstep(0.0, 0.45, sunDot));
+          } else {
+            liveColor = mix(nightBlue, sunsetRed, smoothstep(-0.35, 0.0, sunDot));
+          }
+          vec3 finalColor = mix(glowColor, liveColor, liveBlend);
+          gl_FragColor = vec4(finalColor, 1.0) * rim * intensity;
         }
       `,
       side: THREE.BackSide,
@@ -1727,6 +2169,60 @@
       return Math.round((local - utc) / 60000);
     }
 
+    // Solar calculator (NOAA-style, accurate to ~1 min)
+    function sunTimes(date, lat, lon) {
+      const rad = Math.PI / 180;
+      const yearStart = Date.UTC(date.getUTCFullYear(), 0, 0);
+      const dayOfYear = Math.floor((date.getTime() - yearStart) / 86400000);
+      const decl = 23.45 * Math.sin(2 * Math.PI * (284 + dayOfYear) / 365);
+      const cosH = -Math.tan(lat * rad) * Math.tan(decl * rad);
+      if (cosH > 1)  return { polar: 'night', dayLengthMin: 0 };
+      if (cosH < -1) return { polar: 'day', dayLengthMin: 1440 };
+      const H = Math.acos(cosH) / rad;
+      const solarNoonUTC = 12 - (lon / 15);
+      const sunriseUTC = solarNoonUTC - (H / 15);
+      const sunsetUTC  = solarNoonUTC + (H / 15);
+      const baseUTC = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+      return {
+        sunrise: new Date(baseUTC + sunriseUTC * 3600000),
+        sunset:  new Date(baseUTC + sunsetUTC * 3600000),
+        solarNoon: new Date(baseUTC + solarNoonUTC * 3600000),
+        dayLengthMin: (sunsetUTC - sunriseUTC) * 60,
+      };
+    }
+    function fmtHM(date, tz) {
+      if (!date) return '—';
+      return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(date);
+    }
+    function fmtDayLength(min) {
+      if (min == null) return '—';
+      const h = Math.floor(min / 60);
+      const m = Math.round(min % 60);
+      return `${h}h ${String(m).padStart(2,'0')}m`;
+    }
+
+    // Lunar phase (synodic month approximation)
+    const PHASE_EMOJI = ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
+    const PHASE_NAME  = ['New Moon','Waxing Crescent','First Quarter','Waxing Gibbous','Full Moon','Waning Gibbous','Last Quarter','Waning Crescent'];
+    function lunarPhase(date) {
+      const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14);
+      const synodic = 29.530588853;
+      let days = (date.getTime() - knownNewMoon) / 86400000;
+      let phase = ((days % synodic) + synodic) % synodic / synodic; // 0..1
+      const illumination = (1 - Math.cos(2 * Math.PI * phase)) / 2;
+      // 8-bucket phase index
+      let idx;
+      if (phase < 0.0625 || phase >= 0.9375) idx = 0;
+      else if (phase < 0.1875) idx = 1;
+      else if (phase < 0.3125) idx = 2;
+      else if (phase < 0.4375) idx = 3;
+      else if (phase < 0.5625) idx = 4;
+      else if (phase < 0.6875) idx = 5;
+      else if (phase < 0.8125) idx = 6;
+      else idx = 7;
+      return { phase, illumination, emoji: PHASE_EMOJI[idx], name: PHASE_NAME[idx] };
+    }
+
     // ============================================================
     // SELECTED CITY (panel + now-chip)
     // ============================================================
@@ -1774,6 +2270,7 @@
       renderSelectedCity();
       renderWorldClocks();
       renderNowChip();
+      if (typeof renderPlanner === 'function') renderPlanner();
       nowChip.classList.add('show');
     }
 
@@ -1797,6 +2294,11 @@
       }
       const c = CITIES[selectedCityIdx];
       const dst = isDST(c.tz);
+      const st = sunTimes(new Date(), c.lat, c.lon);
+      const lp = lunarPhase(new Date());
+      const sunriseStr = st.polar === 'night' ? 'Polar night' : (st.polar === 'day' ? 'Polar day' : fmtHM(st.sunrise, c.tz));
+      const sunsetStr  = st.polar === 'night' ? '—' : (st.polar === 'day' ? '—' : fmtHM(st.sunset, c.tz));
+      const dayLenStr  = fmtDayLength(st.dayLengthMin);
       selectedCityEl.innerHTML = `
         <div class="selected-card">
           <div class="city-name">${c.name}</div>
@@ -1810,6 +2312,19 @@
             <div class="item"><div class="k">Longitude</div><div class="v">${c.lon.toFixed(2)}°</div></div>
             <div class="item"><div class="k">DST Active</div><div class="v" style="color:${dst ? 'var(--good)' : 'var(--text-faint)'}">${dst ? 'Yes' : 'No'}</div></div>
             <div class="item"><div class="k">Unix</div><div class="v" style="font-size:11px">${Math.floor(Date.now()/1000)}</div></div>
+          </div>
+          <div class="sky-strip">
+            <div class="sky-cell"><div class="icon">🌅</div><div class="k">Sunrise</div><div class="v">${sunriseStr}</div></div>
+            <div class="sky-cell"><div class="icon">🌇</div><div class="k">Sunset</div><div class="v">${sunsetStr}</div></div>
+            <div class="sky-cell"><div class="icon">☀️</div><div class="k">Day Length</div><div class="v">${dayLenStr}</div></div>
+          </div>
+          <div class="moon-strip">
+            <div class="moon-emoji">${lp.emoji}</div>
+            <div class="moon-info">
+              <div class="moon-name">${lp.name}</div>
+              <div class="moon-meta">${(lp.illumination * 100).toFixed(0)}% illuminated · day ${(lp.phase * 29.53).toFixed(1)}/29.5</div>
+            </div>
+            <div class="moon-bar"><div class="moon-bar-fill" style="width:${lp.illumination * 100}%"></div></div>
           </div>
         </div>
       `;
@@ -2168,6 +2683,233 @@
     setPomPhase('work'); renderPom();
 
     // ============================================================
+    // TIMER / COUNTDOWN
+    // ============================================================
+    const TIMER_KEY = 'chronosphere.countdowns';
+    let countdowns = [];
+    try { countdowns = JSON.parse(localStorage.getItem(TIMER_KEY) || '[]'); } catch (e) { countdowns = []; }
+
+    const timerListEl = document.getElementById('timer-list');
+    const timerNameEl = document.getElementById('timer-name');
+    const timerWhenEl = document.getElementById('timer-when');
+
+    function saveTimers() {
+      try { localStorage.setItem(TIMER_KEY, JSON.stringify(countdowns)); } catch (e) {}
+    }
+    function fmtCountdown(ms) {
+      if (ms < 0) {
+        const ago = -ms;
+        const d = Math.floor(ago / 86400000);
+        const h = Math.floor((ago % 86400000) / 3600000);
+        if (d > 0) return `${d}d ${h}h ago`;
+        const m = Math.floor((ago % 3600000) / 60000);
+        if (h > 0) return `${h}h ${m}m ago`;
+        return `${m}m ago`;
+      }
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor((ms % 86400000) / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      if (d > 0) return `${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+    function fmtTimerWhen(iso) {
+      const d = new Date(iso);
+      return new Intl.DateTimeFormat('en-GB', {
+        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+      }).format(d);
+    }
+    function renderTimers() {
+      countdowns.sort((a, b) => new Date(a.target) - new Date(b.target));
+      if (!countdowns.length) {
+        timerListEl.innerHTML = '<p style="text-align:center;color:var(--text-faint);padding:20px;font-size:11px">No countdowns yet. Add one above.</p>';
+        return;
+      }
+      const now = Date.now();
+      timerListEl.innerHTML = countdowns.map((cd, i) => {
+        const remaining = new Date(cd.target) - now;
+        const cls = remaining < 0 ? 'elapsed' : (remaining < 3600000 ? 'soon' : '');
+        return `<div class="countdown-item ${cls}" data-i="${i}">
+          <div class="cd-info">
+            <div class="cd-name">${cd.name}</div>
+            <div class="cd-when">${fmtTimerWhen(cd.target)}</div>
+          </div>
+          <div class="cd-time" data-target="${cd.target}">${fmtCountdown(remaining)}</div>
+          <button class="cd-del" data-del="${i}" title="Remove">✕</button>
+        </div>`;
+      }).join('');
+      timerListEl.querySelectorAll('.cd-del').forEach(b => {
+        b.addEventListener('click', () => {
+          const i = parseInt(b.dataset.del);
+          countdowns.splice(i, 1);
+          saveTimers();
+          renderTimers();
+        });
+      });
+    }
+    function tickTimers() {
+      const now = Date.now();
+      timerListEl.querySelectorAll('.cd-time').forEach(el => {
+        const remaining = new Date(el.dataset.target) - now;
+        el.textContent = fmtCountdown(remaining);
+        const item = el.parentElement;
+        item.classList.toggle('elapsed', remaining < 0);
+        item.classList.toggle('soon', remaining >= 0 && remaining < 3600000);
+      });
+    }
+    function addTimer(name, target) {
+      if (!name || !target) return;
+      countdowns.push({ name, target: new Date(target).toISOString() });
+      saveTimers();
+      renderTimers();
+    }
+    document.getElementById('timer-add').addEventListener('click', () => {
+      const name = timerNameEl.value.trim() || 'Untitled';
+      const when = timerWhenEl.value;
+      if (!when) return;
+      addTimer(name, when);
+      timerNameEl.value = '';
+      timerWhenEl.value = '';
+    });
+    document.querySelectorAll('#timer-presets .btn').forEach(b => {
+      b.addEventListener('click', () => {
+        const p = b.dataset.preset;
+        const now = new Date();
+        const yr = now.getFullYear();
+        let target, name;
+        if (p === 'hour1') { target = new Date(now.getTime() + 3600000); name = '1 hour from now'; }
+        else if (p === 'day1') { target = new Date(now.getTime() + 86400000); name = '24 hours'; }
+        else if (p === 'week1') { target = new Date(now.getTime() + 7*86400000); name = '1 week'; }
+        else if (p === 'newyear') { target = new Date(yr + 1, 0, 1, 0, 0); name = `New Year ${yr + 1}`; }
+        else if (p === 'xmas') {
+          target = new Date(yr, 11, 25, 0, 0);
+          if (target < now) target = new Date(yr + 1, 11, 25, 0, 0);
+          name = `Christmas ${target.getFullYear()}`;
+        }
+        addTimer(name, target.toISOString());
+      });
+    });
+    renderTimers();
+
+    // ============================================================
+    // MEETING PLANNER
+    // ============================================================
+    const PLANNER_KEY = 'chronosphere.planner';
+    let plannerCities = [];
+    try { plannerCities = JSON.parse(localStorage.getItem(PLANNER_KEY) || 'null') ||
+      ['London','New York','Tokyo','Sydney','Dubai','San Francisco']; } catch (e) {
+      plannerCities = ['London','New York','Tokyo','Sydney','Dubai','San Francisco'];
+    }
+    let plannerOffsetHours = 0; // shift from now
+
+    const plannerCitiesEl = document.getElementById('planner-cities');
+    const plannerSearchEl = document.getElementById('planner-search');
+    const plannerSearchResultsEl = document.getElementById('planner-search-results');
+    const plannerSlider = document.getElementById('planner-slider');
+    const plannerSliderLabel = document.getElementById('planner-slider-label');
+    const plannerRefCityEl = document.getElementById('planner-ref-city');
+    const plannerRefTimeEl = document.getElementById('planner-ref-time');
+
+    function savePlannerCities() {
+      try { localStorage.setItem(PLANNER_KEY, JSON.stringify(plannerCities)); } catch (e) {}
+    }
+    function plannerRefCity() {
+      // Use selected city if available, else user's locale, else London
+      if (selectedCityIdx !== null) return CITIES[selectedCityIdx];
+      try {
+        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const match = CITIES.find(c => c.tz === userTz);
+        if (match) return match;
+      } catch (e) {}
+      return CITIES.find(c => c.name === 'London') || CITIES[0];
+    }
+    function timeAtOffset(tz, offsetH) {
+      const t = new Date(Date.now() + offsetH * 3600000);
+      return new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz,
+      }).format(t);
+    }
+    function hourAt(tz, offsetH) {
+      const t = new Date(Date.now() + offsetH * 3600000);
+      const h = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hour12: false, timeZone: tz }).format(t);
+      return parseInt(h);
+    }
+    function dayAt(tz, offsetH) {
+      const t = new Date(Date.now() + offsetH * 3600000);
+      const today = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: tz }).format(new Date());
+      const then  = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: tz }).format(t);
+      if (then === today) return '';
+      return new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: tz }).format(t);
+    }
+    function bandFor(hour) {
+      if (hour >= 9 && hour < 17) return { cls: 'work', icon: '☀️' };
+      if (hour >= 22 || hour < 6)  return { cls: 'night', icon: '🌙' };
+      return { cls: 'dawn-dusk', icon: hour < 12 ? '🌅' : '🌇' };
+    }
+    function renderPlanner() {
+      const ref = plannerRefCity();
+      plannerRefCityEl.textContent = ref.name;
+      plannerRefTimeEl.textContent = timeAtOffset(ref.tz, plannerOffsetHours);
+      plannerSliderLabel.textContent = plannerOffsetHours === 0 ? 'Now' :
+        (plannerOffsetHours > 0 ? `+${plannerOffsetHours}h` : `${plannerOffsetHours}h`);
+      plannerCitiesEl.innerHTML = plannerCities.map(name => {
+        const c = CITIES.find(x => x.name === name);
+        if (!c) return '';
+        const h = hourAt(c.tz, plannerOffsetHours);
+        const b = bandFor(h);
+        const d = dayAt(c.tz, plannerOffsetHours);
+        return `<div class="planner-city ${b.cls}">
+          <div class="pl-icon">${b.icon}</div>
+          <div class="pl-info">
+            <div class="pl-name">${c.name}</div>
+            <div class="pl-offset">${c.country} · ${getOffset(c.tz)}</div>
+          </div>
+          <div>
+            <div class="pl-time">${timeAtOffset(c.tz, plannerOffsetHours)}</div>
+            <div class="pl-day">${d}</div>
+          </div>
+          <button class="pl-del" data-del="${name}" title="Remove">✕</button>
+        </div>`;
+      }).join('');
+      plannerCitiesEl.querySelectorAll('.pl-del').forEach(b => {
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          plannerCities = plannerCities.filter(n => n !== b.dataset.del);
+          savePlannerCities();
+          renderPlanner();
+        });
+      });
+    }
+    plannerSlider.addEventListener('input', () => {
+      plannerOffsetHours = parseInt(plannerSlider.value);
+      renderPlanner();
+    });
+    plannerSearchEl.addEventListener('input', () => {
+      const q = plannerSearchEl.value.toLowerCase().trim();
+      if (!q) { plannerSearchResultsEl.innerHTML = ''; return; }
+      const matches = CITIES
+        .filter(c => !plannerCities.includes(c.name))
+        .filter(c => c.name.toLowerCase().includes(q) || c.country.toLowerCase().includes(q))
+        .slice(0, 6);
+      plannerSearchResultsEl.innerHTML = matches.map(c => `
+        <div class="wc-card" data-add="${c.name}" style="margin-bottom:5px">
+          <div class="city">+ ${c.name}</div>
+          <div class="offset">${c.country} · ${getOffset(c.tz)}</div>
+        </div>
+      `).join('');
+      plannerSearchResultsEl.querySelectorAll('[data-add]').forEach(el => {
+        el.addEventListener('click', () => {
+          plannerCities.push(el.dataset.add);
+          savePlannerCities();
+          plannerSearchEl.value = '';
+          plannerSearchResultsEl.innerHTML = '';
+          renderPlanner();
+        });
+      });
+    });
+    renderPlanner();
+
+    // ============================================================
     // RESIZE
     // ============================================================
     window.addEventListener('resize', () => {
@@ -2248,6 +2990,10 @@
       if (earthShader) {
         earthShader.uniforms.sunDir.value.copy(sunGroup.userData.dir);
       }
+      // Atmosphere shader sunDir + liveBlend tween
+      atmoMat.uniforms.sunDir.value.copy(sunGroup.userData.dir);
+      const liveTarget = mode === 'live' ? 1 : 0;
+      atmoMat.uniforms.liveBlend.value += (liveTarget - atmoMat.uniforms.liveBlend.value) * Math.min(1, dt / 1400);
       // Three.js directional light follows the sun for moon shading
       sun.position.copy(sunGroup.userData.dir).multiplyScalar(20);
 
@@ -2309,6 +3055,8 @@
       if (secondCounter >= 1000) {
         secondCounter = 0;
         updateAllClocks();
+        tickTimers();
+        if (activePanel === 'planner') renderPlanner();
       }
 
       controls.update();
